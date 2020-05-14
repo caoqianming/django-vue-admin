@@ -15,7 +15,9 @@
 
 安装依赖包 `pip install -r requirements.txt`
 
-修改数据库连接 `server\settings_dev.py`
+修改数据库连接 `server\settings_dev.py` 或者直接使用sqlite数据库(超管账户密码均为admin)
+
+同步数据库 `python manage.py makemigrations system`
 
 同步数据库 `python manage.py migrate`
 

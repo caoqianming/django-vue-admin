@@ -14,7 +14,12 @@ class DictType(SoftModel):
     code = models.CharField('代号', unique=True, max_length=30)
     pid = models.ForeignKey('self', null=True, blank=True,
                             on_delete=models.SET_NULL, verbose_name='父')
+    class Meta:
+        verbose_name = '字典类型'
+        verbose_name_plural = verbose_name
 
+    def __str__(self):
+        return self.name
 
 class Dict(SoftModel):
     """
@@ -28,6 +33,12 @@ class Dict(SoftModel):
     pid = models.ForeignKey('self', null=True, blank=True,
                             on_delete=models.SET_NULL, verbose_name='父')
 
+    class Meta:
+        verbose_name = '字典'
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.name
 
 class Position(BaseModel):
     """
