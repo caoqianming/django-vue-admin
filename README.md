@@ -3,6 +3,11 @@
 
 内置模块有组织机构\用户\角色\岗位\数据字典,支持功能权限(控权到每个接口)和简单的数据权限,采用JWT认证.
 
+## 部分截图
+![image](https://github.com/caoqianming/django-vue-admin/blob/master/img/user.png)
+![image](https://github.com/caoqianming/django-vue-admin/blob/master/img/dict.png)
+![image](https://github.com/caoqianming/django-vue-admin/blob/master/img/docs.png)
+
 ## 启动(以下是在windows下开发操作步骤)
 ### django后端
 定位到server文件夹
@@ -47,7 +52,7 @@ location / {
 }
 ```
 
-运行nginx.exe  
+运行nginx.exe
 
 ## 运行
 打开localhost:8012即可访问
