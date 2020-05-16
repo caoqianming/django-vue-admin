@@ -78,7 +78,7 @@ export const asyncRoutes = [
         path: 'organization',
         name: 'Organization',
         component: () => import('@/views/system/organization'),
-        meta: { title: '部门管理', icon: 'tree', perms: ['organization_manage'] }
+        meta: { title: '部门管理', icon: 'tree', perms: ['org_manage'] }
       },
       {
         path: 'role',
@@ -97,6 +97,21 @@ export const asyncRoutes = [
         name: 'Dict',
         component: () => import('@/views/system/dict'),
         meta: { title: '数据字典', icon: 'example', perms: ['dict_manage'] }
+      }
+    ]
+  },
+  {
+    path: '/develop',
+    component: Layout,
+    redirect: '/develop/perm',
+    name: 'Develop',
+    meta: { title: '开发配置', icon: 'example', perms: ['dev_set'] },
+    children: [
+      {
+        path: 'perm',
+        name: 'Perm',
+        component: () => import('@/views/system/perm'),
+        meta: { title: '权限菜单', icon: 'example', perms: ['perm_manage'] }
       },
       {
         path: 'external-link',
@@ -104,7 +119,17 @@ export const asyncRoutes = [
         children: [
           {
             path: process.env.VUE_APP_BASE_API + '/docs/',
-            meta: { title: '接口文档', icon: 'link', perms: ['docs'] }
+            meta: { title: '接口文档', icon: 'link', perms: ['dev_docs'] }
+          }
+        ]
+      },
+      {
+        path: 'external-link',
+        component: Layout,
+        children: [
+          {
+            path: process.env.VUE_APP_BASE_API + '/admin/',
+            meta: { title: 'Django后台', icon: 'link', perms: ['dev_admin'] }
           }
         ]
       }

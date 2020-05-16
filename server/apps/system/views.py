@@ -40,11 +40,7 @@ class DictTypeViewSet(ModelViewSet):
     """
     数据字典类型：增删改查
     """
-    perms_map = [{'post': 'dicttype_create'},
-                 {'put': 'dicttype_update'},
-                 {'delete': 'dicttype_delete'},
-                 {'get': 'dicttype_view'},
-                 ]
+    perms_map = {'get': '*', 'post': 'dicttype_create', 'put': 'dicttype_update','delete': 'dicttype_delete'}
     queryset = DictType.objects.all()
     serializer_class = DictTypeSerializer
     pagination_class = None
@@ -57,11 +53,7 @@ class DictViewSet(ModelViewSet):
     """
     数据字典：增删改查
     """
-    perms_map = [{'post': 'dict_create'},
-                 {'put': 'dict_update'},
-                 {'delete': 'dict_delete'},
-                 {'get': 'dict_view'},
-                 ]
+    perms_map = {'get': '*', 'post': 'dict_create', 'put': 'dict_update','delete': 'dict_delete'}
     queryset = Dict.objects.all()
     serializer_class = DictSerializer
     search_fields = ['^name']
@@ -72,11 +64,7 @@ class PositionViewSet(ModelViewSet):
     """
     岗位：增删改查
     """
-    perms_map = [{'post': 'position_create'},
-                 {'put': 'position_update'},
-                 {'delete': 'position_delete'},
-                 {'get': 'position_view'},
-                 ]
+    perms_map = {'get': '*', 'post': 'position_create', 'put': 'position_update','delete': 'position_delete'}
     queryset = Position.objects.all()
     serializer_class = PositionSerializer
     pagination_class = None
@@ -86,7 +74,7 @@ class PositionViewSet(ModelViewSet):
 
 
 class TestView(APIView):
-    perms_map = [{'get': 'test_view'}]  # 单个API控权
+    perms_map = {'get':'test_view'}  # 单个API控权
     pass
 
 
@@ -94,11 +82,8 @@ class PermissionViewSet(ModelViewSet):
     """
     权限：增删改查
     """
-    perms_map = [{'post': 'perm_create'},  # 视图类控权
-                 {'put': 'perm_update'},
-                 {'delete': 'perm_delete'},
-                 {'get': 'perm_view'},
-                 ]
+    perms_map = {'get': '*', 'post': 'perm_create', 'put': 'perm_update','delete': 'perm_delete'}
+    queryset = Position.objects.all()
     queryset = Permission.objects.all()
     serializer_class = PermissionSerializer
     pagination_class = None
@@ -111,15 +96,11 @@ class OrganizationViewSet(ModelViewSet):
     """
     组织机构：增删改查
     """
-    perms_map = [{'post': 'org_create'},
-                 {'put': 'org_update'},
-                 {'delete': 'org_delete'},
-                 {'get': 'org_view'},
-                 ]
+    perms_map = {'get': '*', 'post': 'org_create', 'put': 'org_update','delete': 'org_delete'}
     queryset = Organization.objects.all()
     serializer_class = OrganizationSerializer
     pagination_class = None
-    search_fields = ['^name']
+    search_fields = ['^name','^method']
     ordering_fields = ['id']
     ordering = 'id'
 
@@ -128,11 +109,7 @@ class RoleViewSet(ModelViewSet):
     """
     角色：增删改查
     """
-    perms_map = [{'post': 'role_create'},
-                 {'put': 'role_update'},
-                 {'delete': 'role_delete'},
-                 {'get': 'role_view'},
-                 ]
+    perms_map = {'get': '*', 'post': 'role_create', 'put': 'role_update','delete': 'role_delete'}
     queryset = Role.objects.all()
     serializer_class = RoleSerializer
     pagination_class = None
@@ -145,11 +122,7 @@ class UserViewSet(ModelViewSet):
     """
     用户管理：增删改查
     """
-    perms_map = [{'post': 'user_create'},
-                 {'put': 'user_update'},
-                 {'delete': 'user_delete'},
-                 {'get': 'user_view'},
-                 ]
+    perms_map = {'get': '*', 'post': 'user_create', 'put': 'user_update','delete': 'user_delete'}
     queryset = User.objects.all().order_by('-id')
     serializer_class = UserListSerializer
     filterset_class = UserFilter
@@ -177,12 +150,12 @@ class UserViewSet(ModelViewSet):
         # 创建用户默认添加密码
         password = request.data['password'] if 'password' in request.data else None
         if password:
-            request.data['password'] = make_password(password)
+            password = make_password(password)
         else:
-            request.data['password'] = make_password('0000')
+            password = make_password('0000')
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
+        serializer.save(password = password)
         return Response(serializer.data)
 
     @action(methods=['put'], detail=True, permission_classes=[IsAuthenticated],
@@ -205,8 +178,8 @@ class UserViewSet(ModelViewSet):
         else:
             return Response('旧密码错误!', status=status.HTTP_400_BAD_REQUEST)
 
-    # perms_map=[{'get':'my_info'}], 自定义action控权
-    @action(methods=['get'], detail=False, url_name='my_info', permission_classes=[IsAuthenticated])
+    # perms_map={'get':'*'}, 自定义action控权
+    @action(methods=['get'], detail=False, url_name='my_info', permission_classes=[IsAuthenticated]) 
     def info(self, request, pk=None):
         """
         初始化用户信息

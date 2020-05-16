@@ -137,13 +137,7 @@
           <el-input v-model="user.username" placeholder="账户" />
         </el-form-item>
         <el-form-item label="所属部门" prop="dept">
-          <el-cascader
-            v-model="user.dept"
-            :options="orgData"
-            :props="{ checkStrictly: true }"
-            clearable
-            style="width:100%"
-          />
+          <treeselect v-model="user.dept" :multiple="false" :options="orgData" placeholder="所属部门"/>
         </el-form-item>
         <el-form-item label="角色" prop="roles">
           <el-select v-model="user.roles" multiple placeholder="请选择" style="width:100%">
@@ -165,7 +159,7 @@
             :before-upload="beforeAvatarUpload"
             :headers="myHeaders"
           >
-            <img v-if="user.avatar" :src="user.avatar" class="avatar">
+            <img v-if="user.avatar" :src="user.avatar" class="avatar" />
             <i v-else class="el-icon-plus avatar-uploader-icon" />
           </el-upload>
         </el-form-item>
@@ -203,36 +197,37 @@
 }
 </style>
 <script>
-import { getUserList, createUser, deleteUser, updateUser } from '@/api/user'
-import { getOrgAll } from '@/api/org'
-import { getRoleAll } from '@/api/role'
-import { genTree } from '@/utils'
-import checkPermission from '@/utils/permission'
-import { uploadUrl } from '@/api/file'
-import { getToken } from '@/utils/auth'
-import Pagination from '@/components/Pagination' // secondary package based on el-pagination
-
+import { getUserList, createUser, deleteUser, updateUser } from "@/api/user";
+import { getOrgAll } from "@/api/org";
+import { getRoleAll } from "@/api/role";
+import { genTree } from "@/utils";
+import checkPermission from "@/utils/permission";
+import { uploadUrl } from "@/api/file";
+import { getToken } from "@/utils/auth";
+import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
+import Treeselect from '@riophae/vue-treeselect'
+import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 const defaultUser = {
-  id: '',
-  name: '',
-  username: '',
+  id: "",
+  name: "",
+  username: "",
   dept: null,
-  avatar: ''
-}
+  avatar: "/media/default/avatar.png"
+};
 export default {
-  components: { Pagination },
+  components: { Pagination, Treeselect },
   data() {
     return {
       user: {
-        id: '',
-        name: '',
-        username: '',
+        id: "",
+        name: "",
+        username: "",
         dept: null,
-        avatar: ''
+        avatar: ""
       },
-      myHeaders: { Authorization: 'JWT ' + getToken() },
+      myHeaders: { Authorization: "JWT " + getToken() },
       uploadUrl: uploadUrl(),
-      userList: [],
+      userList: {'count':0},
       roles: [],
       listLoading: true,
       listQuery: {
@@ -240,163 +235,161 @@ export default {
         page_size: 20
       },
       enabledOptions: [
-        { key: 'true', display_name: '激活' },
-        { key: 'false', display_name: '禁用' }
+        { key: "true", display_name: "激活" },
+        { key: "false", display_name: "禁用" }
       ],
       dialogVisible: false,
-      dialogType: 'new',
+      dialogType: "new",
       rule1: {
-        name: [{ required: true, message: '请输入姓名', trigger: 'blur' }],
-        username: [{ required: true, message: '请输入账号', trigger: 'change' }]
+        name: [{ required: true, message: "请输入姓名", trigger: "blur" }],
+        username: [{ required: true, message: "请输入账号", trigger: "change" }]
         // password: [
         //   { required: true, message: '请输入密码', trigger: 'change' }
         // ],
       },
-      filterOrgText: '',
+      filterOrgText: "",
       treeLoding: false,
       orgData: []
-    }
+    };
   },
   computed: {},
   watch: {
     filterOrgText(val) {
-      this.$refs.tree.filter(val)
+      this.$refs.tree.filter(val);
     }
   },
   created() {
-    this.getList()
-    this.getOrgAll()
-    this.getRoleAll()
+    this.getList();
+    this.getOrgAll();
+    this.getRoleAll();
   },
   methods: {
     checkPermission,
     handleAvatarSuccess(res, file) {
       if (res.code === 200) {
-        this.user.avatar = res.data.path
+        this.user.avatar = res.data.path;
       } else {
-        this.$message.error('头像上传失败!')
+        this.$message.error("头像上传失败!");
       }
     },
     beforeAvatarUpload(file) {
-      const isLt2M = file.size / 1024 / 1024 < 2
+      const isLt2M = file.size / 1024 / 1024 < 2;
       if (!isLt2M) {
-        this.$message.error('上传头像图片大小不能超过 2MB!')
+        this.$message.error("上传头像图片大小不能超过 2MB!");
       }
-      return isLt2M
+      return isLt2M;
     },
     filterNode(value, data) {
-      if (!value) return true
-      return data.label.indexOf(value) !== -1
+      if (!value) return true;
+      return data.label.indexOf(value) !== -1;
     },
     handleOrgClick(obj, node, vue) {
-      this.listQuery.page = 1
-      this.listQuery.dept = obj.id
-      this.getList()
+      this.listQuery.page = 1;
+      this.listQuery.dept = obj.id;
+      this.getList();
     },
     getList() {
-      this.listLoading = true
+      this.listLoading = true;
       getUserList(this.listQuery).then(response => {
-        this.userList = response.data
-        this.listLoading = false
-      })
+        if (response.data) {
+          this.userList = response.data
+        }
+        this.listLoading = false;
+      });
     },
     getOrgAll() {
-      this.treeLoding = true
+      this.treeLoding = true;
       getOrgAll().then(response => {
-        this.orgData = genTree(response.data)
-        this.treeLoding = false
-      })
+        this.orgData = genTree(response.data);
+        this.treeLoding = false;
+      });
     },
     getRoleAll() {
       getRoleAll().then(response => {
-        this.roles = genTree(response.data)
-      })
+        this.roles = genTree(response.data);
+      });
     },
     resetFilter() {
       this.listQuery = {
         page: 1,
         page_size: 20
-      }
-      this.getList()
+      };
+      this.getList();
     },
     handleFilter() {
-      this.listQuery.page = 1
-      this.getList()
+      this.listQuery.page = 1;
+      this.getList();
     },
     handleAddUser() {
-      this.user = Object.assign({}, defaultUser)
-      this.dialogType = 'new'
-      this.dialogVisible = true
+      this.user = Object.assign({}, defaultUser);
+      this.dialogType = "new";
+      this.dialogVisible = true;
       this.$nextTick(() => {
-        this.$refs['Form'].clearValidate()
-      })
+        this.$refs["Form"].clearValidate();
+      });
     },
     handleEdit(scope) {
-      this.user = Object.assign({}, scope.row) // copy obj
-      this.dialogType = 'edit'
-      this.dialogVisible = true
+      this.user = Object.assign({}, scope.row); // copy obj
+      this.dialogType = "edit";
+      this.dialogVisible = true;
       this.$nextTick(() => {
-        this.$refs['Form'].clearValidate()
-      })
+        this.$refs["Form"].clearValidate();
+      });
     },
     handleDelete(scope) {
-      this.$confirm('确认删除?', '警告', {
-        confirmButtonText: '确认',
-        cancelButtonText: '取消',
-        type: 'error'
+      this.$confirm("确认删除?", "警告", {
+        confirmButtonText: "确认",
+        cancelButtonText: "取消",
+        type: "error"
       })
-        .then(async() => {
-          await deleteUser(scope.row.id)
-          this.userList.splice(scope.row.index, 1)
+        .then(async () => {
+          await deleteUser(scope.row.id);
+          this.userList.splice(scope.row.index, 1);
           this.$message({
-            type: 'success',
-            message: '成功删除!'
-          })
+            type: "success",
+            message: "成功删除!"
+          });
         })
         .catch(err => {
-          console.error(err)
-        })
+          console.error(err);
+        });
     },
     async confirm(form) {
       this.$refs[form].validate(valid => {
         if (valid) {
-          const isEdit = this.dialogType === 'edit'
+          const isEdit = this.dialogType === "edit";
           if (isEdit) {
-            if (this.user.dept instanceof Array) {
-              this.user.dept = this.user.dept.pop()
-            }
             updateUser(this.user.id, this.user).then(res => {
               if (res.code >= 200) {
-                this.getList()
-                this.dialogVisible = false
+                this.getList();
+                this.dialogVisible = false;
                 this.$notify({
-                  title: '成功',
-                  message: '编辑成功',
-                  type: 'success',
+                  title: "成功",
+                  message: "编辑成功",
+                  type: "success",
                   duration: 2000
-                })
+                });
               }
-            })
+            });
           } else {
-            this.user.dept = this.user.dept.pop()
             createUser(this.user).then(res => {
               if (res.code >= 200) {
-                this.getList()
-                this.dialogVisible = false
+                this.getList();
+                this.dialogVisible = false;
                 this.$notify({
-                  title: '成功',
-                  message: '新增成功',
-                  type: 'success',
+                  title: "成功",
+                  message: "新增成功",
+                  type: "success",
                   duration: 2000
-                })
+                });
               }
-            })
+            });
           }
         } else {
-          return false
+          return false;
         }
-      })
+      });
     }
   }
-}
+};
 </script>

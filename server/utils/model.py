@@ -17,7 +17,7 @@ class SoftDeletableQuerySetMixin(object):
         field to True)
         '''
         if soft:
-            self.update(is_delete=True)
+            self.update(is_deleted=True)
         else:
             return super(SoftDeletableQuerySetMixin, self).delete()
 

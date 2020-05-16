@@ -39,6 +39,7 @@ class RbacPermission(BasePermission):
         if not perms:
             perms = get_permission_list(request.user)
         if perms:
+            print(perms)
             if 'admin' in perms:
                 return True
             elif not hasattr(view, 'perms_map'):
@@ -47,9 +48,10 @@ class RbacPermission(BasePermission):
                 perms_map = view.perms_map
                 _method = request._request.method.lower()
                 if perms_map:
-                    for i in perms_map:
-                        if (i[_method] or i['*']) in perms:
-                            return True
+                    for key in perms_map:
+                        if key == _method or key == '*':
+                            if perms_map[key] in perms or perms_map[key] == '*':
+                                return True
                 return False
         else:
             return False
