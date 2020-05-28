@@ -1,7 +1,9 @@
 # 简介
 基于RBAC模型的权限控制的基础开发平台,前后端分离,后端采用django+django-rest-framework,前端采用vue+ElementUI.
 
-内置模块有组织机构\用户\角色\岗位\数据字典,支持功能权限(控权到每个接口)和简单的数据权限,采用JWT认证.
+内置模块有组织机构\用户\角色\岗位\数据字典\文件库
+
+支持功能权限(控权到每个接口)和简单的数据权限（本级及以下、同级及以下等）,采用JWT认证.
 
 ## 部分截图
 ![image](https://github.com/caoqianming/django-vue-admin/blob/master/img/user.png)

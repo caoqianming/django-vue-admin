@@ -137,20 +137,24 @@ export default {
           label: '全部'
         },
         {
-          value: '本级',
-          label: '本级'
+          value: '自定义',
+          label: '自定义'
+        },
+        {
+          value: '同级及以下',
+          label: '同级及以下'
         },
         {
           value: '本级及以下',
           label: '本级及以下'
         },
         {
-          value: '仅本人',
-          label: '仅本人'
+          value: '本级',
+          label: '本级'
         },
         {
-          value: '自定义',
-          label: '自定义'
+          value: '仅本人',
+          label: '仅本人'
         }
       ]
     }

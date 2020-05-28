@@ -1,3 +1,5 @@
+import logging
+
 from django.contrib.auth.hashers import check_password, make_password
 from django.core.cache import cache
 from django_filters.rest_framework import DjangoFilterBackend
@@ -12,18 +14,20 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet, ModelViewSet
-
 from rest_framework_simplejwt.tokens import RefreshToken
-from utils.queryset import get_child_queryset
 
-from .models import Organization, Permission, Position, Role, User, DictType, Dict
+from utils.queryset import get_child_queryset2
+
+from .filters import UserFilter
+from .models import (Dict, DictType, Organization, Permission, Position, Role,
+                     User, File)
 from .permission import RbacPermission, get_permission_list
-from .serializers import (OrganizationSerializer, PermissionSerializer,
+from .permission_data import RbacFilterSet
+from .serializers import (DictSerializer, DictTypeSerializer,
+                          OrganizationSerializer, PermissionSerializer,
                           PositionSerializer, RoleSerializer,
                           UserCreateSerializer, UserListSerializer,
-                          UserModifySerializer, DictSerializer, DictTypeSerializer)
-from .filters import UserFilter
-import logging
+                          UserModifySerializer, FileSerializer)
 
 logger = logging.getLogger('log')
 # logger.info('请求成功！ response_code:{}；response_headers:{}；response_body:{}'.format(response_code, response_headers, response_body[:251]))
@@ -36,11 +40,13 @@ class LogoutView(APIView):
     def get(self, request, *args, **kwargs):  # 可将token加入黑名单
         return Response(status=status.HTTP_200_OK)
 
+
 class DictTypeViewSet(ModelViewSet):
     """
     数据字典类型：增删改查
     """
-    perms_map = {'get': '*', 'post': 'dicttype_create', 'put': 'dicttype_update','delete': 'dicttype_delete'}
+    perms_map = {'get': '*', 'post': 'dicttype_create',
+                 'put': 'dicttype_update', 'delete': 'dicttype_delete'}
     queryset = DictType.objects.all()
     serializer_class = DictTypeSerializer
     pagination_class = None
@@ -53,18 +59,21 @@ class DictViewSet(ModelViewSet):
     """
     数据字典：增删改查
     """
-    perms_map = {'get': '*', 'post': 'dict_create', 'put': 'dict_update','delete': 'dict_delete'}
+    perms_map = {'get': '*', 'post': 'dict_create',
+                 'put': 'dict_update', 'delete': 'dict_delete'}
     queryset = Dict.objects.all()
     serializer_class = DictSerializer
     search_fields = ['^name']
     ordering_fields = ['id']
     ordering = 'id'
 
+
 class PositionViewSet(ModelViewSet):
     """
     岗位：增删改查
     """
-    perms_map = {'get': '*', 'post': 'position_create', 'put': 'position_update','delete': 'position_delete'}
+    perms_map = {'get': '*', 'post': 'position_create',
+                 'put': 'position_update', 'delete': 'position_delete'}
     queryset = Position.objects.all()
     serializer_class = PositionSerializer
     pagination_class = None
@@ -74,7 +83,7 @@ class PositionViewSet(ModelViewSet):
 
 
 class TestView(APIView):
-    perms_map = {'get':'test_view'}  # 单个API控权
+    perms_map = {'get': 'test_view'}  # 单个API控权
     pass
 
 
@@ -82,7 +91,8 @@ class PermissionViewSet(ModelViewSet):
     """
     权限：增删改查
     """
-    perms_map = {'get': '*', 'post': 'perm_create', 'put': 'perm_update','delete': 'perm_delete'}
+    perms_map = {'get': '*', 'post': 'perm_create',
+                 'put': 'perm_update', 'delete': 'perm_delete'}
     queryset = Position.objects.all()
     queryset = Permission.objects.all()
     serializer_class = PermissionSerializer
@@ -96,11 +106,12 @@ class OrganizationViewSet(ModelViewSet):
     """
     组织机构：增删改查
     """
-    perms_map = {'get': '*', 'post': 'org_create', 'put': 'org_update','delete': 'org_delete'}
+    perms_map = {'get': '*', 'post': 'org_create',
+                 'put': 'org_update', 'delete': 'org_delete'}
     queryset = Organization.objects.all()
     serializer_class = OrganizationSerializer
     pagination_class = None
-    search_fields = ['^name','^method']
+    search_fields = ['^name', '^method']
     ordering_fields = ['id']
     ordering = 'id'
 
@@ -109,7 +120,8 @@ class RoleViewSet(ModelViewSet):
     """
     角色：增删改查
     """
-    perms_map = {'get': '*', 'post': 'role_create', 'put': 'role_update','delete': 'role_delete'}
+    perms_map = {'get': '*', 'post': 'role_create',
+                 'put': 'role_update', 'delete': 'role_delete'}
     queryset = Role.objects.all()
     serializer_class = RoleSerializer
     pagination_class = None
@@ -122,7 +134,8 @@ class UserViewSet(ModelViewSet):
     """
     用户管理：增删改查
     """
-    perms_map = {'get': '*', 'post': 'user_create', 'put': 'user_update','delete': 'user_delete'}
+    perms_map = {'get': '*', 'post': 'user_create',
+                 'put': 'user_update', 'delete': 'user_delete'}
     queryset = User.objects.all().order_by('-id')
     serializer_class = UserListSerializer
     filterset_class = UserFilter
@@ -131,10 +144,11 @@ class UserViewSet(ModelViewSet):
 
     def get_queryset(self):
         queryset = self.queryset
-        queryset = self.get_serializer_class().setup_eager_loading(queryset)  # 性能优化
+        if hasattr(self.get_serializer_class(), 'setup_eager_loading'):
+            queryset = self.get_serializer_class().setup_eager_loading(queryset)  # 性能优化
         dept = self.request.query_params.get('dept', None)  # 该部门及其子部门所有员工
         if dept is not None:
-            deptqueryset = get_child_queryset('rbac.Organization', dept)
+            deptqueryset = get_child_queryset2(Organization.objects.get(pk=dept))
             queryset = queryset.filter(dept__in=deptqueryset)
         return queryset
 
@@ -155,7 +169,7 @@ class UserViewSet(ModelViewSet):
             password = make_password('0000')
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        serializer.save(password = password)
+        serializer.save(password=password)
         return Response(serializer.data)
 
     @action(methods=['put'], detail=True, permission_classes=[IsAuthenticated],
@@ -179,7 +193,7 @@ class UserViewSet(ModelViewSet):
             return Response('旧密码错误!', status=status.HTTP_400_BAD_REQUEST)
 
     # perms_map={'get':'*'}, 自定义action控权
-    @action(methods=['get'], detail=False, url_name='my_info', permission_classes=[IsAuthenticated]) 
+    @action(methods=['get'], detail=False, url_name='my_info', permission_classes=[IsAuthenticated])
     def info(self, request, pk=None):
         """
         初始化用户信息
@@ -196,3 +210,37 @@ class UserViewSet(ModelViewSet):
             'perms': perms,
         }
         return Response(data)
+
+from rest_framework.parsers import MultiPartParser, JSONParser, FileUploadParser
+from .mixins import CreateModelAMixin
+from django.conf import settings
+class FileViewSet(ModelViewSet):
+    """
+    文件：增删改查
+    """
+    perms_map = None
+    parser_classes = [MultiPartParser, JSONParser]
+    queryset = File.objects.all()
+    serializer_class = FileSerializer
+    filterset_fields = ['type']
+    search_fields = ['name']
+    ordering = '-create_time'
+
+    def perform_create(self, serializer):
+        fileobj = self.request.data.get('file')
+        name = fileobj._name
+        size = fileobj.size
+        mime = fileobj.content_type
+        type = '其它'
+        if 'image' in mime:
+            type = '图片'
+        elif 'video' in mime:
+            type = '视频'
+        elif 'audio' in mime:
+            type = '音频'
+        elif 'application' or 'text' in mime:
+            type = '文档'
+        instance = serializer.save(create_by = self.request.user, name=name, size=size, type=type, mime=mime)
+        instance.path = settings.MEDIA_URL + instance.file.name
+        instance.save()
+        

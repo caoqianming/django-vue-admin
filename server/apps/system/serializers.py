@@ -2,8 +2,12 @@ import re
 
 from rest_framework import serializers
 
-from .models import Organization, Permission, Role, User, Position, DictType, Dict
+from .models import Organization, Permission, Role, User, Position, DictType, Dict, File
 
+class FileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = File
+        fields = "__all__"
 
 class DictTypeSerializer(serializers.ModelSerializer):
     """
@@ -71,7 +75,7 @@ class UserListSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('id', 'name', 'phone', 'email', 'position',
-                  'username', 'is_active', 'date_joined', 'dept_name', 'dept', 'roles')
+                  'username', 'is_active', 'date_joined', 'dept_name', 'dept', 'roles', 'avatar')
 
     @staticmethod
     def setup_eager_loading(queryset):

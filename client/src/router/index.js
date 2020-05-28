@@ -97,6 +97,12 @@ export const asyncRoutes = [
         name: 'Dict',
         component: () => import('@/views/system/dict'),
         meta: { title: '数据字典', icon: 'example', perms: ['dict_manage'] }
+      },
+      {
+        path: 'file',
+        name: 'File',
+        component: () => import('@/views/system/file'),
+        meta: { title: '文件库', icon: 'documentation', perms: ['file_room'] }
       }
     ]
   },
@@ -114,7 +120,17 @@ export const asyncRoutes = [
         meta: { title: '权限菜单', icon: 'example', perms: ['perm_manage'] }
       },
       {
-        path: 'external-link',
+        path: 'form-gen-link',
+        component: Layout,
+        children: [
+          {
+            path: 'https://jakhuang.github.io/form-generator/',
+            meta: { title: '表单设计器', icon: 'link', perms: ['dev_form_gen'] }
+          }
+        ]
+      },
+      {
+        path: 'docs-link',
         component: Layout,
         children: [
           {
@@ -124,7 +140,7 @@ export const asyncRoutes = [
         ]
       },
       {
-        path: 'external-link',
+        path: 'admin-link',
         component: Layout,
         children: [
           {

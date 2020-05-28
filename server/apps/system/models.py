@@ -4,41 +4,9 @@ import django.utils.timezone as timezone
 from django.db.models.query import QuerySet
 
 from utils.model import SoftModel, BaseModel
+from simple_history.models import HistoricalRecords
 
 
-class DictType(SoftModel):
-    """
-    数据字典类型
-    """
-    name = models.CharField('名称', max_length=30)
-    code = models.CharField('代号', unique=True, max_length=30)
-    pid = models.ForeignKey('self', null=True, blank=True,
-                            on_delete=models.SET_NULL, verbose_name='父')
-    class Meta:
-        verbose_name = '字典类型'
-        verbose_name_plural = verbose_name
-
-    def __str__(self):
-        return self.name
-
-class Dict(SoftModel):
-    """
-    数据字典
-    """
-    name = models.CharField('名称', max_length=30, unique=True)
-    desc = models.TextField('描述', blank=True, null=True)
-    type = models.ForeignKey(
-        DictType, on_delete=models.CASCADE, verbose_name='类型')
-    sort = models.IntegerField('排序', default=1)
-    pid = models.ForeignKey('self', null=True, blank=True,
-                            on_delete=models.SET_NULL, verbose_name='父')
-
-    class Meta:
-        verbose_name = '字典'
-        verbose_name_plural = verbose_name
-
-    def __str__(self):
-        return self.name
 
 class Position(BaseModel):
     """
@@ -71,7 +39,8 @@ class Permission(SoftModel):
     sort = models.IntegerField('排序标记', default=1)
     pid = models.ForeignKey('self', null=True, blank=True,
                             on_delete=models.SET_NULL, verbose_name='父')
-    method = models.CharField('方法/代号', max_length=50, unique=True, null=True, blank=True)
+    method = models.CharField('方法/代号', max_length=50,
+                              unique=True, null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -110,10 +79,11 @@ class Role(SoftModel):
     """
     data_type_choices = (
         ('全部', '全部'),
-        ('本级', '本级'),
+        ('自定义', '自定义'),
+        ('同级及以下', '同级及以下'),
         ('本级及以下', '本级及以下'),
-        ('仅本人', '仅本人'),
-        ('自定义', '自定义')
+        ('本级', '本级'),
+        ('仅本人', '仅本人')
     )
     name = models.CharField('角色', max_length=32, unique=True)
     perms = models.ManyToManyField(Permission, blank=True, verbose_name='功能权限')
@@ -155,12 +125,94 @@ class User(AbstractUser):
     def __str__(self):
         return self.username
 
-class CommonModel(SoftModel):
+class DictType(SoftModel):
     """
-    业务用基本表
+    数据字典类型
     """
-    create_by = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL, verbose_name='创建人', related_name='create_by')
-    update_by = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL, verbose_name='最后编辑人', related_name='update_by')
+    name = models.CharField('名称', max_length=30)
+    code = models.CharField('代号', unique=True, max_length=30)
+    pid = models.ForeignKey('self', null=True, blank=True,
+                            on_delete=models.SET_NULL, verbose_name='父')
+
+    class Meta:
+        verbose_name = '字典类型'
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.name
+
+
+class Dict(SoftModel):
+    """
+    数据字典
+    """
+    name = models.CharField('名称', max_length=30, unique=True)
+    code = models.CharField('代码', max_length=30, null=True, blank=True)
+    desc = models.TextField('描述', blank=True, null=True)
+    enabled = models.BooleanField('是否有效', default=True)
+    type = models.ForeignKey(
+        DictType, on_delete=models.CASCADE, verbose_name='类型')
+    sort = models.IntegerField('排序', default=1)
+    pid = models.ForeignKey('self', null=True, blank=True,
+                            on_delete=models.SET_NULL, verbose_name='父')
+    history = HistoricalRecords()
+
+    class Meta:
+        verbose_name = '字典'
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.name
+    
+
+class CommonAModel(SoftModel):
+    """
+    业务用基本表A,包含create_by, update_by字段
+    """
+    create_by = models.ForeignKey(
+        User, null=True, blank=True, on_delete=models.SET_NULL, verbose_name='创建人', related_name='create_by')
+    update_by = models.ForeignKey(
+        User, null=True, blank=True, on_delete=models.SET_NULL, verbose_name='最后编辑人', related_name='update_by')
 
     class Meta:
         abstract = True
+
+class CommonBModel(SoftModel):
+    """
+    业务用基本表B,包含create_by, update_by, belong_to字段
+    """
+    create_by = models.ForeignKey(
+        User, null=True, blank=True, on_delete=models.SET_NULL, verbose_name='创建人', related_name='create_by')
+    update_by = models.ForeignKey(
+        User, null=True, blank=True, on_delete=models.SET_NULL, verbose_name='最后编辑人', related_name='update_by')
+    belong_to = models.ForeignKey(
+        Organization, null=True, blank=True, on_delete=models.SET_NULL, verbose_name='所属部门', related_name='belong_to')
+
+    class Meta:
+        abstract = True
+
+
+class File(CommonAModel):
+    """
+    文件存储表,业务表根据具体情况选择是否外键关联
+    """
+    name = models.CharField('名称', max_length=30, null=True, blank=True)
+    size = models.IntegerField('文件大小', default=1, null=True, blank=True)
+    file = models.FileField('文件', upload_to='%Y/%m/%d/')
+    type_choices = (
+        ('文档', '文档'),
+        ('视频', '视频'),
+        ('音频', '音频'),
+        ('图片', '图片'),
+        ('其它', '其它')
+    )
+    mime = models.CharField('文件格式', max_length=50, null=True, blank=True)
+    type = models.CharField('文件类型', max_length=50, choices=type_choices, default='文档')
+    path = models.CharField('地址', max_length=1000, null=True, blank=True)
+
+    class Meta:
+        verbose_name = '文件库'
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.name

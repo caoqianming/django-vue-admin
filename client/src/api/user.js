@@ -15,15 +15,12 @@ export function logout() {
   })
 }
 
-
 export function getInfo() {
   return request({
     url: '/system/user/info/',
     method: 'get'
   })
 }
-
-
 
 export function getUserList(query) {
   return request({

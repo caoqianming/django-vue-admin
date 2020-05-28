@@ -1,8 +1,8 @@
 from django.core.cache import cache
 from rest_framework.permissions import BasePermission
-
+from utils.queryset import get_child_queryset2
 from .models import Permission
-
+from django.db.models import Q
 
 def get_permission_list(user):
     """
@@ -54,3 +54,39 @@ class RbacPermission(BasePermission):
                 return False
         else:
             return False
+    
+    def has_object_permission(self, request, view, obj):
+        """
+        Return `True` if permission is granted, `False` otherwise.
+        """
+        has_obj_perm(request.user, obj)
+        return True
+
+def has_obj_perm(user, obj):
+    """
+    数据权限控权
+    返回对象的是否可以操作
+    需要控数据权限的表需有belong_to, create_by, update_by字段(部门, 创建人, 编辑人)
+    传入user, obj实例
+    """
+    roles = user.roles
+    data_range = roles.values_list('datas', flat=True)
+    if '全部' in data_range:
+        return True
+    elif '自定义' in data_range:
+        if roles.depts.exists():
+            if obj.belong_to not in roles.depts:
+                return False
+    elif '同级及以下' in data_range:
+        if user.dept.pid:
+            belong_tos = get_child_queryset2(user.dept.pid)
+            if obj.belong_to not in belong_tos:
+                return False
+    elif '本级及以下' in data_range:
+        belong_tos = get_child_queryset2(user.dept)
+        if obj.belong_to not in belong_tos:
+            return False
+    elif '本级' in data_range:
+        if obj.belong_to is not user.dept:
+            return False
+    return True

@@ -1,6 +1,5 @@
 import request from '@/utils/request'
 
-
 export function getPositionAll() {
   return request({
     url: '/system/position/',

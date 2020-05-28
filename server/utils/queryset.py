@@ -2,23 +2,23 @@ from django.db import models
 from django.apps import apps
 
 
-def get_child_queryset_x(checkQueryset, fatherQueryset, noneQueryset, hasParent=True):
+def get_child_queryset_u(checkQueryset, obj, hasParent=True):
     '''
     获取所有子集
-    查checkQueryset
-    父fatherQueryset
-    空noneQueryset
+    查的范围checkQueryset
+    父obj
     是否包含父默认True
     '''
-    if fatherQueryset is None:
-        return noneQueryset
+    cls = type(obj)
+    queryset = cls.objects.none()
+    fatherQueryset = cls.objects.filter(pk=obj.id)
     if hasParent:
-        noneQueryset = noneQueryset | fatherQueryset
-    child_queryset = checkQueryset.filter(pid=fatherQueryset.first())
+        queryset = queryset | fatherQueryset
+    child_queryset = checkQueryset.filter(pid=obj)
     while child_queryset:
-        noneQueryset = noneQueryset | child_queryset
+        queryset = queryset | child_queryset
         child_queryset = checkQueryset.filter(pid__in=child_queryset)
-    return noneQueryset.distinct()
+    return queryset
 
 
 def get_child_queryset(name, pk, hasParent=True):
@@ -39,4 +39,22 @@ def get_child_queryset(name, pk, hasParent=True):
         while child_queryset:
             queryset = queryset | child_queryset
             child_queryset = cls.objects.filter(pid__in=child_queryset)
+    return queryset
+
+def get_child_queryset2(obj, hasParent=True):
+    '''
+    获取所有子集
+    obj实例
+    数据表需包含pid字段
+    是否包含父默认True
+    '''
+    cls = type(obj)
+    queryset = cls.objects.none()
+    fatherQueryset = cls.objects.filter(pk=obj.id)
+    if hasParent:
+        queryset = queryset | fatherQueryset
+    child_queryset = cls.objects.filter(pid=obj)
+    while child_queryset:
+        queryset = queryset | child_queryset
+        child_queryset = cls.objects.filter(pid__in=child_queryset)
     return queryset

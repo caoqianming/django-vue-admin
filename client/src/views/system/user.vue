@@ -1,7 +1,8 @@
 <template>
   <div class="app-container">
     <el-row :gutter="10">
-      <el-col :span="6">
+
+      <el-col :md="6">
         <el-input v-model="filterOrgText" placeholder="输入部门名进行过滤" />
 
         <el-tree
@@ -17,7 +18,7 @@
           @node-click="handleOrgClick"
         />
       </el-col>
-      <el-col :span="18">
+      <el-col :md="18">
         <div>
           <el-select
             v-model="listQuery.is_active"
@@ -81,16 +82,6 @@
               slot-scope="scope"
             >{{ scope.row.dept_name }}</template>
           </el-table-column>
-          <!-- <el-table-column align="header-center" label="状态">
-            <template slot-scope="scope">
-              <el-switch
-                v-model="scope.row.is_active"
-                :disabled="!checkPermission(['user_update'])"
-                active-color="#409EFF"
-                inactive-color="#F56C6C"
-              />
-            </template>
-          </el-table-column>-->
           <el-table-column label="创建日期">
             <template slot-scope="scope">
               <span>{{ scope.row.date_joined }}</span>
@@ -157,7 +148,7 @@
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload"
-            :headers="myHeaders"
+            :headers="upHeaders"
           >
             <img v-if="user.avatar" :src="user.avatar" class="avatar" />
             <i v-else class="el-icon-plus avatar-uploader-icon" />
@@ -198,13 +189,12 @@
 </style>
 <script>
 import { getUserList, createUser, deleteUser, updateUser } from "@/api/user";
-import { getOrgAll } from "@/api/org";
-import { getRoleAll } from "@/api/role";
-import { genTree } from "@/utils";
-import checkPermission from "@/utils/permission";
-import { uploadUrl } from "@/api/file";
-import { getToken } from "@/utils/auth";
-import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
+import { getOrgAll } from "@/api/org"
+import { getRoleAll } from "@/api/role"
+import { genTree } from "@/utils"
+import checkPermission from "@/utils/permission"
+import { uploadUrl, upHeaders } from "@/api/file"
+import Pagination from "@/components/Pagination" // secondary package based on el-pagination
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 const defaultUser = {
@@ -218,16 +208,10 @@ export default {
   components: { Pagination, Treeselect },
   data() {
     return {
-      user: {
-        id: "",
-        name: "",
-        username: "",
-        dept: null,
-        avatar: ""
-      },
-      myHeaders: { Authorization: "JWT " + getToken() },
+      user: defaultUser,
+      upHeaders: upHeaders(),
       uploadUrl: uploadUrl(),
-      userList: {'count':0},
+      userList: {count:0},
       roles: [],
       listLoading: true,
       listQuery: {
@@ -266,10 +250,10 @@ export default {
   methods: {
     checkPermission,
     handleAvatarSuccess(res, file) {
-      if (res.code === 200) {
-        this.user.avatar = res.data.path;
+      if (res.code >= 200) {
+        this.user.avatar = res.data.path
       } else {
-        this.$message.error("头像上传失败!");
+        this.$message.error("头像上传失败!")
       }
     },
     beforeAvatarUpload(file) {

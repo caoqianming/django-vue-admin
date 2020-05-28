@@ -10,7 +10,7 @@ export function getOrgList(query) {
   return request({
     url: '/system/organization/',
     method: 'get',
-    params:query
+    params: query
   })
 }
 export function createOrg(data) {
