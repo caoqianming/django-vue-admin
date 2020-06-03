@@ -113,7 +113,8 @@ USE_L10N = True
 
 USE_TZ = True
 
-
+# 跨域配置
+CORS_ORIGIN_ALLOW_ALL = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
