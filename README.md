@@ -13,6 +13,8 @@ JWT认证,具有审计功能
 ![image](https://github.com/caoqianming/django-vue-admin/blob/master/img/docs.png)
 
 ## 启动(以下是在windows下开发操作步骤)
+需要安装redis,请先安装redis并在默认端口启动
+
 ### django后端
 定位到server文件夹
 
@@ -34,7 +36,7 @@ JWT认证,具有审计功能
 
 运行服务 `python manage.py runserver 8000` 
 
-## vue前端
+### vue前端
 定位到client文件夹
 
 安装node.js
@@ -43,7 +45,7 @@ JWT认证,具有审计功能
 
 运行服务 `npm run dev` 
 
-## nginx
+### nginx
 修改nginx.conf
 
 ```
@@ -58,7 +60,7 @@ location / {
 
 运行nginx.exe
 
-## 运行
+### 运行
 打开localhost:8012即可访问
 
 接口文档 localhost:8000/docs
