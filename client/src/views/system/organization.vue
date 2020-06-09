@@ -59,8 +59,8 @@
         <el-form-item label="名称" prop="name">
           <el-input v-model="org.name" placeholder="名称" />
         </el-form-item>
-        <el-form-item label="上级部门" prop="pid">
-          <treeselect v-model="org.pid" :multiple="false" :options="tableData" placeholder="父级"/>
+        <el-form-item label="上级部门" prop="parent">
+          <treeselect v-model="org.parent" :multiple="false" :options="tableData" placeholder="父级"/>
         </el-form-item>
       </el-form>
       <div style="text-align:right;">
@@ -81,7 +81,7 @@ import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 const defaultOrg = {
   id: null,
   name: '',
-  pid: null
+  parent: null
 }
 export default {
   components: { Treeselect },
@@ -90,7 +90,7 @@ export default {
       org: {
         id: '',
         name: '',
-        pid: ''
+        parent: ''
       },
       search: '',
       tableData: [],
@@ -100,7 +100,7 @@ export default {
       dialogType: 'new',
       rule1: {
         name: [{ required: true, message: '请输入名称', trigger: 'blur' }],
-        pid: [{ required: true, message: '请选择上级', trigger: 'change' }]
+        parent: [{ required: true, message: '请选择上级', trigger: 'change' }]
       }
     }
   },

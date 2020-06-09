@@ -78,8 +78,8 @@ export default {
         password: ''
       },
       loginRules: {
-        username: [{ required: true, trigger: 'blur', message: "请输入账户" }],
-        password: [{ required: true, trigger: 'blur', validator: validatePassword, message: "请输入密码" }]
+        username: [{ required: true, trigger: 'blur', message: '请输入账户' }],
+        password: [{ required: true, trigger: 'blur', validator: validatePassword, message: '请输入密码' }]
       },
       loading: false,
       passwordType: 'password',

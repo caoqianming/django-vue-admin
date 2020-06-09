@@ -63,7 +63,7 @@
             <template slot-scope="scope">{{ scope.row.name }}</template>
           </el-table-column>
           <el-table-column align="header-center" label="描述">
-            <template slot-scope="scope">{{ scope.row.desc }}</template>
+            <template slot-scope="scope">{{ scope.row.description }}</template>
           </el-table-column>
           <el-table-column align="header-center" label="排序">
             <template
@@ -111,8 +111,8 @@
         <el-form-item label="代号" prop="code">
           <el-input v-model="dicttype.code" placeholder="代号" />
         </el-form-item>
-        <el-form-item label="父级" prop="pid">
-          <treeselect v-model="dicttype.pid" :multiple="false" :options="dictTypeData" placeholder="父级"/>
+        <el-form-item label="父级" prop="parent">
+          <treeselect v-model="dicttype.parent" :multiple="false" :options="dictTypeData" placeholder="父级"/>
         </el-form-item>
       </el-form>
       <div style="text-align:right;">
@@ -125,8 +125,8 @@
         <el-form-item label="名称" prop="name">
           <el-input v-model="dict.name" placeholder="名称" />
         </el-form-item>
-        <el-form-item label="描述" prop="desc">
-          <el-input v-model="dict.desc" placeholder="描述" />
+        <el-form-item label="描述" prop="description">
+          <el-input v-model="dict.description" placeholder="描述" />
         </el-form-item>
       </el-form>
       <div style="text-align:right;">
@@ -158,12 +158,12 @@ const defaultDictType = {
   id: '',
   name: '',
   code: '',
-  pid: null
+  parent: null
 }
 const defaultDict = {
   id: '',
   name: '',
-  desc: '',
+  description: '',
   sort: 1,
   type: null
 }

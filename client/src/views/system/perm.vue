@@ -69,8 +69,8 @@
         <el-form-item label="代号" prop="method">
           <el-input v-model="perm.method" placeholder="代号" />
         </el-form-item>
-        <el-form-item label="父级" prop="pid">
-          <treeselect v-model="perm.pid" :multiple="false" :options="tableData" placeholder="父级"/>
+        <el-form-item label="父级" prop="parent">
+          <treeselect v-model="perm.parent" :multiple="false" :options="tableData" placeholder="父级"/>
         </el-form-item>
         <el-form-item label="排序" prop="sort">
           <el-input-number v-model="perm.sort" :min="1" label="排序"></el-input-number>
@@ -97,7 +97,7 @@ const defaultPerm = {
         type: '目录',
         method: '',
         sort:1,
-        pid: null
+        parent: null
       }
 export default {
   components: { Treeselect },

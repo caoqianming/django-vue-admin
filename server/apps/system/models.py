@@ -8,12 +8,13 @@ from simple_history.models import HistoricalRecords
 
 
 
+
 class Position(BaseModel):
     """
     职位/岗位
     """
     name = models.CharField('名称', max_length=32, unique=True)
-    desc = models.CharField('描述', max_length=50, blank=True, null=True)
+    description = models.CharField('描述', max_length=50, blank=True, null=True)
 
     class Meta:
         verbose_name = '职位/岗位'
@@ -37,7 +38,7 @@ class Permission(SoftModel):
                             choices=menu_type_choices, default='接口')
     is_frame = models.BooleanField('外部链接', default=False)
     sort = models.IntegerField('排序标记', default=1)
-    pid = models.ForeignKey('self', null=True, blank=True,
+    parent = models.ForeignKey('self', null=True, blank=True,
                             on_delete=models.SET_NULL, verbose_name='父')
     method = models.CharField('方法/代号', max_length=50,
                               unique=True, null=True, blank=True)
@@ -62,7 +63,7 @@ class Organization(SoftModel):
     name = models.CharField('名称', max_length=60)
     type = models.CharField('类型', max_length=20,
                             choices=organization_type_choices, default='部门')
-    pid = models.ForeignKey('self', null=True, blank=True,
+    parent = models.ForeignKey('self', null=True, blank=True,
                             on_delete=models.SET_NULL, verbose_name='父')
 
     class Meta:
@@ -91,7 +92,7 @@ class Role(SoftModel):
                              choices=data_type_choices, default='本级及以下')
     depts = models.ManyToManyField(
         Organization, blank=True, verbose_name='权限范围')
-    desc = models.CharField('描述', max_length=50, blank=True, null=True)
+    description = models.CharField('描述', max_length=50, blank=True, null=True)
 
     class Meta:
         verbose_name = '角色'
@@ -131,7 +132,7 @@ class DictType(SoftModel):
     """
     name = models.CharField('名称', max_length=30)
     code = models.CharField('代号', unique=True, max_length=30)
-    pid = models.ForeignKey('self', null=True, blank=True,
+    parent = models.ForeignKey('self', null=True, blank=True,
                             on_delete=models.SET_NULL, verbose_name='父')
 
     class Meta:
@@ -147,13 +148,13 @@ class Dict(SoftModel):
     数据字典
     """
     name = models.CharField('名称', max_length=30, unique=True)
-    code = models.CharField('代码', max_length=30, null=True, blank=True)
-    desc = models.TextField('描述', blank=True, null=True)
+    code = models.CharField('编号', max_length=30, null=True, blank=True)
+    description = models.TextField('描述', blank=True, null=True)
     enabled = models.BooleanField('是否有效', default=True)
     type = models.ForeignKey(
         DictType, on_delete=models.CASCADE, verbose_name='类型')
     sort = models.IntegerField('排序', default=1)
-    pid = models.ForeignKey('self', null=True, blank=True,
+    parent = models.ForeignKey('self', null=True, blank=True,
                             on_delete=models.SET_NULL, verbose_name='父')
     history = HistoricalRecords()
 
@@ -179,14 +180,14 @@ class CommonAModel(SoftModel):
 
 class CommonBModel(SoftModel):
     """
-    业务用基本表B,包含create_by, update_by, belong_to字段
+    业务用基本表B,包含create_by, update_by, belong_dept字段
     """
     create_by = models.ForeignKey(
         User, null=True, blank=True, on_delete=models.SET_NULL, verbose_name='创建人', related_name='create_by')
     update_by = models.ForeignKey(
         User, null=True, blank=True, on_delete=models.SET_NULL, verbose_name='最后编辑人', related_name='update_by')
-    belong_to = models.ForeignKey(
-        Organization, null=True, blank=True, on_delete=models.SET_NULL, verbose_name='所属部门', related_name='belong_to')
+    belong_dept = models.ForeignKey(
+        Organization, null=True, blank=True, on_delete=models.SET_NULL, verbose_name='所属部门', related_name='belong_dept')
 
     class Meta:
         abstract = True

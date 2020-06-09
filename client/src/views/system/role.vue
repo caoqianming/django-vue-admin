@@ -26,7 +26,7 @@
         <template slot-scope="scope">{{ scope.row.name }}</template>
       </el-table-column>
       <el-table-column align="header-center" label="角色描述">
-        <template slot-scope="scope">{{ scope.row.desc }}</template>
+        <template slot-scope="scope">{{ scope.row.description }}</template>
       </el-table-column>
       <el-table-column align="center" label="操作">
         <template slot-scope="scope">
@@ -43,7 +43,7 @@
         </el-form-item>
         <el-form-item label="描述">
           <el-input
-            v-model="role.desc"
+            v-model="role.description"
             :autosize="{ minRows: 2, maxRows: 4}"
             type="textarea"
             placeholder="角色描述"
@@ -112,7 +112,7 @@ import { getOrgAll } from '@/api/org'
 const defaultRole = {
   id: '',
   name: '',
-  desc: '',
+  description: '',
   perms: [],
   datas: '本级及以下',
   depts: []
@@ -252,14 +252,14 @@ export default {
         this.getRoleAll()
       }
 
-      const { desc, name } = this.role
+      const { description, name } = this.role
       this.dialogVisible = false
       this.$notify({
         title: '成功',
         dangerouslyUseHTMLString: true,
         message: `
             <div>角色名: ${name}</div>
-            <div>角色描述: ${desc}</div>
+            <div>角色描述: ${description}</div>
           `,
         type: 'success'
       })

@@ -38,11 +38,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_redis',
+    'django_celery_beat',
     'rest_framework',
     'corsheaders',
     "django_filters",
     'apps.system',
     'apps.crm',
+    'simple_history'
 ]
 
 MIDDLEWARE = [
@@ -54,6 +57,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'simple_history.middleware.HistoryRequestMiddleware',
 ]
 
 ROOT_URLCONF = 'server.urls'
@@ -113,8 +117,7 @@ USE_L10N = True
 
 USE_TZ = True
 
-# 跨域配置
-CORS_ORIGIN_ALLOW_ALL = True
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
@@ -156,14 +159,15 @@ SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
 }
 
+# 跨域配置
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = False
+
+# Auth配置
 AUTH_USER_MODEL = 'system.User'
-
-
-# 用户认证
 AUTHENTICATION_BACKENDS = (
     'apps.system.authentication.CustomBackend',
 )
-
 
 # 缓存配置
 CACHES = {
@@ -176,6 +180,8 @@ CACHES = {
         }
     }
 }
+
+
 # 日志配置
 # 创建日志的路径
 LOG_PATH = os.path.join(BASE_DIR, 'log')

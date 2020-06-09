@@ -9,7 +9,7 @@ export default function checkPermission(value) {
   if (value && value instanceof Array && value.length > 0) {
     const perms = store.getters && store.getters.perms
     const permissionperms = value
-    if(perms.includes('admin')){
+    if (perms.includes('admin')) {
       return true
     } // 如果是超管,都可以操作
     const hasPermission = perms.some(perm => {

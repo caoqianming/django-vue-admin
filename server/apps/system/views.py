@@ -1,7 +1,9 @@
 import logging
 
+from django.conf import settings
 from django.contrib.auth.hashers import check_password, make_password
 from django.core.cache import cache
+from django_celery_beat.models import PeriodicTask
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import status
 from rest_framework.decorators import action
@@ -10,6 +12,8 @@ from rest_framework.mixins import (CreateModelMixin, DestroyModelMixin,
                                    ListModelMixin, RetrieveModelMixin,
                                    UpdateModelMixin)
 from rest_framework.pagination import PageNumberPagination
+from rest_framework.parsers import (FileUploadParser, JSONParser,
+                                    MultiPartParser)
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -19,15 +23,16 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from utils.queryset import get_child_queryset2
 
 from .filters import UserFilter
-from .models import (Dict, DictType, Organization, Permission, Position, Role,
-                     User, File)
+from .mixins import CreateModelAMixin
+from .models import (Dict, DictType, File, Organization, Permission, Position,
+                     Role, User)
 from .permission import RbacPermission, get_permission_list
 from .permission_data import RbacFilterSet
-from .serializers import (DictSerializer, DictTypeSerializer,
+from .serializers import (DictSerializer, DictTypeSerializer, FileSerializer,
                           OrganizationSerializer, PermissionSerializer,
-                          PositionSerializer, RoleSerializer,
+                          PositionSerializer, RoleSerializer, TaskSerializer,
                           UserCreateSerializer, UserListSerializer,
-                          UserModifySerializer, FileSerializer)
+                          UserModifySerializer)
 
 logger = logging.getLogger('log')
 # logger.info('请求成功！ response_code:{}；response_headers:{}；response_body:{}'.format(response_code, response_headers, response_body[:251]))
@@ -39,6 +44,14 @@ class LogoutView(APIView):
 
     def get(self, request, *args, **kwargs):  # 可将token加入黑名单
         return Response(status=status.HTTP_200_OK)
+
+class TaskViewSet(ModelViewSet):
+    queryset = PeriodicTask.objects.all()
+    serializer_class = TaskSerializer
+    search_fields = ['^name']
+    filterset_fields = ['enabled']
+    ordering = '-pk'
+
 
 
 class DictTypeViewSet(ModelViewSet):
@@ -77,7 +90,7 @@ class PositionViewSet(ModelViewSet):
     queryset = Position.objects.all()
     serializer_class = PositionSerializer
     pagination_class = None
-    search_fields = ['^name']
+    search_fields = ['name','description']
     ordering_fields = ['id']
     ordering = 'id'
 
@@ -172,7 +185,7 @@ class UserViewSet(ModelViewSet):
         serializer.save(password=password)
         return Response(serializer.data)
 
-    @action(methods=['put'], detail=True, permission_classes=[IsAuthenticated],
+    @action(methods=['put'], detail=True, permission_classes=[IsAuthenticated], # perms_map={'put':'change_password'}
             url_name='change_password')
     def password(self, request, pk=None):
         """
@@ -211,9 +224,6 @@ class UserViewSet(ModelViewSet):
         }
         return Response(data)
 
-from rest_framework.parsers import MultiPartParser, JSONParser, FileUploadParser
-from .mixins import CreateModelAMixin
-from django.conf import settings
 class FileViewSet(ModelViewSet):
     """
     文件：增删改查
@@ -243,4 +253,3 @@ class FileViewSet(ModelViewSet):
         instance = serializer.save(create_by = self.request.user, name=name, size=size, type=type, mime=mime)
         instance.path = settings.MEDIA_URL + instance.file.name
         instance.save()
-        

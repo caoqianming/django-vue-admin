@@ -66,7 +66,7 @@ def has_obj_perm(user, obj):
     """
     数据权限控权
     返回对象的是否可以操作
-    需要控数据权限的表需有belong_to, create_by, update_by字段(部门, 创建人, 编辑人)
+    需要控数据权限的表需有belong_dept, create_by, update_by字段(部门, 创建人, 编辑人)
     传入user, obj实例
     """
     roles = user.roles
@@ -75,18 +75,18 @@ def has_obj_perm(user, obj):
         return True
     elif '自定义' in data_range:
         if roles.depts.exists():
-            if obj.belong_to not in roles.depts:
+            if obj.belong_dept not in roles.depts:
                 return False
     elif '同级及以下' in data_range:
-        if user.dept.pid:
-            belong_tos = get_child_queryset2(user.dept.pid)
-            if obj.belong_to not in belong_tos:
+        if user.dept.parent:
+            belong_depts = get_child_queryset2(user.dept.parent)
+            if obj.belong_dept not in belong_depts:
                 return False
     elif '本级及以下' in data_range:
-        belong_tos = get_child_queryset2(user.dept)
-        if obj.belong_to not in belong_tos:
+        belong_depts = get_child_queryset2(user.dept)
+        if obj.belong_dept not in belong_depts:
             return False
     elif '本级' in data_range:
-        if obj.belong_to is not user.dept:
+        if obj.belong_dept is not user.dept:
             return False
     return True

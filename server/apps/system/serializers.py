@@ -1,8 +1,16 @@
 import re
 
+from django_celery_beat.models import PeriodicTask
 from rest_framework import serializers
 
-from .models import Organization, Permission, Role, User, Position, DictType, Dict, File
+from .models import (Dict, DictType, File, Organization, Permission, Position,
+                     Role, User)
+
+class TaskSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PeriodicTask
+        fields = '__all__'
+
 
 class FileSerializer(serializers.ModelSerializer):
     class Meta:

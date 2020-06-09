@@ -21,7 +21,7 @@ class CreateModelBMixin:
     业务用基本表B用
     """
     def perform_create(self, serializer):
-        serializer.save(create_by = self.request.user, belong_to=self.request.user.dept)
+        serializer.save(create_by = self.request.user, belong_dept=self.request.user.dept)
 
 class UpdateModelBMixin:
     """

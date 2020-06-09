@@ -244,7 +244,7 @@ export function getTime(type) {
 export function debounce(func, wait, immediate) {
   let timeout, args, context, timestamp, result
 
-  const later = function () {
+  const later = function() {
     // 据上一次触发时间间隔
     const last = +new Date() - timestamp
 
@@ -261,7 +261,7 @@ export function debounce(func, wait, immediate) {
     }
   }
 
-  return function (...args) {
+  return function(...args) {
     context = this
     timestamp = +new Date()
     const callNow = immediate && !timeout
@@ -346,37 +346,36 @@ export function removeClass(ele, cls) {
   }
 }
 
-
 export function genTree(data) {
-  let result = []
+  const result = []
   if (!Array.isArray(data)) {
     return result
   }
   data.forEach(item => {
-    delete item.children;
-  });
-  let map = {};
+    delete item.children
+  })
+  const map = {}
   data.forEach(item => {
     item.label = item.name
     item.value = item.id
-    map[item.id] = item;
-  });
+    map[item.id] = item
+  })
   data.forEach(item => {
-    let parent = map[item.pid];
+    const parent = map[item.parent]
     if (parent) {
-      (parent.children || (parent.children = [])).push(item);
+      (parent.children || (parent.children = [])).push(item)
     } else {
-      result.push(item);
+      result.push(item)
     }
-  });
-  return result;
+  })
+  return result
 }
 
 const arrChange = arr => arr.map(item => {
-  const res = {};
-  for (let key in item) {
-    let _key = key === 'name' ? 'label' : key;
-    res[_key] = Array.isArray(item[key]) ? arrChange(item[key]) : item[key];
+  const res = {}
+  for (const key in item) {
+    const _key = key === 'name' ? 'label' : key
+    res[_key] = Array.isArray(item[key]) ? arrChange(item[key]) : item[key]
   }
   return res
-});
+})

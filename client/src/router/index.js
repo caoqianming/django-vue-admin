@@ -103,6 +103,12 @@ export const asyncRoutes = [
         name: 'File',
         component: () => import('@/views/system/file'),
         meta: { title: '文件库', icon: 'documentation', perms: ['file_room'] }
+      },
+      {
+        path: 'task',
+        name: 'Task',
+        component: () => import('@/views/system/task'),
+        meta: { title: '定时任务', icon: 'list', perms: ['task_manage'] }
       }
     ]
   },

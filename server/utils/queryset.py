@@ -14,10 +14,10 @@ def get_child_queryset_u(checkQueryset, obj, hasParent=True):
     fatherQueryset = cls.objects.filter(pk=obj.id)
     if hasParent:
         queryset = queryset | fatherQueryset
-    child_queryset = checkQueryset.filter(pid=obj)
+    child_queryset = checkQueryset.filter(parent=obj)
     while child_queryset:
         queryset = queryset | child_queryset
-        child_queryset = checkQueryset.filter(pid__in=child_queryset)
+        child_queryset = checkQueryset.filter(parent__in=child_queryset)
     return queryset
 
 
@@ -35,10 +35,10 @@ def get_child_queryset(name, pk, hasParent=True):
     if fatherQueryset.exists():
         if hasParent:
             queryset = queryset | fatherQueryset
-        child_queryset = cls.objects.filter(pid=fatherQueryset.first())
+        child_queryset = cls.objects.filter(parent=fatherQueryset.first())
         while child_queryset:
             queryset = queryset | child_queryset
-            child_queryset = cls.objects.filter(pid__in=child_queryset)
+            child_queryset = cls.objects.filter(parent__in=child_queryset)
     return queryset
 
 def get_child_queryset2(obj, hasParent=True):
@@ -53,8 +53,8 @@ def get_child_queryset2(obj, hasParent=True):
     fatherQueryset = cls.objects.filter(pk=obj.id)
     if hasParent:
         queryset = queryset | fatherQueryset
-    child_queryset = cls.objects.filter(pid=obj)
+    child_queryset = cls.objects.filter(parent=obj)
     while child_queryset:
         queryset = queryset | child_queryset
-        child_queryset = cls.objects.filter(pid__in=child_queryset)
+        child_queryset = cls.objects.filter(parent__in=child_queryset)
     return queryset

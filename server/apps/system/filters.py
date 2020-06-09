@@ -7,5 +7,5 @@ class UserFilter(filters.FilterSet):
         model = User
         fields = {
             'name': ['exact', 'contains'],
-            'is_active': ['exact']
+            'is_active': ['exact'],
         }

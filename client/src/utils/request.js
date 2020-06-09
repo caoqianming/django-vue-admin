@@ -45,7 +45,7 @@ service.interceptors.response.use(
     const res = response.data
     // 50008: Illegal token; 50012: Other clients logged in; 50014: Token expired;
     if (res.code === 401) {
-      MessageBox.confirm('您已退出,您可以停留在本页或者重新登陆.', '确认退出', {
+      MessageBox.confirm('认证失败,请重新登陆.', '确认退出', {
         confirmButtonText: '重新登陆',
         cancelButtonText: '取消',
         type: 'warning'
@@ -60,8 +60,7 @@ service.interceptors.response.use(
         type: 'error',
         duration: 5 * 1000
       })
-
-      // return Promise.reject(new Error(res.error || '请求出错'))
+      return Promise.reject(new Error(res.msg || '请求出错'))
     } else {
       return res
     }
