@@ -46,11 +46,11 @@ class LogoutView(APIView):
         return Response(status=status.HTTP_200_OK)
 
 class TaskViewSet(ModelViewSet):
-    queryset = PeriodicTask.objects.all()
+    queryset = PeriodicTask.objects
     serializer_class = TaskSerializer
-    search_fields = ['^name']
+    search_fields = ['name']
     filterset_fields = ['enabled']
-    ordering = '-pk'
+    ordering = ['-pk']
 
 
 
@@ -60,12 +60,12 @@ class DictTypeViewSet(ModelViewSet):
     """
     perms_map = {'get': '*', 'post': 'dicttype_create',
                  'put': 'dicttype_update', 'delete': 'dicttype_delete'}
-    queryset = DictType.objects.all()
+    queryset = DictType.objects
     serializer_class = DictTypeSerializer
     pagination_class = None
-    search_fields = ['^name']
-    ordering_fields = ['id']
-    ordering = 'id'
+    search_fields = ['name']
+    ordering_fields = ['pk']
+    ordering = ['pk']
 
 
 class DictViewSet(ModelViewSet):
@@ -74,11 +74,21 @@ class DictViewSet(ModelViewSet):
     """
     perms_map = {'get': '*', 'post': 'dict_create',
                  'put': 'dict_update', 'delete': 'dict_delete'}
-    queryset = Dict.objects.all()
+    queryset = Dict.objects.get_queryset(all=True) # 获取全部的,包括软删除的
+    filterset_fields = ['type', 'is_deleted']
     serializer_class = DictSerializer
-    search_fields = ['^name']
-    ordering_fields = ['id']
-    ordering = 'id'
+    search_fields = ['name']
+    ordering_fields = ['sort']
+    ordering = ['is_deleted', 'sort']
+
+    def paginate_queryset(self, queryset):
+        """
+        如果查询参数里有type,则不分页,否则请求分页
+        """
+        if (self.request.query_params.get('type', None)) or (self.paginator is None):
+            return None
+        return self.paginator.paginate_queryset(queryset, self.request, view=self)
+
 
 
 class PositionViewSet(ModelViewSet):
@@ -87,12 +97,12 @@ class PositionViewSet(ModelViewSet):
     """
     perms_map = {'get': '*', 'post': 'position_create',
                  'put': 'position_update', 'delete': 'position_delete'}
-    queryset = Position.objects.all()
+    queryset = Position.objects
     serializer_class = PositionSerializer
     pagination_class = None
     search_fields = ['name','description']
-    ordering_fields = ['id']
-    ordering = 'id'
+    ordering_fields = ['pk']
+    ordering = ['pk']
 
 
 class TestView(APIView):
@@ -106,13 +116,12 @@ class PermissionViewSet(ModelViewSet):
     """
     perms_map = {'get': '*', 'post': 'perm_create',
                  'put': 'perm_update', 'delete': 'perm_delete'}
-    queryset = Position.objects.all()
-    queryset = Permission.objects.all()
+    queryset = Permission.objects
     serializer_class = PermissionSerializer
     pagination_class = None
     search_fields = ['name']
     ordering_fields = ['sort']
-    ordering = 'id'
+    ordering = ['pk']
 
 
 class OrganizationViewSet(ModelViewSet):
@@ -121,12 +130,12 @@ class OrganizationViewSet(ModelViewSet):
     """
     perms_map = {'get': '*', 'post': 'org_create',
                  'put': 'org_update', 'delete': 'org_delete'}
-    queryset = Organization.objects.all()
+    queryset = Organization.objects
     serializer_class = OrganizationSerializer
     pagination_class = None
-    search_fields = ['^name', '^method']
-    ordering_fields = ['id']
-    ordering = 'id'
+    search_fields = ['name', 'method']
+    ordering_fields = ['pk']
+    ordering = ['pk']
 
 
 class RoleViewSet(ModelViewSet):
@@ -135,12 +144,12 @@ class RoleViewSet(ModelViewSet):
     """
     perms_map = {'get': '*', 'post': 'role_create',
                  'put': 'role_update', 'delete': 'role_delete'}
-    queryset = Role.objects.all()
+    queryset = Role.objects
     serializer_class = RoleSerializer
     pagination_class = None
     search_fields = ['name']
-    ordering_fields = ['id']
-    ordering = 'id'
+    ordering_fields = ['pk']
+    ordering = ['pk']
 
 
 class UserViewSet(ModelViewSet):
@@ -149,11 +158,11 @@ class UserViewSet(ModelViewSet):
     """
     perms_map = {'get': '*', 'post': 'user_create',
                  'put': 'user_update', 'delete': 'user_delete'}
-    queryset = User.objects.all().order_by('-id')
+    queryset = User.objects.order_by('-id')
     serializer_class = UserListSerializer
     filterset_class = UserFilter
     search_fields = ['username', 'name', 'phone', 'email']
-    ordering_fields = ['-id']
+    ordering_fields = ['-pk']
 
     def get_queryset(self):
         queryset = self.queryset
@@ -217,7 +226,7 @@ class UserViewSet(ModelViewSet):
             'id': user.id,
             'username': user.username,
             'name': user.name,
-            'roles': user.roles.all().values_list('name', flat=True),
+            'roles': user.roles.values_list('name', flat=True),
             # 'avatar': request._request._current_scheme_host + '/media/' + str(user.image),
             'avatar': user.avatar,
             'perms': perms,
@@ -230,11 +239,11 @@ class FileViewSet(ModelViewSet):
     """
     perms_map = None
     parser_classes = [MultiPartParser, JSONParser]
-    queryset = File.objects.all()
+    queryset = File.objects
     serializer_class = FileSerializer
     filterset_fields = ['type']
     search_fields = ['name']
-    ordering = '-create_time'
+    ordering = ['-create_time']
 
     def perform_create(self, serializer):
         fileobj = self.request.data.get('file')

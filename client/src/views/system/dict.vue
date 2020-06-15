@@ -13,7 +13,6 @@
           v-loading="treeLoding"
           class="filter-tree"
           :data="dictTypeData"
-          default-expand-all
           highlight-current
           :expand-on-click-node="false"
           :filter-node-method="filterNode"
@@ -46,29 +45,39 @@
           <div slot="header" class="clearfix">
     <span>字典详情</span>
   </div>
-        <el-button v-show="listQuery.type" type="primary" icon="el-icon-plus" @click="handleAddDict" >新增</el-button>
+  <div >
+    <el-button v-show="listQuery.type" type="primary" icon="el-icon-plus" @click="handleAddDict" >新增</el-button>
+  </div>
         <el-table
           v-show="listQuery.type"
           v-loading="listLoading"
-          :data="dictList.results"
+          :data="dictList"
           style="width: 100%;margin-top:10px;"
           border
           fit
           stripe
           highlight-current-row
           max-height="600"
+          row-key="id"
+          default-expand-all
+          :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
         >
           <el-table-column type="index" width="50" />
+          <el-table-column align="center" label="代号/编号">
+            <template slot-scope="scope">{{ scope.row.code }}</template>
+          </el-table-column>
           <el-table-column align="center" label="名称">
             <template slot-scope="scope">{{ scope.row.name }}</template>
           </el-table-column>
           <el-table-column align="header-center" label="描述">
             <template slot-scope="scope">{{ scope.row.description }}</template>
           </el-table-column>
-          <el-table-column align="header-center" label="排序">
-            <template
-              slot-scope="scope"
-            >{{ scope.row.sort }}</template>
+          <el-table-column align="header-center" label="是否有效">
+            <template slot-scope="scope">
+              
+              <el-tag type="danger" v-if="scope.row.is_deleted">无效</el-tag>
+              <el-tag type="success" v-else>有效</el-tag>
+              </template>
           </el-table-column>
           <el-table-column align="center" label="操作">
             <template slot-scope="scope">
@@ -80,25 +89,25 @@
                 icon="el-icon-edit"
                 @click="handleEdit(scope)"
               />
-              <el-button
+              <!-- <el-button
                 v-if="!scope.row.is_superuser"
                 :disabled="!checkPermission(['dict_delete'])"
                 type="danger"
                 size="small"
                 icon="el-icon-delete"
                 @click="handleDelete(scope)"
-              />
+              /> -->
             </template>
           </el-table-column>
         </el-table>
         <p v-show="!listQuery.type">点击左侧类型查看字典</p>
-        <pagination
+        <!-- <pagination
           v-show="dictList.count>0"
           :total="dictList.count"
           :page.sync="listQuery.page"
           :limit.sync="listQuery.page_size"
           @pagination="getList"
-        />
+        /> -->
         </el-card>
       </el-col>
     </el-row>
@@ -122,11 +131,27 @@
     </el-dialog>
     <el-dialog :visible.sync="dgV2" :title="dgT2==='edit'?'编辑字典':'新建字典'">
       <el-form ref="Form2" :model="dict" label-width="80px" label-position="right" :rules="rule2">
+
+        <el-form-item label="编号" prop="code">
+          <el-input v-model="dict.code" placeholder="编号" />
+        </el-form-item>
         <el-form-item label="名称" prop="name">
-          <el-input v-model="dict.name" placeholder="名称" />
+          <el-input type="textarea" v-model="dict.name" placeholder="名称" />
         </el-form-item>
         <el-form-item label="描述" prop="description">
-          <el-input v-model="dict.description" placeholder="描述" />
+          <el-input type="textarea" v-model="dict.description" placeholder="描述" />
+        </el-form-item>
+        <el-form-item label="父级" prop="parent">
+          <treeselect v-model="dict.parent" :multiple="false" :options="dictList" placeholder="父级"/>
+        </el-form-item>
+        <el-form-item label="排序" prop="sort">
+          <el-input-number v-model="dict.sort" :min="1" :max="999"></el-input-number>
+        </el-form-item>
+        <el-form-item label="状态" prop="is_deleted">
+          <el-radio-group v-model="dict.is_deleted">
+    <el-radio :label="false">有效</el-radio>
+    <el-radio :label="true">无效</el-radio>
+  </el-radio-group>
         </el-form-item>
       </el-form>
       <div style="text-align:right;">
@@ -165,15 +190,18 @@ const defaultDict = {
   name: '',
   description: '',
   sort: 1,
-  type: null
+  type: null,
+  is_deleted: false,
+  parent:null
 }
 export default {
   components: { Pagination, Treeselect },
   data() {
     return {
-      dicttype: defaultDictType,
-      dict: defaultDict,
-      dictList: { count: 0 },
+      dicttype: Object.assign({}, defaultDictType),
+      dict: Object.assign({}, defaultDict),
+      search:'',
+      dictList: [],
       listLoading: true,
       listQuery: {
         page: 1,
@@ -192,7 +220,7 @@ export default {
       },
       filterDictTypeText: '',
       treeLoding: false,
-      dictTypeData: []
+      dictTypeData: [],
     }
   },
   computed: {},
@@ -202,7 +230,6 @@ export default {
     }
   },
   created() {
-    this.getList()
     this.getDictTypeList()
   },
   methods: {
@@ -219,13 +246,11 @@ export default {
     getList() {
       this.listLoading = true
       getDictList(this.listQuery).then(response => {
-        if (response.code >= 200) {
-          if (response.data.results) {
-            this.dictList = response.data
-          }
+          if (response.data) {
+            this.dictList = genTree(response.data)
           this.listLoading = false
-        }
-      })
+          }
+      }).catch(error=>{this.listLoading = false})
     },
     getDictTypeList() {
       this.treeLoding = true
@@ -259,8 +284,8 @@ export default {
         this.$refs['Form2'].clearValidate()
       })
     },
-    handleEditDictType(val) {
-      this.dicttype = val // copy obj
+    handleEditDictType(data) {
+      this.dicttype = Object.assign({}, data) // copy obj
       this.dgT1 = 'edit'
       this.dgV1 = true
       this.$nextTick(() => {
@@ -277,7 +302,7 @@ export default {
         .then(async() => {
           const { code } = await deleteDict(scope.row.id)
           if (code>=200){
-          this.dictList.results.splice(scope.row.index, 1)
+          this.dictList.splice(scope.row.index, 1)
           this.$message({
             type: 'success',
             message: '成功删除!'

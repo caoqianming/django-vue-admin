@@ -33,14 +33,15 @@ class SoftDeletableManagerMixin(object):
     '''
     _queryset_class = SoftDeletableQuerySet
 
-    def get_queryset(self):
+    def get_queryset(self, all=False):
         '''
         Return queryset limited to not deleted entries.
         '''
         kwargs = {'model': self.model, 'using': self._db}
         if hasattr(self, '_hints'):
             kwargs['hints'] = self._hints
-
+        if all:
+            return self._queryset_class(**kwargs)
         return self._queryset_class(**kwargs).filter(is_deleted=False)
 
 

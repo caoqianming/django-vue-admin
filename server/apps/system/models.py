@@ -5,7 +5,7 @@ from django.db.models.query import QuerySet
 
 from utils.model import SoftModel, BaseModel
 from simple_history.models import HistoricalRecords
-
+from django.contrib.postgres.fields import JSONField
 
 
 
@@ -147,10 +147,10 @@ class Dict(SoftModel):
     """
     数据字典
     """
-    name = models.CharField('名称', max_length=30, unique=True)
+    name = models.CharField('名称', max_length=1000)
     code = models.CharField('编号', max_length=30, null=True, blank=True)
     description = models.TextField('描述', blank=True, null=True)
-    enabled = models.BooleanField('是否有效', default=True)
+    other = JSONField('其它信息', blank=True, null=True)
     type = models.ForeignKey(
         DictType, on_delete=models.CASCADE, verbose_name='类型')
     sort = models.IntegerField('排序', default=1)
@@ -161,6 +161,7 @@ class Dict(SoftModel):
     class Meta:
         verbose_name = '字典'
         verbose_name_plural = verbose_name
+        unique_together = ('name', 'code', 'type')
 
     def __str__(self):
         return self.name
@@ -171,9 +172,9 @@ class CommonAModel(SoftModel):
     业务用基本表A,包含create_by, update_by字段
     """
     create_by = models.ForeignKey(
-        User, null=True, blank=True, on_delete=models.SET_NULL, verbose_name='创建人', related_name='create_by')
+        User, null=True, blank=True, on_delete=models.SET_NULL, verbose_name='创建人', related_name= '%(class)s_create_by')
     update_by = models.ForeignKey(
-        User, null=True, blank=True, on_delete=models.SET_NULL, verbose_name='最后编辑人', related_name='update_by')
+        User, null=True, blank=True, on_delete=models.SET_NULL, verbose_name='最后编辑人', related_name= '%(class)s_update_by')
 
     class Meta:
         abstract = True
@@ -183,11 +184,11 @@ class CommonBModel(SoftModel):
     业务用基本表B,包含create_by, update_by, belong_dept字段
     """
     create_by = models.ForeignKey(
-        User, null=True, blank=True, on_delete=models.SET_NULL, verbose_name='创建人', related_name='create_by')
+        User, null=True, blank=True, on_delete=models.SET_NULL, verbose_name='创建人', related_name = '%(class)s_create_by')
     update_by = models.ForeignKey(
-        User, null=True, blank=True, on_delete=models.SET_NULL, verbose_name='最后编辑人', related_name='update_by')
+        User, null=True, blank=True, on_delete=models.SET_NULL, verbose_name='最后编辑人', related_name = '%(class)s_update_by')
     belong_dept = models.ForeignKey(
-        Organization, null=True, blank=True, on_delete=models.SET_NULL, verbose_name='所属部门', related_name='belong_dept')
+        Organization, null=True, blank=True, on_delete=models.SET_NULL, verbose_name='所属部门', related_name= '%(class)s_belong_dept')
 
     class Meta:
         abstract = True
