@@ -184,11 +184,9 @@ export default {
             updatePerm(this.perm.id, this.perm).then(() => {
               this.getList()
               this.dialogVisible = false
-              this.$notify({
-                title: '成功',
+              this.$message({
                 message: '编辑成功',
                 type: 'success',
-                duration: 2000
               })
             })
           } else {
@@ -197,11 +195,9 @@ export default {
               // this.tableData.unshift(this.perm)
               this.getList()
               this.dialogVisible = false
-              this.$notify({
-                title: '成功',
+              this.$message({
                 message: '新增成功',
                 type: 'success',
-                duration: 2000
               })
             })
           }

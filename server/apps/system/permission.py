@@ -18,8 +18,8 @@ def get_permission_list(user):
                 perms = perms | i.perms.all()
         perms_list = perms.values_list('method', flat=True)
         perms_list = list(set(perms_list))
-    cache.set(user.username, perms_list)
-    cache.persist(user.username)
+    cache.set(user.username + '__perms', perms_list)
+    # cache.persist(user.username)
     return perms_list
 
 
@@ -35,7 +35,7 @@ class RbacPermission(BasePermission):
         :param view:
         :return:
         """
-        perms = cache.get(request.user)
+        perms = cache.get(request.user.username + '__perms')
         if not perms:
             perms = get_permission_list(request.user)
         if perms:

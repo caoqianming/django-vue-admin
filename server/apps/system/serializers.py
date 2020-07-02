@@ -30,10 +30,13 @@ class DictSerializer(serializers.ModelSerializer):
     """
     数据字典序列化
     """
+    fullname = serializers.SerializerMethodField(read_only=True)
     class Meta:
         model = Dict
         fields = '__all__'
 
+    def get_fullname(self, obj):
+        return obj.code + obj.name
 
 class PositionSerializer(serializers.ModelSerializer):
     """
@@ -82,8 +85,8 @@ class UserListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'name', 'phone', 'email', 'position',
-                  'username', 'is_active', 'date_joined', 'dept_name', 'dept', 'roles', 'avatar')
+        fields = ['id', 'name', 'phone', 'email', 'position',
+                  'username', 'is_active', 'date_joined', 'dept_name', 'dept', 'roles', 'avatar']
 
     @staticmethod
     def setup_eager_loading(queryset):

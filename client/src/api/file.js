@@ -1,7 +1,7 @@
 import { getToken } from "@/utils/auth"
 import request from '@/utils/request'
 
-export function uploadUrl() {
+export function upUrl() {
   return process.env.VUE_APP_BASE_API + '/file/'
 }
 

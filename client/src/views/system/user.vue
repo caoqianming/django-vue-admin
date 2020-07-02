@@ -143,7 +143,7 @@
         <el-form-item label="头像" prop="dept">
           <el-upload
             class="avatar-uploader"
-            :action="uploadUrl"
+            :action="upUrl"
             accept="image/jpeg, image/gif, image/png, image/bmp"
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
@@ -193,7 +193,7 @@ import { getOrgAll } from "@/api/org"
 import { getRoleAll } from "@/api/role"
 import { genTree } from "@/utils"
 import checkPermission from "@/utils/permission"
-import { uploadUrl, upHeaders } from "@/api/file"
+import { upUrl, upHeaders } from "@/api/file"
 import Pagination from "@/components/Pagination" // secondary package based on el-pagination
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
@@ -210,7 +210,7 @@ export default {
     return {
       user: defaultUser,
       upHeaders: upHeaders(),
-      uploadUrl: uploadUrl(),
+      upUrl: upUrl(),
       userList: {count:0},
       roles: [],
       listLoading: true,
@@ -250,11 +250,7 @@ export default {
   methods: {
     checkPermission,
     handleAvatarSuccess(res, file) {
-      if (res.code >= 200) {
         this.user.avatar = res.data.path
-      } else {
-        this.$message.error("头像上传失败!")
-      }
     },
     beforeAvatarUpload(file) {
       const isLt2M = file.size / 1024 / 1024 < 2;
@@ -344,29 +340,21 @@ export default {
           const isEdit = this.dialogType === "edit";
           if (isEdit) {
             updateUser(this.user.id, this.user).then(res => {
-              if (res.code >= 200) {
                 this.getList();
                 this.dialogVisible = false;
-                this.$notify({
-                  title: "成功",
+                this.$message({
                   message: "编辑成功",
                   type: "success",
-                  duration: 2000
                 });
-              }
             });
           } else {
             createUser(this.user).then(res => {
-              if (res.code >= 200) {
                 this.getList();
                 this.dialogVisible = false;
-                this.$notify({
-                  title: "成功",
+                this.$message({
                   message: "新增成功",
-                  type: "success",
-                  duration: 2000
+                  type: "success"
                 });
-              }
             });
           }
         } else {

@@ -45,20 +45,29 @@ service.interceptors.response.use(
     const res = response.data
     // 50008: Illegal token; 50012: Other clients logged in; 50014: Token expired;
     if (res.code === 401) {
-      MessageBox.confirm('认证失败,请重新登陆.', '确认退出', {
-        confirmButtonText: '重新登陆',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        store.dispatch('user/resetToken').then(() => {
-          location.reload()
+      if(res.msg.indexOf('No active account')!=-1){
+        Message({
+          message: '用户名或密码错误',
+          type: 'error',
+          duration: 3 * 1000
         })
-      })
+      }else{
+        MessageBox.confirm('认证失败,请重新登陆.', '确认退出', {
+          confirmButtonText: '重新登陆',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          store.dispatch('user/resetToken').then(() => {
+            location.reload()
+          })
+        })
+      }
+      
     } else if (res.code >= 400) {
       Message({
         message: res.msg || '请求出错',
         type: 'error',
-        duration: 5 * 1000
+        duration: 3 * 1000
       })
       return Promise.reject(new Error(res.msg || '请求出错'))
     } else {

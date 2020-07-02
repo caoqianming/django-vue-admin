@@ -60,3 +60,11 @@ export function deleteUser(id, data) {
     data
   })
 }
+
+export function changePassword(data) {
+  return request({
+    url: '/system/user/password/',
+    method: 'put',
+    data
+  })
+}

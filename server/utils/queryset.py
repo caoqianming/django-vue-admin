@@ -45,7 +45,7 @@ def get_child_queryset2(obj, hasParent=True):
     '''
     获取所有子集
     obj实例
-    数据表需包含pid字段
+    数据表需包含parent字段
     是否包含父默认True
     '''
     cls = type(obj)

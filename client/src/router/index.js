@@ -74,6 +74,13 @@ export const asyncRoutes = [
         component: () => import('@/views/system/user.vue'),
         meta: { title: '用户管理', icon: 'user', perms: ['user_manage'] }
       },
+     {
+        path: 'user/password',
+        name: 'ChangePassword',
+        component: () => import('@/views/system/changepassword'),
+        meta: { title: '修改密码', noCache: true, icon: ''},
+        hidden: true
+      },
       {
         path: 'organization',
         name: 'Organization',

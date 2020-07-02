@@ -23,7 +23,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from utils.queryset import get_child_queryset2
 
 from .filters import UserFilter
-from .mixins import CreateModelAMixin
+from .mixins import CreateUpdateModelAMixin
 from .models import (Dict, DictType, File, Organization, Permission, Position,
                      Role, User)
 from .permission import RbacPermission, get_permission_list
@@ -75,7 +75,7 @@ class DictViewSet(ModelViewSet):
     perms_map = {'get': '*', 'post': 'dict_create',
                  'put': 'dict_update', 'delete': 'dict_delete'}
     queryset = Dict.objects.get_queryset(all=True) # 获取全部的,包括软删除的
-    filterset_fields = ['type', 'is_deleted']
+    filterset_fields = ['type', 'is_deleted', 'type__code']
     serializer_class = DictSerializer
     search_fields = ['name']
     ordering_fields = ['sort']
@@ -83,9 +83,11 @@ class DictViewSet(ModelViewSet):
 
     def paginate_queryset(self, queryset):
         """
-        如果查询参数里有type,则不分页,否则请求分页
+        如果查询参数里没有page但有type或type__code时则不分页,否则请求分页
         """
-        if (self.request.query_params.get('type', None)) or (self.paginator is None):
+        if self.paginator is None:
+            return None
+        if (not self.request.query_params.get('page', None)) and ((self.request.query_params.get('type__code', None)) or (self.request.query_params.get('type', None))):
             return None
         return self.paginator.paginate_queryset(queryset, self.request, view=self)
 
@@ -158,7 +160,7 @@ class UserViewSet(ModelViewSet):
     """
     perms_map = {'get': '*', 'post': 'user_create',
                  'put': 'user_update', 'delete': 'user_delete'}
-    queryset = User.objects.order_by('-id')
+    queryset = User.objects
     serializer_class = UserListSerializer
     filterset_class = UserFilter
     search_fields = ['username', 'name', 'phone', 'email']
@@ -194,13 +196,13 @@ class UserViewSet(ModelViewSet):
         serializer.save(password=password)
         return Response(serializer.data)
 
-    @action(methods=['put'], detail=True, permission_classes=[IsAuthenticated], # perms_map={'put':'change_password'}
+    @action(methods=['put'], detail=False, permission_classes=[IsAuthenticated], # perms_map={'put':'change_password'}
             url_name='change_password')
     def password(self, request, pk=None):
         """
         修改密码
         """
-        user = User.objects.get(id=pk)
+        user = request.user
         old_password = request.data['old_password']
         if check_password(old_password, user.password):
             new_password1 = request.data['new_password1']
@@ -233,7 +235,7 @@ class UserViewSet(ModelViewSet):
         }
         return Response(data)
 
-class FileViewSet(ModelViewSet):
+class FileViewSet(CreateUpdateModelAMixin, ModelViewSet):
     """
     文件：增删改查
     """

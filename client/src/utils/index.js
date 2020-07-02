@@ -357,6 +357,9 @@ export function genTree(data) {
   const map = {}
   data.forEach(item => {
     item.label = item.name
+    if(item.fullname){
+      item.label = item.fullname
+    }
     item.value = item.id
     map[item.id] = item
   })

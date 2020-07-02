@@ -203,10 +203,7 @@ export default {
       search:'',
       dictList: [],
       listLoading: true,
-      listQuery: {
-        page: 1,
-        page_size: 20
-      },
+      listQuery: {},
       dgV1: false,
       dgT1: 'new',
       rule1: {
@@ -239,7 +236,6 @@ export default {
       return data.label.indexOf(value) !== -1
     },
     handleDictTypeClick(obj, node, vue) {
-      this.listQuery.page = 1
       this.listQuery.type = obj.id
       this.getList()
     },
@@ -319,30 +315,22 @@ export default {
           const isEdit = this.dgT1 === 'edit'
           if (isEdit) {
             updateDictType(this.dicttype.id, this.dicttype).then(res => {
-              if (res.code >= 200) {
                 this.getDictTypeList()
                 this.dgV1 = false
-                this.$notify({
-                  title: '成功',
+                this.$message({
                   message: '编辑成功',
                   type: 'success',
-                  duration: 2000
                 })
-              }
-            })
+            }).catch(error=>{})
           } else {
             createDictType(this.dicttype).then(res => {
-              if (res.code >= 200) {
                 this.getDictTypeList()
                 this.dgV1 = false
-                this.$notify({
-                  title: '成功',
+                this.$message({
                   message: '新增成功',
                   type: 'success',
-                  duration: 2000
                 })
-              }
-            })
+            }).catch(error=>{})
           }
         } else {
           return false
@@ -355,30 +343,22 @@ export default {
           const isEdit = this.dgT2 === 'edit'
           if (isEdit) {
             updateDict(this.dict.id, this.dict).then(res => {
-              if (res.code >= 200) {
                 this.getList()
                 this.dgV2 = false
-                this.$notify({
-                  title: '成功',
+                this.$message({
                   message: '编辑成功',
                   type: 'success',
-                  duration: 2000
                 })
-              }
-            })
+            }).catch(error=>{})
           } else {
             createDict(this.dict).then(res => {
-              if (res.code >= 200) {
                 this.getList()
                 this.dgV2 = false
-                this.$notify({
-                  title: '成功',
+                this.$message({
                   message: '新增成功',
                   type: 'success',
-                  duration: 2000
                 })
-              }
-            })
+            }).catch(error=>{})
           }
         } else {
           return false

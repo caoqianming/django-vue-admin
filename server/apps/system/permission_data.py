@@ -1,15 +1,17 @@
 from django.db.models import Q
 from django.db.models.query import QuerySet
 from rest_framework.generics import GenericAPIView
-
+from apps.system.mixins import CreateUpdateModelBMixin
 from utils.queryset import get_child_queryset2
 
 
-class RbacFilterSet(GenericAPIView):
+class RbacFilterSet(CreateUpdateModelBMixin, GenericAPIView):
     """
     数据权限控权返回的queryset
     在必须的View下继承
     需要控数据权限的表需有belong_dept, create_by, update_by字段(部门, 创建人, 编辑人)
+    带性能优化
+    包括必要的创建和编辑操作
     """
     def get_queryset(self):
         assert self.queryset is not None, (
@@ -47,7 +49,8 @@ class RbacFilterSet(GenericAPIView):
             elif '仅本人' in data_range:
                 queryset = queryset.filter(Q(create_by=user)|Q(update_by=user))
                 return queryset
-            
+        if hasattr(self.get_serializer_class(), 'setup_eager_loading'):
+            queryset = self.get_serializer_class().setup_eager_loading(queryset)  # 性能优化    
         return queryset
 
 

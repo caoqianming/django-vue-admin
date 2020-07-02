@@ -169,11 +169,9 @@ export default {
             updatePosition(this.position.id, this.position).then(() => {
               this.getList()
               this.dialogVisible = false
-              this.$notify({
-                title: '成功',
+              this.$message({
                 message: '编辑成功',
                 type: 'success',
-                duration: 2000
               })
             })
           } else {
@@ -182,11 +180,9 @@ export default {
               // this.tableData.unshift(this.position)
               this.getList()
               this.dialogVisible = false
-              this.$notify({
-                title: '成功',
+              this.$message({
                 message: '新增成功',
                 type: 'success',
-                duration: 2000
               })
             })
           }
