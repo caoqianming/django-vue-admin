@@ -36,7 +36,7 @@ from .serializers import (DictSerializer, DictTypeSerializer, FileSerializer,
 
 logger = logging.getLogger('log')
 # logger.info('请求成功！ response_code:{}；response_headers:{}；response_body:{}'.format(response_code, response_headers, response_body[:251]))
-# logger.error('请求出错：{}'.format(error))
+# logger.error('请求出错-{}'.format(error))
 
 
 class LogoutView(APIView):
@@ -46,7 +46,7 @@ class LogoutView(APIView):
         return Response(status=status.HTTP_200_OK)
 
 class TaskViewSet(ModelViewSet):
-    queryset = PeriodicTask.objects
+    queryset = PeriodicTask.objects.all()
     serializer_class = TaskSerializer
     search_fields = ['name']
     filterset_fields = ['enabled']
@@ -56,11 +56,11 @@ class TaskViewSet(ModelViewSet):
 
 class DictTypeViewSet(ModelViewSet):
     """
-    数据字典类型：增删改查
+    数据字典类型-增删改查
     """
     perms_map = {'get': '*', 'post': 'dicttype_create',
                  'put': 'dicttype_update', 'delete': 'dicttype_delete'}
-    queryset = DictType.objects
+    queryset = DictType.objects.all()
     serializer_class = DictTypeSerializer
     pagination_class = None
     search_fields = ['name']
@@ -70,11 +70,12 @@ class DictTypeViewSet(ModelViewSet):
 
 class DictViewSet(ModelViewSet):
     """
-    数据字典：增删改查
+    数据字典-增删改查
     """
     perms_map = {'get': '*', 'post': 'dict_create',
                  'put': 'dict_update', 'delete': 'dict_delete'}
-    queryset = Dict.objects.get_queryset(all=True) # 获取全部的,包括软删除的
+    # queryset = Dict.objects.get_queryset(all=True) # 获取全部的,包括软删除的
+    queryset = Dict.objects.all()
     filterset_fields = ['type', 'is_deleted', 'type__code']
     serializer_class = DictSerializer
     search_fields = ['name']
@@ -87,19 +88,23 @@ class DictViewSet(ModelViewSet):
         """
         if self.paginator is None:
             return None
-        if (not self.request.query_params.get('page', None)) and ((self.request.query_params.get('type__code', None)) or (self.request.query_params.get('type', None))):
+        elif (not self.request.query_params.get('page', None)) and ((self.request.query_params.get('type__code', None)) or (self.request.query_params.get('type', None))):
             return None
         return self.paginator.paginate_queryset(queryset, self.request, view=self)
 
-
+    @action(methods=['get'], detail=False, permission_classes=[], authentication_classes=[],url_name='correct_dict')
+    def correct(self, request, pk=None):
+        for i in Dict.objects.all():
+            i.save()
+        return Response(status=status.HTTP_200_OK)
 
 class PositionViewSet(ModelViewSet):
     """
-    岗位：增删改查
+    岗位-增删改查
     """
     perms_map = {'get': '*', 'post': 'position_create',
                  'put': 'position_update', 'delete': 'position_delete'}
-    queryset = Position.objects
+    queryset = Position.objects.all()
     serializer_class = PositionSerializer
     pagination_class = None
     search_fields = ['name','description']
@@ -114,11 +119,11 @@ class TestView(APIView):
 
 class PermissionViewSet(ModelViewSet):
     """
-    权限：增删改查
+    权限-增删改查
     """
     perms_map = {'get': '*', 'post': 'perm_create',
                  'put': 'perm_update', 'delete': 'perm_delete'}
-    queryset = Permission.objects
+    queryset = Permission.objects.all()
     serializer_class = PermissionSerializer
     pagination_class = None
     search_fields = ['name']
@@ -128,11 +133,11 @@ class PermissionViewSet(ModelViewSet):
 
 class OrganizationViewSet(ModelViewSet):
     """
-    组织机构：增删改查
+    组织机构-增删改查
     """
     perms_map = {'get': '*', 'post': 'org_create',
                  'put': 'org_update', 'delete': 'org_delete'}
-    queryset = Organization.objects
+    queryset = Organization.objects.all()
     serializer_class = OrganizationSerializer
     pagination_class = None
     search_fields = ['name', 'method']
@@ -142,11 +147,11 @@ class OrganizationViewSet(ModelViewSet):
 
 class RoleViewSet(ModelViewSet):
     """
-    角色：增删改查
+    角色-增删改查
     """
     perms_map = {'get': '*', 'post': 'role_create',
                  'put': 'role_update', 'delete': 'role_delete'}
-    queryset = Role.objects
+    queryset = Role.objects.all()
     serializer_class = RoleSerializer
     pagination_class = None
     search_fields = ['name']
@@ -156,11 +161,11 @@ class RoleViewSet(ModelViewSet):
 
 class UserViewSet(ModelViewSet):
     """
-    用户管理：增删改查
+    用户管理-增删改查
     """
     perms_map = {'get': '*', 'post': 'user_create',
                  'put': 'user_update', 'delete': 'user_delete'}
-    queryset = User.objects
+    queryset = User.objects.all()
     serializer_class = UserListSerializer
     filterset_class = UserFilter
     search_fields = ['username', 'name', 'phone', 'email']
@@ -193,7 +198,9 @@ class UserViewSet(ModelViewSet):
             password = make_password('0000')
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        serializer.save(password=password)
+        instance = serializer.save(password=password)
+        from apps.employee.models import Employee
+        Employee.objects.create(user=instance,create_by=request.user)
         return Response(serializer.data)
 
     @action(methods=['put'], detail=False, permission_classes=[IsAuthenticated], # perms_map={'put':'change_password'}
@@ -237,11 +244,11 @@ class UserViewSet(ModelViewSet):
 
 class FileViewSet(CreateUpdateModelAMixin, ModelViewSet):
     """
-    文件：增删改查
+    文件-增删改查
     """
     perms_map = None
     parser_classes = [MultiPartParser, JSONParser]
-    queryset = File.objects
+    queryset = File.objects.all()
     serializer_class = FileSerializer
     filterset_fields = ['type']
     search_fields = ['name']

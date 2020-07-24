@@ -35,7 +35,10 @@ class RbacPermission(BasePermission):
         :param view:
         :return:
         """
-        perms = cache.get(request.user.username + '__perms')
+        if not request.user:
+            perms = ['visitor'] # 如果没有经过认证,视为游客
+        else:
+            perms = cache.get(request.user.username + '__perms')
         if not perms:
             perms = get_permission_list(request.user)
         if perms:
@@ -59,7 +62,10 @@ class RbacPermission(BasePermission):
         """
         Return `True` if permission is granted, `False` otherwise.
         """
-        has_obj_perm(request.user, obj)
+        if not request.user:
+            return False
+        if hasattr(obj, 'belong_dept'):
+            has_obj_perm(request.user, obj)
         return True
 
 def has_obj_perm(user, obj):

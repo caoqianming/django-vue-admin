@@ -63,23 +63,23 @@
           :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
         >
           <el-table-column type="index" width="50" />
-          <el-table-column align="center" label="代号/编号">
+          <el-table-column label="代号/编号">
             <template slot-scope="scope">{{ scope.row.code }}</template>
           </el-table-column>
-          <el-table-column align="center" label="名称">
+          <el-table-column label="名称">
             <template slot-scope="scope">{{ scope.row.name }}</template>
           </el-table-column>
-          <el-table-column align="header-center" label="描述">
+          <el-table-column label="描述">
             <template slot-scope="scope">{{ scope.row.description }}</template>
           </el-table-column>
-          <el-table-column align="header-center" label="是否有效">
+          <el-table-column label="是否有效">
             <template slot-scope="scope">
               
-              <el-tag type="danger" v-if="scope.row.is_deleted">无效</el-tag>
-              <el-tag type="success" v-else>有效</el-tag>
+              <el-tag type="success" v-if="scope.row.is_used">有效</el-tag>
+              <el-tag type="danger" v-else>无效</el-tag>
               </template>
           </el-table-column>
-          <el-table-column align="center" label="操作">
+          <el-table-column label="操作">
             <template slot-scope="scope">
               <el-button
                 v-if="!scope.row.is_superuser"
@@ -147,11 +147,10 @@
         <el-form-item label="排序" prop="sort">
           <el-input-number v-model="dict.sort" :min="1" :max="999"></el-input-number>
         </el-form-item>
-        <el-form-item label="状态" prop="is_deleted">
-          <el-radio-group v-model="dict.is_deleted">
-    <el-radio :label="false">有效</el-radio>
-    <el-radio :label="true">无效</el-radio>
-  </el-radio-group>
+        <el-form-item label="是否有效" prop="is_used">
+          <el-switch
+  v-model="dict.is_used">
+</el-switch>
         </el-form-item>
       </el-form>
       <div style="text-align:right;">
@@ -191,7 +190,7 @@ const defaultDict = {
   description: '',
   sort: 1,
   type: null,
-  is_deleted: false,
+  is_used: true,
   parent:null
 }
 export default {

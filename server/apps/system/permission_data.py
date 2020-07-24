@@ -5,7 +5,7 @@ from apps.system.mixins import CreateUpdateModelBMixin
 from utils.queryset import get_child_queryset2
 
 
-class RbacFilterSet(CreateUpdateModelBMixin, GenericAPIView):
+class RbacFilterSet(CreateUpdateModelBMixin, object):
     """
     数据权限控权返回的queryset
     在必须的View下继承
@@ -21,6 +21,8 @@ class RbacFilterSet(CreateUpdateModelBMixin, GenericAPIView):
         )
         
         queryset = self.queryset
+        if hasattr(self.get_serializer_class(), 'setup_eager_loading'):
+            queryset = self.get_serializer_class().setup_eager_loading(queryset)  # 性能优化
         if isinstance(queryset, QuerySet):
             # Ensure queryset is re-evaluated on each request.
             queryset = queryset.all()

@@ -50,6 +50,9 @@ class SoftDeletableManager(SoftDeletableManagerMixin, models.Manager):
 
 
 class BaseModel(models.Model):
+    """
+    基本表
+    """
     create_time = models.DateTimeField(
         default=timezone.now, verbose_name='创建时间', help_text='创建时间')
     update_time = models.DateTimeField(
@@ -61,6 +64,9 @@ class BaseModel(models.Model):
         abstract = True
 
 class SoftModel(BaseModel):
+    """
+    软删除基本表
+    """
     class Meta:
         abstract = True
 

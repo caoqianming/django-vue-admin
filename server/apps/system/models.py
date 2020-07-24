@@ -107,7 +107,7 @@ class User(AbstractUser):
     用户
     """
     name = models.CharField('姓名', max_length=20, null=True, blank=True)
-    phone = models.CharField('手机号码', max_length=11,
+    phone = models.CharField('手机号', max_length=11,
                              null=True, blank=True, unique=True)
     avatar = models.CharField(
         '头像', default='/media/default/avatar.png', max_length=1000, null=True, blank=True)
@@ -149,6 +149,7 @@ class Dict(SoftModel):
     """
     name = models.CharField('名称', max_length=1000)
     code = models.CharField('编号', max_length=30, null=True, blank=True)
+    fullname = models.CharField('全名', max_length=1000, null=True, blank=True)
     description = models.TextField('描述', blank=True, null=True)
     other = JSONField('其它信息', blank=True, null=True)
     type = models.ForeignKey(
@@ -156,16 +157,24 @@ class Dict(SoftModel):
     sort = models.IntegerField('排序', default=1)
     parent = models.ForeignKey('self', null=True, blank=True,
                             on_delete=models.SET_NULL, verbose_name='父')
+    is_used = models.BooleanField('是否有效', default=True)
     history = HistoricalRecords()
 
     class Meta:
         verbose_name = '字典'
         verbose_name_plural = verbose_name
-        unique_together = ('name', 'code', 'type')
+        unique_together = ('name', 'is_used', 'type')
 
     def __str__(self):
         return self.name
     
+    def save(self, *args, **kwargs):
+        """
+        冗余一个字段,方便调用
+        """
+        if self.code and self.code not in self.name:
+            self.fullname = self.code + '-' + self.name
+        super().save(*args, **kwargs)
 
 class CommonAModel(SoftModel):
     """
