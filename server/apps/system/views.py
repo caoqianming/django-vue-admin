@@ -76,11 +76,11 @@ class DictViewSet(ModelViewSet):
                  'put': 'dict_update', 'delete': 'dict_delete'}
     # queryset = Dict.objects.get_queryset(all=True) # 获取全部的,包括软删除的
     queryset = Dict.objects.all()
-    filterset_fields = ['type', 'is_deleted', 'type__code']
+    filterset_fields = ['type', 'is_used', 'type__code']
     serializer_class = DictSerializer
     search_fields = ['name']
     ordering_fields = ['sort']
-    ordering = ['is_deleted', 'sort']
+    ordering = ['sort']
 
     def paginate_queryset(self, queryset):
         """
@@ -199,8 +199,8 @@ class UserViewSet(ModelViewSet):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         instance = serializer.save(password=password)
-        from apps.employee.models import Employee
-        Employee.objects.create(user=instance,create_by=request.user)
+        # from apps.employee.models import Employee
+        # Employee.objects.create(user=instance,create_by=request.user)
         return Response(serializer.data)
 
     @action(methods=['put'], detail=False, permission_classes=[IsAuthenticated], # perms_map={'put':'change_password'}
