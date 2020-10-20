@@ -63,3 +63,44 @@ div:focus {
 .app-container {
   padding: 20px;
 }
+
+.el-table--medium td,   .el-table--medium th {
+  padding: 2px 0;
+}
+.el-form-item {
+  margin-bottom: 16px;
+}
+.el-card, .el-message {
+  border-radius: 0px;
+  overflow: hidden;
+}
+.el-card__body {
+  padding: 6px;
+}
+.el-card__header {
+  padding: 6px;
+}
+.el-tabs--border-card>.el-tabs__content {
+  padding: 6px;
+}
+.el-dialog__header {
+  padding: 10px 10px 6px;
+}
+.el-dialog__body {
+  padding: 8px 12px;
+}
+// .el-form-item--medium .el-form-item__label {
+//   line-height: 16px;
+// }
+.el-form--label-top .el-form-item__label {
+  line-height: 16px;
+}
+.el-button+.el-button {
+  margin-left: 1px;
+}
+// .el-button {
+//   border-radius: 0px;
+// }
+.el-tabs__header {
+  margin: 0 0 6px;
+}
