@@ -13,7 +13,7 @@ JWT认证,具有审计功能
 ![image](https://github.com/caoqianming/django-vue-admin/blob/master/img/docs.png)
 
 ## 启动(以下是在windows下开发操作步骤)
-需要安装redis,请先安装redis并在默认端口启动
+
 
 ### django后端
 定位到server文件夹
@@ -66,4 +66,12 @@ location / {
 接口文档 localhost:8000/docs
 
 后台地址 localhost:8000/admin
+
+### 理念
+功能权限的核心代码在server/apps/system/permission.py下重写了has_permission方法
+
+数据权限因为跟具体业务有关,简单定义了几个规则，重写了has_object_permission方法
+
+### 后续
+继续完善定时任务配置(借助django-celery-beat包实现定时任务的热更新)
 
