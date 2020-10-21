@@ -247,6 +247,7 @@ class FileViewSet(CreateUpdateModelAMixin, ModelViewSet):
     文件-增删改查
     """
     perms_map = None
+    permission_classes=[IsAuthenticated]
     parser_classes = [MultiPartParser, JSONParser]
     queryset = File.objects.all()
     serializer_class = FileSerializer
