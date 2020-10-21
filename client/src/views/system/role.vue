@@ -8,7 +8,7 @@
         class="filter-item"
         @keyup.native="handleFilter"
       />
-      <el-button type="primary" icon="el-icon-plus" @click="handleAdd">新增</el-button>
+      <el-button type="primary" icon="el-icon-plus" @click="handleAdd" v-if="checkPermission(['role_create'])">新增</el-button>
     </div>
     <el-table
       v-loading="listLoading"
@@ -30,8 +30,8 @@
       </el-table-column>
       <el-table-column align="center" label="操作">
         <template slot-scope="scope">
-          <el-button type="primary" size="small" icon="el-icon-edit" @click="handleEdit(scope)" />
-          <el-button type="danger" size="small" icon="el-icon-delete" @click="handleDelete(scope)" />
+          <el-button type="primary" size="small" icon="el-icon-edit" @click="handleEdit(scope)"  :disabled="!checkPermission(['role_update'])"/>
+          <el-button type="danger" size="small" icon="el-icon-delete" @click="handleDelete(scope)" :disabled="!checkPermission(['role_delete'])"/>
         </template>
       </el-table-column>
     </el-table>
@@ -100,6 +100,7 @@
 
 <script>
 import { genTree, deepClone } from '@/utils'
+import checkPermission from '@/utils/permission'
 import {
   getRoutes,
   getRoleAll,
@@ -167,6 +168,7 @@ export default {
     this.getRoleAll()
   },
   methods: {
+    checkPermission,
     handleFilter() {
       const newData = this.rolesList.filter(
         data =>
