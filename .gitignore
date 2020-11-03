@@ -3,6 +3,7 @@
 .vs/
 venv/
 media/
+!media/default
 *.log
 static/
 __pycache__/
