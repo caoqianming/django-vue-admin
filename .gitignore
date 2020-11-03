@@ -2,8 +2,8 @@
 .vscode/
 .vs/
 venv/
-media/
-!media/default/*.*
+server/media/
+!server/media/default/*.*
 log/*
 static/
 __pycache__/
