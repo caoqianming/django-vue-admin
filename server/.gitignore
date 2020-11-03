@@ -2,6 +2,6 @@
 .vs/
 venv/
 media/
-!media/default/*
+!media/default/
 __pycache__/
 *.pyc
