@@ -1,21 +1,11 @@
-# server
-.vscode/
-.vs/
-venv/
-static/
-__pycache__/
-*.pyc
-
-# client
+.DS_Store
 node_modules/
 dist/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-
+package-lock.json
 tests/**/coverage/
-tests/e2e/reports
-selenium-debug.log
 
 # Editor directories and files
 .idea
@@ -24,9 +14,3 @@ selenium-debug.log
 *.ntvs*
 *.njsproj
 *.sln
-*.local
-
-package-lock.json
-yarn.lock
-
-web.config
