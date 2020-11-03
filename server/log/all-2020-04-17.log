@@ -1,0 +1,206 @@
+[2020-04-17 16:10:53,758] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-04-17 16:14:06,742] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\django-vue-rbac\server\server\settings_dev.py changed, reloading.
+[2020-04-17 16:14:08,098] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-04-17 16:16:31,394] [basehttp.py:157] [basehttp:log_message] [INFO]- "OPTIONS /token/ HTTP/1.1" 200 0
+[2020-04-17 16:16:31,711] [basehttp.py:157] [basehttp:log_message] [INFO]- "POST /token/ HTTP/1.1" 200 469
+[2020-04-17 16:16:31,735] [basehttp.py:157] [basehttp:log_message] [INFO]- "OPTIONS /rbac/user/info/ HTTP/1.1" 200 0
+[2020-04-17 16:16:31,959] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /rbac/user/info/ HTTP/1.1" 200 136
+[2020-04-17 16:16:34,904] [basehttp.py:157] [basehttp:log_message] [INFO]- "OPTIONS /rbac/organization/ HTTP/1.1" 200 0
+[2020-04-17 16:16:39,925] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /rbac/organization/ HTTP/1.1" 200 798
+[2020-04-17 16:16:42,668] [basehttp.py:157] [basehttp:log_message] [INFO]- "OPTIONS /rbac/user/?page=1&page_size=20 HTTP/1.1" 200 0
+[2020-04-17 16:16:42,676] [basehttp.py:157] [basehttp:log_message] [INFO]- "OPTIONS /rbac/role/ HTTP/1.1" 200 0
+[2020-04-17 16:16:42,774] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /rbac/organization/ HTTP/1.1" 200 798
+[2020-04-17 16:16:42,915] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /rbac/user/?page=1&page_size=20 HTTP/1.1" 200 361
+[2020-04-17 16:16:43,055] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /rbac/role/ HTTP/1.1" 200 217
+[2020-04-17 16:16:43,851] [basehttp.py:157] [basehttp:log_message] [INFO]- "OPTIONS /rbac/user/?page=1&page_size=20&dept=2 HTTP/1.1" 200 0
+[2020-04-17 16:16:44,244] [log.py:228] [log:log_response] [ERROR]- Internal Server Error: /rbac/user/
+Traceback (most recent call last):
+  File "E:\cnas\server\venv\lib\site-packages\django\core\handlers\exception.py", line 34, in inner
+    response = get_response(request)
+  File "E:\cnas\server\venv\lib\site-packages\django\core\handlers\base.py", line 115, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "E:\cnas\server\venv\lib\site-packages\django\core\handlers\base.py", line 113, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\cnas\server\venv\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "E:\cnas\server\venv\lib\site-packages\rest_framework\viewsets.py", line 114, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "E:\cnas\server\venv\lib\site-packages\rest_framework\views.py", line 505, in dispatch
+    response = self.handle_exception(exc)
+  File "E:\cnas\server\venv\lib\site-packages\rest_framework\views.py", line 465, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "E:\cnas\server\venv\lib\site-packages\rest_framework\views.py", line 476, in raise_uncaught_exception
+    raise exc
+  File "E:\cnas\server\venv\lib\site-packages\rest_framework\views.py", line 502, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\cnas\server\venv\lib\site-packages\rest_framework\mixins.py", line 38, in list
+    queryset = self.filter_queryset(self.get_queryset())
+  File "E:\django-vue-rbac\server\apps\rbac\views.py", line 129, in get_queryset
+    deptqueryset = get_child_queryset('apps.rbac.Organization',dept)
+  File "E:\django-vue-rbac\server\utils\queryset.py", line 29, in get_child_queryset
+    app, model = name.split('.')
+ValueError: too many values to unpack (expected 2)
+[2020-04-17 16:16:44,254] [basehttp.py:157] [basehttp:log_message] [ERROR]- "GET /rbac/user/?page=1&page_size=20&dept=2 HTTP/1.1" 500 19118
+[2020-04-17 16:17:39,688] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\django-vue-rbac\server\apps\rbac\views.py changed, reloading.
+[2020-04-17 16:17:41,148] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-04-17 16:17:54,615] [basehttp.py:157] [basehttp:log_message] [INFO]- "OPTIONS /rbac/user/?page=1&page_size=20&dept=3 HTTP/1.1" 200 0
+[2020-04-17 16:17:54,865] [log.py:228] [log:log_response] [ERROR]- Internal Server Error: /rbac/user/
+Traceback (most recent call last):
+  File "E:\cnas\server\venv\lib\site-packages\django\core\handlers\exception.py", line 34, in inner
+    response = get_response(request)
+  File "E:\cnas\server\venv\lib\site-packages\django\core\handlers\base.py", line 115, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "E:\cnas\server\venv\lib\site-packages\django\core\handlers\base.py", line 113, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\cnas\server\venv\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "E:\cnas\server\venv\lib\site-packages\rest_framework\viewsets.py", line 114, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "E:\cnas\server\venv\lib\site-packages\rest_framework\views.py", line 505, in dispatch
+    response = self.handle_exception(exc)
+  File "E:\cnas\server\venv\lib\site-packages\rest_framework\views.py", line 465, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "E:\cnas\server\venv\lib\site-packages\rest_framework\views.py", line 476, in raise_uncaught_exception
+    raise exc
+  File "E:\cnas\server\venv\lib\site-packages\rest_framework\views.py", line 502, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\cnas\server\venv\lib\site-packages\rest_framework\mixins.py", line 38, in list
+    queryset = self.filter_queryset(self.get_queryset())
+  File "E:\django-vue-rbac\server\apps\rbac\views.py", line 129, in get_queryset
+    deptqueryset = get_child_queryset('rbac.Organization',dept)
+  File "E:\django-vue-rbac\server\utils\queryset.py", line 30, in get_child_queryset
+    cls = get_model(app, model)
+NameError: name 'get_model' is not defined
+[2020-04-17 16:17:54,875] [basehttp.py:157] [basehttp:log_message] [ERROR]- "GET /rbac/user/?page=1&page_size=20&dept=3 HTTP/1.1" 500 19096
+[2020-04-17 16:17:56,008] [log.py:228] [log:log_response] [ERROR]- Internal Server Error: /rbac/user/
+Traceback (most recent call last):
+  File "E:\cnas\server\venv\lib\site-packages\django\core\handlers\exception.py", line 34, in inner
+    response = get_response(request)
+  File "E:\cnas\server\venv\lib\site-packages\django\core\handlers\base.py", line 115, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "E:\cnas\server\venv\lib\site-packages\django\core\handlers\base.py", line 113, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\cnas\server\venv\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "E:\cnas\server\venv\lib\site-packages\rest_framework\viewsets.py", line 114, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "E:\cnas\server\venv\lib\site-packages\rest_framework\views.py", line 505, in dispatch
+    response = self.handle_exception(exc)
+  File "E:\cnas\server\venv\lib\site-packages\rest_framework\views.py", line 465, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "E:\cnas\server\venv\lib\site-packages\rest_framework\views.py", line 476, in raise_uncaught_exception
+    raise exc
+  File "E:\cnas\server\venv\lib\site-packages\rest_framework\views.py", line 502, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\cnas\server\venv\lib\site-packages\rest_framework\mixins.py", line 38, in list
+    queryset = self.filter_queryset(self.get_queryset())
+  File "E:\django-vue-rbac\server\apps\rbac\views.py", line 129, in get_queryset
+    deptqueryset = get_child_queryset('rbac.Organization',dept)
+  File "E:\django-vue-rbac\server\utils\queryset.py", line 30, in get_child_queryset
+    cls = get_model(app, model)
+NameError: name 'get_model' is not defined
+[2020-04-17 16:17:56,016] [basehttp.py:157] [basehttp:log_message] [ERROR]- "GET /rbac/user/?page=1&page_size=20&dept=2 HTTP/1.1" 500 19096
+[2020-04-17 16:19:03,960] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\django-vue-rbac\server\utils\queryset.py changed, reloading.
+[2020-04-17 16:19:05,292] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-04-17 16:19:12,717] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /rbac/user/?page=1&page_size=20&dept=3 HTTP/1.1" 200 83
+[2020-04-17 16:19:14,221] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /rbac/user/?page=1&page_size=20&dept=2 HTTP/1.1" 200 83
+[2020-04-17 16:19:14,974] [basehttp.py:157] [basehttp:log_message] [INFO]- "OPTIONS /rbac/user/?page=1&page_size=20&dept=1 HTTP/1.1" 200 0
+[2020-04-17 16:19:15,140] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /rbac/user/?page=1&page_size=20&dept=1 HTTP/1.1" 200 83
+[2020-04-17 16:19:24,449] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /rbac/organization/ HTTP/1.1" 200 798
+[2020-04-17 16:19:25,207] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /rbac/user/?page=1&page_size=20 HTTP/1.1" 200 361
+[2020-04-17 16:19:25,322] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /rbac/organization/ HTTP/1.1" 200 798
+[2020-04-17 16:19:25,390] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /rbac/role/ HTTP/1.1" 200 217
+[2020-04-17 16:19:39,103] [basehttp.py:157] [basehttp:log_message] [INFO]- "OPTIONS /rbac/user/2/ HTTP/1.1" 200 0
+[2020-04-17 16:19:39,249] [basehttp.py:157] [basehttp:log_message] [INFO]- "PUT /rbac/user/2/ HTTP/1.1" 200 103
+[2020-04-17 16:20:09,404] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /rbac/user/info/ HTTP/1.1" 200 136
+[2020-04-17 16:20:09,685] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /rbac/organization/ HTTP/1.1" 200 798
+[2020-04-17 16:20:09,709] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /rbac/user/?page=1&page_size=20 HTTP/1.1" 200 361
+[2020-04-17 16:20:09,821] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /rbac/role/ HTTP/1.1" 200 217
+[2020-04-17 16:21:19,312] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /rbac/user/info/ HTTP/1.1" 200 136
+[2020-04-17 16:21:19,601] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /rbac/organization/ HTTP/1.1" 200 798
+[2020-04-17 16:21:19,624] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /rbac/user/?page=1&page_size=20 HTTP/1.1" 200 361
+[2020-04-17 16:21:19,847] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /rbac/role/ HTTP/1.1" 200 217
+[2020-04-17 16:23:05,829] [basehttp.py:157] [basehttp:log_message] [INFO]- "PUT /rbac/user/2/ HTTP/1.1" 200 103
+[2020-04-17 16:24:28,006] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /rbac/organization/ HTTP/1.1" 200 798
+[2020-04-17 16:24:28,041] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /rbac/user/?page=1&page_size=20 HTTP/1.1" 200 361
+[2020-04-17 16:24:28,158] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /rbac/role/ HTTP/1.1" 200 217
+[2020-04-17 16:24:52,890] [basehttp.py:157] [basehttp:log_message] [INFO]- "PUT /rbac/user/2/ HTTP/1.1" 200 103
+[2020-04-17 16:28:25,887] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /rbac/organization/ HTTP/1.1" 200 798
+[2020-04-17 16:28:25,902] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /rbac/user/?page=1&page_size=20 HTTP/1.1" 200 361
+[2020-04-17 16:28:26,022] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /rbac/role/ HTTP/1.1" 200 217
+[2020-04-17 16:28:34,653] [basehttp.py:157] [basehttp:log_message] [INFO]- "PUT /rbac/user/2/ HTTP/1.1" 200 203
+[2020-04-17 16:29:56,389] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /rbac/user/info/ HTTP/1.1" 200 136
+[2020-04-17 16:29:56,699] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /rbac/organization/ HTTP/1.1" 200 798
+[2020-04-17 16:29:56,725] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /rbac/user/?page=1&page_size=20 HTTP/1.1" 200 365
+[2020-04-17 16:29:56,821] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /rbac/role/ HTTP/1.1" 200 217
+[2020-04-17 16:34:24,273] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\django-vue-rbac\server\apps\rbac\serializers.py changed, reloading.
+[2020-04-17 16:34:26,165] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-04-17 16:34:38,797] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\django-vue-rbac\server\apps\rbac\serializers.py changed, reloading.
+[2020-04-17 16:34:40,013] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-04-17 16:36:29,138] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\django-vue-rbac\server\apps\rbac\serializers.py changed, reloading.
+[2020-04-17 16:36:30,653] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-04-17 16:36:37,106] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /rbac/user/info/ HTTP/1.1" 200 136
+[2020-04-17 16:36:37,506] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /rbac/organization/ HTTP/1.1" 200 798
+[2020-04-17 16:36:37,540] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /rbac/user/?page=1&page_size=20 HTTP/1.1" 200 436
+[2020-04-17 16:36:37,660] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /rbac/role/ HTTP/1.1" 200 217
+[2020-04-17 16:38:01,120] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /rbac/organization/ HTTP/1.1" 200 798
+[2020-04-17 16:38:01,144] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /rbac/user/?page=1&page_size=20 HTTP/1.1" 200 436
+[2020-04-17 16:38:01,252] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /rbac/role/ HTTP/1.1" 200 217
+[2020-04-17 16:38:53,656] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /rbac/organization/ HTTP/1.1" 200 798
+[2020-04-17 16:38:53,807] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /rbac/role/ HTTP/1.1" 200 217
+[2020-04-17 16:38:53,809] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /rbac/user/?page=1&page_size=20 HTTP/1.1" 200 436
+[2020-04-17 16:39:28,413] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /rbac/user/info/ HTTP/1.1" 200 136
+[2020-04-17 16:39:28,788] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /rbac/user/?page=1&page_size=20 HTTP/1.1" 200 436
+[2020-04-17 16:39:28,845] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /rbac/organization/ HTTP/1.1" 200 798
+[2020-04-17 16:39:28,910] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /rbac/role/ HTTP/1.1" 200 217
+[2020-04-17 16:39:34,543] [basehttp.py:157] [basehttp:log_message] [INFO]- "PUT /rbac/user/2/ HTTP/1.1" 200 72
+[2020-04-17 16:39:35,788] [basehttp.py:157] [basehttp:log_message] [INFO]- "PUT /rbac/user/2/ HTTP/1.1" 200 72
+[2020-04-17 16:39:39,304] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /rbac/user/info/ HTTP/1.1" 200 136
+[2020-04-17 16:39:39,584] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /rbac/organization/ HTTP/1.1" 200 798
+[2020-04-17 16:39:39,619] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /rbac/user/?page=1&page_size=20 HTTP/1.1" 200 436
+[2020-04-17 16:39:39,702] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /rbac/role/ HTTP/1.1" 200 217
+[2020-04-17 16:39:46,414] [basehttp.py:157] [basehttp:log_message] [INFO]- "PUT /rbac/user/2/ HTTP/1.1" 200 72
+[2020-04-17 16:40:31,495] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\django-vue-rbac\server\apps\rbac\serializers.py changed, reloading.
+[2020-04-17 16:40:32,556] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-04-17 16:40:37,866] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\django-vue-rbac\server\apps\rbac\serializers.py changed, reloading.
+[2020-04-17 16:40:38,933] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-04-17 16:40:54,896] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\django-vue-rbac\server\apps\rbac\serializers.py changed, reloading.
+[2020-04-17 16:40:55,923] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-04-17 16:41:24,993] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\django-vue-rbac\server\apps\rbac\serializers.py changed, reloading.
+[2020-04-17 16:41:26,030] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-04-17 16:41:40,701] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\django-vue-rbac\server\apps\rbac\serializers.py changed, reloading.
+[2020-04-17 16:41:41,759] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-04-17 16:41:58,770] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\django-vue-rbac\server\apps\rbac\serializers.py changed, reloading.
+[2020-04-17 16:41:59,882] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-04-17 16:42:44,807] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /rbac/user/info/ HTTP/1.1" 200 136
+[2020-04-17 16:42:45,284] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /rbac/organization/ HTTP/1.1" 200 798
+[2020-04-17 16:42:45,309] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /rbac/user/?page=1&page_size=20 HTTP/1.1" 200 436
+[2020-04-17 16:42:45,485] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /rbac/role/ HTTP/1.1" 200 217
+[2020-04-17 16:43:03,861] [basehttp.py:157] [basehttp:log_message] [INFO]- "PUT /rbac/user/2/ HTTP/1.1" 200 208
+[2020-04-17 16:43:05,161] [basehttp.py:157] [basehttp:log_message] [INFO]- "PUT /rbac/user/2/ HTTP/1.1" 200 208
+[2020-04-17 16:43:11,995] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /rbac/user/info/ HTTP/1.1" 200 136
+[2020-04-17 16:43:12,346] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /rbac/organization/ HTTP/1.1" 200 798
+[2020-04-17 16:43:12,358] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /rbac/role/ HTTP/1.1" 200 217
+[2020-04-17 16:43:12,362] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /rbac/user/?page=1&page_size=20 HTTP/1.1" 200 427
+[2020-04-17 16:43:49,848] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /rbac/user/info/ HTTP/1.1" 200 136
+[2020-04-17 16:43:50,140] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /rbac/organization/ HTTP/1.1" 200 798
+[2020-04-17 16:43:50,193] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /rbac/user/?page=1&page_size=20 HTTP/1.1" 200 427
+[2020-04-17 16:43:50,277] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /rbac/role/ HTTP/1.1" 200 217
+[2020-04-17 16:43:59,081] [basehttp.py:157] [basehttp:log_message] [INFO]- "PUT /rbac/user/2/ HTTP/1.1" 200 208
+[2020-04-17 16:44:25,222] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /rbac/organization/ HTTP/1.1" 200 798
+[2020-04-17 16:44:25,255] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /rbac/role/ HTTP/1.1" 200 217
+[2020-04-17 16:44:25,270] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /rbac/user/?page=1&page_size=20 HTTP/1.1" 200 427
+[2020-04-17 16:44:29,516] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /rbac/user/info/ HTTP/1.1" 200 136
+[2020-04-17 16:44:29,801] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /rbac/organization/ HTTP/1.1" 200 798
+[2020-04-17 16:44:29,812] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /rbac/user/?page=1&page_size=20 HTTP/1.1" 200 427
+[2020-04-17 16:44:29,812] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /rbac/role/ HTTP/1.1" 200 217
+[2020-04-17 16:44:38,791] [basehttp.py:157] [basehttp:log_message] [INFO]- "PUT /rbac/user/2/ HTTP/1.1" 200 208
+[2020-04-17 16:44:38,953] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /rbac/user/?page=1&page_size=20 HTTP/1.1" 200 427
+[2020-04-17 16:44:44,625] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /rbac/user/?page=1&page_size=20&dept=1 HTTP/1.1" 200 251
+[2020-04-17 16:44:45,742] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /rbac/user/?page=1&page_size=20&dept=2 HTTP/1.1" 200 83
+[2020-04-17 16:44:46,815] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /rbac/user/?page=1&page_size=20&dept=1 HTTP/1.1" 200 251
+[2020-04-17 16:44:49,227] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /rbac/organization/ HTTP/1.1" 200 798
+[2020-04-17 16:49:19,544] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\django-vue-rbac\server\server\settings_dev.py changed, reloading.
+[2020-04-17 16:49:20,665] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-04-17 16:51:13,924] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\django-vue-rbac\server\server\settings_dev.py changed, reloading.
+[2020-04-17 16:51:15,372] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader

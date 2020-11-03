@@ -1,0 +1,75 @@
+[2020-05-11 08:19:38,639] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-05-11 08:40:33,768] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /docs/ HTTP/1.1" 200 255011
+[2020-05-11 08:40:34,038] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /static/rest_framework/css/bootstrap-theme.min.css HTTP/1.1" 304 0
+[2020-05-11 08:40:34,038] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /static/rest_framework/docs/css/base.css HTTP/1.1" 304 0
+[2020-05-11 08:40:34,038] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /static/rest_framework/css/bootstrap.min.css HTTP/1.1" 304 0
+[2020-05-11 08:40:34,040] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /static/rest_framework/docs/css/jquery.json-view.min.css HTTP/1.1" 304 0
+[2020-05-11 08:40:34,042] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /static/rest_framework/css/font-awesome-4.0.3.css HTTP/1.1" 304 0
+[2020-05-11 08:40:34,112] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /static/rest_framework/js/coreapi-0.1.1.js HTTP/1.1" 304 0
+[2020-05-11 08:40:34,223] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /docs/schema.js HTTP/1.1" 200 39524
+[2020-05-11 08:40:34,752] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /static/rest_framework/js/jquery-3.4.1.min.js HTTP/1.1" 304 0
+[2020-05-11 08:40:34,753] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /static/rest_framework/js/bootstrap.min.js HTTP/1.1" 304 0
+[2020-05-11 08:40:34,765] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /static/rest_framework/docs/js/api.js HTTP/1.1" 304 0
+[2020-05-11 08:40:34,765] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /static/rest_framework/docs/js/jquery.json-view.min.js HTTP/1.1" 304 0
+[2020-05-11 08:40:34,769] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /static/rest_framework/fonts/fontawesome-webfont.woff?v=4.0.3 HTTP/1.1" 304 0
+[2020-05-11 08:42:57,370] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/user/info/ HTTP/1.1" 200 63
+[2020-05-11 08:43:29,203] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /token/black/ HTTP/1.1" 200 35
+[2020-05-11 08:44:25,040] [basehttp.py:157] [basehttp:log_message] [INFO]- "POST /token/ HTTP/1.1" 200 83
+[2020-05-11 08:45:41,918] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\django-vue-rbac\server\apps\system\views.py changed, reloading.
+[2020-05-11 08:45:43,547] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-05-11 08:45:59,695] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\django-vue-rbac\server\apps\system\serializers.py changed, reloading.
+[2020-05-11 08:46:00,902] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-05-11 08:46:12,272] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\django-vue-rbac\server\apps\system\permission.py changed, reloading.
+[2020-05-11 08:46:13,562] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-05-11 08:46:21,278] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\django-vue-rbac\server\apps\system\models.py changed, reloading.
+[2020-05-11 08:46:22,466] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-05-11 08:52:00,734] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\django-vue-rbac\server\apps\system\permission.py changed, reloading.
+[2020-05-11 08:52:01,893] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-05-11 08:52:09,531] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\django-vue-rbac\server\apps\system\views.py changed, reloading.
+[2020-05-11 08:52:10,609] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-05-11 08:52:48,723] [basehttp.py:157] [basehttp:log_message] [INFO]- "POST /token/ HTTP/1.1" 200 469
+[2020-05-11 08:53:32,329] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/user/info/ HTTP/1.1" 200 136
+[2020-05-11 08:54:26,174] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\django-vue-rbac\server\apps\system\permission.py changed, reloading.
+[2020-05-11 08:54:27,262] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-05-11 08:54:40,553] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/user/info/ HTTP/1.1" 200 136
+[2020-05-11 08:55:43,349] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\django-vue-rbac\server\apps\system\views.py changed, reloading.
+[2020-05-11 08:55:44,518] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-05-11 08:55:49,504] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/user/info/ HTTP/1.1" 200 136
+[2020-05-11 09:06:15,377] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\django-vue-rbac\server\apps\system\permission.py changed, reloading.
+[2020-05-11 09:06:16,516] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-05-11 09:06:19,848] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/user/info/ HTTP/1.1" 200 136
+[2020-05-11 09:06:37,540] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\django-vue-rbac\server\apps\system\permission.py changed, reloading.
+[2020-05-11 09:06:38,676] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-05-11 09:06:40,084] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/user/info/ HTTP/1.1" 200 136
+[2020-05-11 09:07:00,607] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\django-vue-rbac\server\apps\system\permission.py changed, reloading.
+[2020-05-11 09:07:01,693] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-05-11 09:07:02,536] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/user/info/ HTTP/1.1" 200 136
+[2020-05-11 09:07:25,883] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\django-vue-rbac\server\apps\system\permission.py changed, reloading.
+[2020-05-11 09:07:27,162] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-05-11 09:07:29,222] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/user/info/ HTTP/1.1" 200 136
+[2020-05-11 09:12:51,218] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\django-vue-rbac\server\apps\system\permission.py changed, reloading.
+[2020-05-11 09:12:52,238] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-05-11 09:13:00,992] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\django-vue-rbac\server\apps\system\permission.py changed, reloading.
+[2020-05-11 09:13:01,976] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-05-11 09:13:04,729] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\django-vue-rbac\server\apps\system\permission.py changed, reloading.
+[2020-05-11 09:13:05,948] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-05-11 09:13:24,079] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\django-vue-rbac\server\apps\system\views.py changed, reloading.
+[2020-05-11 09:13:25,161] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-05-11 09:13:31,614] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\django-vue-rbac\server\apps\system\views.py changed, reloading.
+[2020-05-11 09:13:32,725] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-05-11 09:14:23,872] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\django-vue-rbac\server\apps\system\views.py changed, reloading.
+[2020-05-11 09:14:24,987] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-05-11 09:14:40,772] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\django-vue-rbac\server\apps\system\views.py changed, reloading.
+[2020-05-11 09:14:41,897] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-05-11 09:16:34,021] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\django-vue-rbac\server\apps\system\views.py changed, reloading.
+[2020-05-11 09:16:35,436] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-05-11 09:16:50,111] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/user/info/ HTTP/1.1" 200 136
+[2020-05-11 09:20:21,583] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\django-vue-rbac\server\apps\system\views.py changed, reloading.
+[2020-05-11 09:20:22,632] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-05-11 09:20:43,332] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\django-vue-rbac\server\apps\system\views.py changed, reloading.
+[2020-05-11 09:20:44,371] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-05-11 09:20:50,880] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\django-vue-rbac\server\apps\system\views.py changed, reloading.
+[2020-05-11 09:20:51,993] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-05-11 09:41:28,797] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\django-vue-rbac\server\apps\system\permission.py changed, reloading.
+[2020-05-11 09:41:29,947] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-05-11 15:30:04,401] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader

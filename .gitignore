@@ -3,8 +3,8 @@
 .vs/
 venv/
 media/
-!media/default
-*.log
+!media/default/*.*
+log/*.*
 static/
 __pycache__/
 *.pyc

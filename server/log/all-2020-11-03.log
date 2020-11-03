@@ -1,0 +1,83 @@
+[2020-11-03 12:04:58,930] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-11-03 12:05:24,959] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\django-vue-admin\server\apps\system\signals.py changed, reloading.
+[2020-11-03 12:05:27,038] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-11-03 12:05:33,562] [basehttp.py:157] [basehttp:log_message] [INFO]- "OPTIONS /system/permission/6/ HTTP/1.1" 200 0
+[2020-11-03 12:05:34,162] [basehttp.py:157] [basehttp:log_message] [INFO]- "PUT /system/permission/6/ HTTP/1.1" 200 227
+[2020-11-03 12:05:34,211] [basehttp.py:157] [basehttp:log_message] [INFO]- "OPTIONS /system/permission/ HTTP/1.1" 200 0
+[2020-11-03 12:05:34,237] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/permission/ HTTP/1.1" 200 5844
+[2020-11-03 12:05:50,374] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\django-vue-admin\server\apps\system\signals.py changed, reloading.
+[2020-11-03 12:05:52,175] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-11-03 12:06:07,756] [basehttp.py:157] [basehttp:log_message] [INFO]- "OPTIONS /system/user/?page=1&page_size=20 HTTP/1.1" 200 0
+[2020-11-03 12:06:07,756] [basehttp.py:157] [basehttp:log_message] [INFO]- "OPTIONS /system/organization/ HTTP/1.1" 200 0
+[2020-11-03 12:06:07,759] [basehttp.py:157] [basehttp:log_message] [INFO]- "OPTIONS /system/role/ HTTP/1.1" 200 0
+[2020-11-03 12:06:07,819] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/organization/ HTTP/1.1" 200 476
+[2020-11-03 12:06:07,826] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/role/ HTTP/1.1" 200 238
+[2020-11-03 12:06:07,827] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/user/?page=1&page_size=20 HTTP/1.1" 200 573
+[2020-11-03 12:06:50,413] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\django-vue-admin\server\apps\system\signals.py changed, reloading.
+[2020-11-03 12:06:52,386] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-11-03 12:06:55,433] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\django-vue-admin\server\apps\system\signals.py changed, reloading.
+[2020-11-03 12:06:57,329] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-11-03 12:07:33,263] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\django-vue-admin\server\apps\system\signals.py changed, reloading.
+[2020-11-03 12:07:35,187] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-11-03 12:07:40,665] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\django-vue-admin\server\apps\system\signals.py changed, reloading.
+[2020-11-03 12:07:42,488] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-11-03 12:07:50,158] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /media/default/avatar.png HTTP/1.0" 200 22934
+[2020-11-03 12:07:52,376] [basehttp.py:157] [basehttp:log_message] [INFO]- "OPTIONS /system/user/5/ HTTP/1.1" 200 0
+[2020-11-03 12:07:52,563] [basehttp.py:157] [basehttp:log_message] [INFO]- "PUT /system/user/5/ HTTP/1.1" 200 213
+[2020-11-03 12:07:52,608] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/user/?page=1&page_size=20 HTTP/1.1" 200 573
+[2020-11-03 12:08:03,058] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\django-vue-admin\server\apps\system\signals.py changed, reloading.
+[2020-11-03 12:08:04,918] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-11-03 12:08:20,144] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\django-vue-admin\server\apps\system\signals.py changed, reloading.
+[2020-11-03 12:08:22,013] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-11-03 14:03:42,970] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\django-vue-admin\server\apps\system\signals.py changed, reloading.
+[2020-11-03 14:03:45,597] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-11-03 14:03:57,036] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\django-vue-admin\server\apps\system\signals.py changed, reloading.
+[2020-11-03 14:03:58,862] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-11-03 14:16:53,625] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\django-vue-admin\server\apps\system\signals.py changed, reloading.
+[2020-11-03 14:16:56,749] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-11-03 14:17:01,000] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\django-vue-admin\server\apps\system\signals.py changed, reloading.
+[2020-11-03 14:17:03,545] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-11-03 14:17:09,057] [basehttp.py:157] [basehttp:log_message] [INFO]- "OPTIONS /system/user/5/ HTTP/1.1" 200 0
+[2020-11-03 14:17:09,372] [basehttp.py:157] [basehttp:log_message] [INFO]- "PUT /system/user/5/ HTTP/1.1" 200 213
+[2020-11-03 14:17:09,399] [basehttp.py:157] [basehttp:log_message] [INFO]- "OPTIONS /system/user/?page=1&page_size=20 HTTP/1.1" 200 0
+[2020-11-03 14:17:09,423] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/user/?page=1&page_size=20 HTTP/1.1" 200 573
+[2020-11-03 14:17:36,911] [basehttp.py:157] [basehttp:log_message] [INFO]- "PUT /system/user/5/ HTTP/1.1" 200 212
+[2020-11-03 14:17:36,956] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/user/?page=1&page_size=20 HTTP/1.1" 200 558
+[2020-11-03 14:17:47,516] [basehttp.py:157] [basehttp:log_message] [INFO]- "PUT /system/user/5/ HTTP/1.1" 200 213
+[2020-11-03 14:17:47,559] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/user/?page=1&page_size=20 HTTP/1.1" 200 573
+[2020-11-03 14:18:48,353] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\django-vue-admin\server\apps\system\signals.py changed, reloading.
+[2020-11-03 14:18:50,679] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-11-03 14:18:52,262] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\django-vue-admin\server\apps\system\signals.py changed, reloading.
+[2020-11-03 14:18:54,069] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-11-03 14:22:03,148] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\django-vue-admin\server\apps\system\signals.py changed, reloading.
+[2020-11-03 14:22:05,018] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-11-03 14:22:21,473] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\django-vue-admin\server\apps\system\signals.py changed, reloading.
+[2020-11-03 14:22:23,401] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-11-03 14:23:57,660] [basehttp.py:157] [basehttp:log_message] [INFO]- "PUT /system/user/5/ HTTP/1.1" 200 213
+[2020-11-03 14:23:57,697] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/user/?page=1&page_size=20 HTTP/1.1" 200 573
+[2020-11-03 14:24:20,263] [basehttp.py:157] [basehttp:log_message] [INFO]- "PUT /system/user/5/ HTTP/1.1" 200 212
+[2020-11-03 14:24:20,299] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/user/?page=1&page_size=20 HTTP/1.1" 200 558
+[2020-11-03 14:32:08,896] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\django-vue-admin\server\apps\system\signals.py changed, reloading.
+[2020-11-03 14:32:11,484] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-11-03 14:32:17,016] [basehttp.py:157] [basehttp:log_message] [INFO]- "PUT /system/user/5/ HTTP/1.1" 200 213
+[2020-11-03 14:32:17,054] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/user/?page=1&page_size=20 HTTP/1.1" 200 573
+[2020-11-03 14:33:01,323] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\django-vue-admin\server\apps\system\signals.py changed, reloading.
+[2020-11-03 14:33:03,203] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-11-03 14:33:07,880] [basehttp.py:157] [basehttp:log_message] [INFO]- "PUT /system/user/5/ HTTP/1.1" 200 212
+[2020-11-03 14:33:07,924] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/user/?page=1&page_size=20 HTTP/1.1" 200 558
+[2020-11-03 14:33:52,784] [basehttp.py:157] [basehttp:log_message] [INFO]- "PUT /system/user/5/ HTTP/1.1" 200 213
+[2020-11-03 14:33:52,822] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/user/?page=1&page_size=20 HTTP/1.1" 200 573
+[2020-11-03 14:34:43,995] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\django-vue-admin\server\apps\system\signals.py changed, reloading.
+[2020-11-03 14:34:46,088] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-11-03 14:34:48,421] [basehttp.py:157] [basehttp:log_message] [INFO]- "PUT /system/user/5/ HTTP/1.1" 200 212
+[2020-11-03 14:34:48,463] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/user/?page=1&page_size=20 HTTP/1.1" 200 558
+[2020-11-03 14:34:59,162] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\django-vue-admin\server\apps\system\signals.py changed, reloading.
+[2020-11-03 14:35:01,239] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-11-03 14:35:18,728] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\django-vue-admin\server\apps\system\signals.py changed, reloading.
+[2020-11-03 14:35:20,628] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-11-03 14:39:06,946] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\django-vue-admin\server\apps\system\signals.py changed, reloading.
+[2020-11-03 14:39:08,887] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-11-03 14:39:36,270] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\django-vue-admin\server\apps\system\signals.py changed, reloading.
+[2020-11-03 14:39:38,083] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-11-03 14:40:37,041] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\django-vue-admin\server\apps\system\signals.py changed, reloading.
+[2020-11-03 14:40:38,951] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader

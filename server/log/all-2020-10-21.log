@@ -1,0 +1,146 @@
+[2020-10-21 14:37:49,924] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-10-21 14:38:16,623] [basehttp.py:157] [basehttp:log_message] [INFO]- "OPTIONS /system/user/info/ HTTP/1.1" 200 0
+[2020-10-21 14:38:16,714] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/user/info/ HTTP/1.1" 200 136
+[2020-10-21 14:38:23,351] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/user/info/ HTTP/1.1" 200 136
+[2020-10-21 14:38:26,316] [basehttp.py:157] [basehttp:log_message] [INFO]- "OPTIONS /system/permission/ HTTP/1.1" 200 0
+[2020-10-21 14:38:26,316] [basehttp.py:157] [basehttp:log_message] [INFO]- "OPTIONS /system/organization/ HTTP/1.1" 200 0
+[2020-10-21 14:38:26,324] [basehttp.py:157] [basehttp:log_message] [INFO]- "OPTIONS /system/role/ HTTP/1.1" 200 0
+[2020-10-21 14:38:26,418] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/permission/ HTTP/1.1" 200 5844
+[2020-10-21 14:38:26,418] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/organization/ HTTP/1.1" 200 476
+[2020-10-21 14:38:26,465] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/role/ HTTP/1.1" 200 232
+[2020-10-21 14:38:30,138] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/permission/ HTTP/1.1" 200 5844
+[2020-10-21 14:38:33,469] [basehttp.py:157] [basehttp:log_message] [INFO]- "OPTIONS /system/user/?page=1&page_size=20 HTTP/1.1" 200 0
+[2020-10-21 14:38:33,486] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/organization/ HTTP/1.1" 200 476
+[2020-10-21 14:38:33,504] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/role/ HTTP/1.1" 200 232
+[2020-10-21 14:38:33,508] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/user/?page=1&page_size=20 HTTP/1.1" 200 573
+[2020-10-21 14:38:42,483] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /media/default/avatar.png HTTP/1.0" 200 22934
+[2020-10-21 14:39:12,686] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/permission/ HTTP/1.1" 200 5844
+[2020-10-21 14:39:43,188] [basehttp.py:157] [basehttp:log_message] [INFO]- "OPTIONS /system/position/ HTTP/1.1" 200 0
+[2020-10-21 14:39:43,230] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/position/ HTTP/1.1" 200 33
+[2020-10-21 14:39:44,391] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/organization/ HTTP/1.1" 200 476
+[2020-10-21 14:39:44,402] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/permission/ HTTP/1.1" 200 5844
+[2020-10-21 14:39:44,402] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/role/ HTTP/1.1" 200 232
+[2020-10-21 14:39:52,293] [basehttp.py:157] [basehttp:log_message] [INFO]- "OPTIONS /system/role/1/ HTTP/1.1" 200 0
+[2020-10-21 14:39:52,638] [basehttp.py:157] [basehttp:log_message] [INFO]- "PUT /system/role/1/ HTTP/1.1" 200 233
+[2020-10-21 14:39:56,174] [basehttp.py:157] [basehttp:log_message] [INFO]- "OPTIONS /token/black/ HTTP/1.1" 200 0
+[2020-10-21 14:39:56,182] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /token/black/ HTTP/1.1" 200 35
+[2020-10-21 14:40:00,350] [basehttp.py:157] [basehttp:log_message] [INFO]- "OPTIONS /token/ HTTP/1.1" 200 0
+[2020-10-21 14:40:00,549] [basehttp.py:157] [basehttp:log_message] [INFO]- "POST /token/ HTTP/1.1" 200 469
+[2020-10-21 14:40:00,577] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/user/info/ HTTP/1.1" 200 262
+[2020-10-21 14:40:00,661] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/organization/ HTTP/1.1" 200 476
+[2020-10-21 14:40:00,675] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/permission/ HTTP/1.1" 200 5844
+[2020-10-21 14:40:00,675] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/role/ HTTP/1.1" 200 235
+[2020-10-21 14:43:24,700] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/organization/ HTTP/1.1" 200 476
+[2020-10-21 14:43:24,709] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/role/ HTTP/1.1" 200 235
+[2020-10-21 14:43:24,710] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/permission/ HTTP/1.1" 200 5844
+[2020-10-21 14:43:40,009] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/user/info/ HTTP/1.1" 200 262
+[2020-10-21 14:43:40,158] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/organization/ HTTP/1.1" 200 476
+[2020-10-21 14:43:40,163] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/role/ HTTP/1.1" 200 235
+[2020-10-21 14:43:40,174] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/permission/ HTTP/1.1" 200 5844
+[2020-10-21 14:43:47,075] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/organization/ HTTP/1.1" 200 476
+[2020-10-21 14:43:47,087] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/role/ HTTP/1.1" 200 235
+[2020-10-21 14:43:47,088] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/user/?page=1&page_size=20 HTTP/1.1" 200 573
+[2020-10-21 14:43:55,313] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/organization/ HTTP/1.1" 200 476
+[2020-10-21 14:43:55,327] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/permission/ HTTP/1.1" 200 5844
+[2020-10-21 14:43:55,328] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/role/ HTTP/1.1" 200 235
+[2020-10-21 14:43:56,435] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/organization/ HTTP/1.1" 200 476
+[2020-10-21 14:46:23,731] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /token/black/ HTTP/1.1" 200 35
+[2020-10-21 14:46:25,110] [basehttp.py:157] [basehttp:log_message] [INFO]- "POST /token/ HTTP/1.1" 200 469
+[2020-10-21 14:46:25,136] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/user/info/ HTTP/1.1" 200 136
+[2020-10-21 14:46:25,219] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/organization/ HTTP/1.1" 200 476
+[2020-10-21 14:46:27,930] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/permission/ HTTP/1.1" 200 5844
+[2020-10-21 14:47:34,812] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/organization/ HTTP/1.1" 200 476
+[2020-10-21 14:47:34,821] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/role/ HTTP/1.1" 200 235
+[2020-10-21 14:47:34,822] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/user/?page=1&page_size=20 HTTP/1.1" 200 573
+[2020-10-21 14:47:36,183] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/organization/ HTTP/1.1" 200 476
+[2020-10-21 14:47:37,666] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/permission/ HTTP/1.1" 200 5844
+[2020-10-21 14:47:37,674] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/organization/ HTTP/1.1" 200 476
+[2020-10-21 14:47:37,675] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/role/ HTTP/1.1" 200 235
+[2020-10-21 14:47:38,928] [basehttp.py:157] [basehttp:log_message] [INFO]- "OPTIONS /system/dicttype/ HTTP/1.1" 200 0
+[2020-10-21 14:47:38,942] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/dicttype/ HTTP/1.1" 200 187
+[2020-10-21 14:47:40,053] [basehttp.py:157] [basehttp:log_message] [INFO]- "OPTIONS /file/?page=1&page_size=20 HTTP/1.1" 200 0
+[2020-10-21 14:47:40,103] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /file/?page=1&page_size=20 HTTP/1.1" 200 83
+[2020-10-21 14:47:41,687] [basehttp.py:157] [basehttp:log_message] [INFO]- "OPTIONS /system/task/?page=1&page_size=20 HTTP/1.1" 200 0
+[2020-10-21 14:47:41,719] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/task/?page=1&page_size=20 HTTP/1.1" 200 83
+[2020-10-21 14:47:43,030] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /file/?page=1&page_size=20 HTTP/1.1" 200 83
+[2020-10-21 14:47:45,222] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/task/?page=1&page_size=20 HTTP/1.1" 200 83
+[2020-10-21 14:47:45,919] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/dicttype/ HTTP/1.1" 200 187
+[2020-10-21 14:47:47,144] [basehttp.py:157] [basehttp:log_message] [INFO]- "OPTIONS /system/dict/?type=1 HTTP/1.1" 200 0
+[2020-10-21 14:47:47,159] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/dict/?type=1 HTTP/1.1" 200 272
+[2020-10-21 14:47:54,232] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/dict/?type=1 HTTP/1.1" 200 272
+[2020-10-21 14:47:59,185] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /token/black/ HTTP/1.1" 200 35
+[2020-10-21 14:48:02,538] [basehttp.py:157] [basehttp:log_message] [INFO]- "POST /token/ HTTP/1.1" 200 469
+[2020-10-21 14:48:02,564] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/user/info/ HTTP/1.1" 200 262
+[2020-10-21 14:48:03,912] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/user/info/ HTTP/1.1" 200 262
+[2020-10-21 14:48:08,548] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/organization/ HTTP/1.1" 200 476
+[2020-10-21 14:48:08,560] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/role/ HTTP/1.1" 200 235
+[2020-10-21 14:48:08,561] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/user/?page=1&page_size=20 HTTP/1.1" 200 573
+[2020-10-21 14:48:10,063] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/organization/ HTTP/1.1" 200 476
+[2020-10-21 14:48:14,122] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/organization/ HTTP/1.1" 200 476
+[2020-10-21 14:48:14,131] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/role/ HTTP/1.1" 200 235
+[2020-10-21 14:48:14,131] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/permission/ HTTP/1.1" 200 5844
+[2020-10-21 14:48:58,588] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/user/info/ HTTP/1.1" 200 262
+[2020-10-21 14:48:58,802] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/organization/ HTTP/1.1" 200 476
+[2020-10-21 14:48:58,812] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/permission/ HTTP/1.1" 200 5844
+[2020-10-21 14:48:58,813] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/role/ HTTP/1.1" 200 235
+[2020-10-21 14:53:04,830] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/role/ HTTP/1.1" 200 235
+[2020-10-21 14:53:04,834] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/organization/ HTTP/1.1" 200 476
+[2020-10-21 14:53:04,834] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/user/?page=1&page_size=20 HTTP/1.1" 200 573
+[2020-10-21 14:53:13,901] [basehttp.py:157] [basehttp:log_message] [INFO]- "OPTIONS /file/ HTTP/1.1" 200 0
+[2020-10-21 14:53:13,924] [basehttp.py:157] [basehttp:log_message] [INFO]- "POST /file/ HTTP/1.1" 200 69
+[2020-10-21 14:53:36,803] [basehttp.py:157] [basehttp:log_message] [INFO]- "POST /file/ HTTP/1.1" 200 69
+[2020-10-21 14:54:47,586] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\django-vue-admin\server\apps\system\views.py changed, reloading.
+[2020-10-21 14:54:49,413] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-10-21 14:56:59,487] [log.py:228] [log:log_response] [ERROR]- Internal Server Error: /file/
+Traceback (most recent call last):
+  File "E:\cnas\server\venv\lib\site-packages\rest_framework\request.py", line 74, in wrap_attributeerrors
+    yield
+  File "E:\cnas\server\venv\lib\site-packages\rest_framework\request.py", line 220, in user
+    self._authenticate()
+  File "E:\cnas\server\venv\lib\site-packages\rest_framework\request.py", line 373, in _authenticate
+    user_auth_tuple = authenticator.authenticate(self)
+AttributeError: 'IsAuthenticated' object has no attribute 'authenticate'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "E:\cnas\server\venv\lib\site-packages\django\core\handlers\exception.py", line 34, in inner
+    response = get_response(request)
+  File "E:\cnas\server\venv\lib\site-packages\django\core\handlers\base.py", line 115, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "E:\cnas\server\venv\lib\site-packages\django\core\handlers\base.py", line 113, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\cnas\server\venv\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "E:\cnas\server\venv\lib\site-packages\rest_framework\viewsets.py", line 114, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "E:\cnas\server\venv\lib\site-packages\rest_framework\views.py", line 505, in dispatch
+    response = self.handle_exception(exc)
+  File "E:\cnas\server\venv\lib\site-packages\rest_framework\views.py", line 465, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "E:\cnas\server\venv\lib\site-packages\rest_framework\views.py", line 476, in raise_uncaught_exception
+    raise exc
+  File "E:\cnas\server\venv\lib\site-packages\rest_framework\views.py", line 493, in dispatch
+    self.initial(request, *args, **kwargs)
+  File "E:\cnas\server\venv\lib\site-packages\rest_framework\views.py", line 410, in initial
+    self.perform_authentication(request)
+  File "E:\cnas\server\venv\lib\site-packages\rest_framework\views.py", line 324, in perform_authentication
+    request.user
+  File "E:\cnas\server\venv\lib\site-packages\rest_framework\request.py", line 220, in user
+    self._authenticate()
+  File "C:\Basepackage\Python36\lib\contextlib.py", line 99, in __exit__
+    self.gen.throw(type, value, traceback)
+  File "E:\cnas\server\venv\lib\site-packages\rest_framework\request.py", line 78, in wrap_attributeerrors
+    raise exc.with_traceback(info[2])
+  File "E:\cnas\server\venv\lib\site-packages\rest_framework\request.py", line 74, in wrap_attributeerrors
+    yield
+  File "E:\cnas\server\venv\lib\site-packages\rest_framework\request.py", line 220, in user
+    self._authenticate()
+  File "E:\cnas\server\venv\lib\site-packages\rest_framework\request.py", line 373, in _authenticate
+    user_auth_tuple = authenticator.authenticate(self)
+rest_framework.request.WrappedAttributeError: 'IsAuthenticated' object has no attribute 'authenticate'
+[2020-10-21 14:56:59,495] [basehttp.py:157] [basehttp:log_message] [ERROR]- "POST /file/ HTTP/1.1" 500 21813
+[2020-10-21 14:58:12,466] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\django-vue-admin\server\apps\system\views.py changed, reloading.
+[2020-10-21 14:58:14,293] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-10-21 14:58:20,015] [basehttp.py:157] [basehttp:log_message] [INFO]- "POST /file/ HTTP/1.1" 200 312
+[2020-10-21 14:58:20,353] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /media/2020/10/21/26.png HTTP/1.0" 200 820

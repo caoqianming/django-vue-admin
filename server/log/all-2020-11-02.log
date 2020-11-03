@@ -1,0 +1,103 @@
+[2020-11-02 15:04:19,314] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-11-02 15:05:35,490] [basehttp.py:157] [basehttp:log_message] [INFO]- "OPTIONS /system/user/info/ HTTP/1.1" 200 0
+[2020-11-02 15:05:35,979] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/user/info/ HTTP/1.1" 200 136
+[2020-11-02 15:05:38,586] [basehttp.py:157] [basehttp:log_message] [INFO]- "OPTIONS /system/user/?page=1&page_size=20 HTTP/1.1" 200 0
+[2020-11-02 15:05:38,587] [basehttp.py:157] [basehttp:log_message] [INFO]- "OPTIONS /system/organization/ HTTP/1.1" 200 0
+[2020-11-02 15:05:38,596] [basehttp.py:157] [basehttp:log_message] [INFO]- "OPTIONS /system/role/ HTTP/1.1" 200 0
+[2020-11-02 15:05:38,645] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/organization/ HTTP/1.1" 200 476
+[2020-11-02 15:05:38,649] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/user/?page=1&page_size=20 HTTP/1.1" 200 573
+[2020-11-02 15:05:38,664] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/role/ HTTP/1.1" 200 235
+[2020-11-02 15:05:48,707] [basehttp.py:157] [basehttp:log_message] [INFO]- "OPTIONS /system/user/info/ HTTP/1.1" 200 0
+[2020-11-02 15:05:48,724] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/user/info/ HTTP/1.1" 200 136
+[2020-11-02 15:05:51,605] [basehttp.py:157] [basehttp:log_message] [INFO]- "OPTIONS /system/organization/ HTTP/1.1" 200 0
+[2020-11-02 15:05:51,605] [basehttp.py:157] [basehttp:log_message] [INFO]- "OPTIONS /system/user/?page=1&page_size=20 HTTP/1.1" 200 0
+[2020-11-02 15:05:51,605] [basehttp.py:157] [basehttp:log_message] [INFO]- "OPTIONS /system/role/ HTTP/1.1" 200 0
+[2020-11-02 15:05:51,639] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/organization/ HTTP/1.1" 200 476
+[2020-11-02 15:05:51,648] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/user/?page=1&page_size=20 HTTP/1.1" 200 573
+[2020-11-02 15:05:51,648] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/role/ HTTP/1.1" 200 235
+[2020-11-02 15:05:55,314] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /media/default/avatar.png HTTP/1.0" 200 22934
+[2020-11-02 15:06:39,587] [basehttp.py:157] [basehttp:log_message] [INFO]- "OPTIONS /system/permission/ HTTP/1.1" 200 0
+[2020-11-02 15:06:39,604] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/organization/ HTTP/1.1" 200 476
+[2020-11-02 15:06:39,612] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/role/ HTTP/1.1" 200 235
+[2020-11-02 15:06:39,623] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/permission/ HTTP/1.1" 200 5844
+[2020-11-02 15:06:47,747] [basehttp.py:157] [basehttp:log_message] [INFO]- "OPTIONS /system/role/1/ HTTP/1.1" 200 0
+[2020-11-02 15:06:48,032] [basehttp.py:157] [basehttp:log_message] [INFO]- "PUT /system/role/1/ HTTP/1.1" 200 236
+[2020-11-02 15:07:16,703] [basehttp.py:157] [basehttp:log_message] [INFO]- "PUT /system/role/1/ HTTP/1.1" 200 233
+[2020-11-02 15:15:50,858] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\django-vue-admin\server\server\settings.py changed, reloading.
+[2020-11-02 15:15:52,880] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-11-02 15:24:36,684] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-11-02 15:30:19,917] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-11-02 15:32:00,780] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-11-02 15:33:41,477] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-11-02 15:34:27,101] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\django-vue-admin\server\server\settings.py changed, reloading.
+[2020-11-02 15:34:28,338] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-11-02 15:35:34,701] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-11-02 15:35:56,712] [basehttp.py:157] [basehttp:log_message] [INFO]- "OPTIONS /token/ HTTP/1.1" 200 0
+[2020-11-02 15:35:56,922] [basehttp.py:157] [basehttp:log_message] [INFO]- "POST /token/ HTTP/1.1" 200 469
+[2020-11-02 15:35:56,946] [basehttp.py:157] [basehttp:log_message] [INFO]- "OPTIONS /system/user/info/ HTTP/1.1" 200 0
+[2020-11-02 15:35:56,981] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/user/info/ HTTP/1.1" 200 136
+[2020-11-02 15:35:57,088] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /media/default/avatar.png?imageView2/1/w/80/h/80 HTTP/1.0" 200 22934
+[2020-11-02 15:36:00,150] [basehttp.py:157] [basehttp:log_message] [INFO]- "OPTIONS /system/permission/ HTTP/1.1" 200 0
+[2020-11-02 15:36:00,150] [basehttp.py:157] [basehttp:log_message] [INFO]- "OPTIONS /system/organization/ HTTP/1.1" 200 0
+[2020-11-02 15:36:00,160] [basehttp.py:157] [basehttp:log_message] [INFO]- "OPTIONS /system/role/ HTTP/1.1" 200 0
+[2020-11-02 15:36:00,169] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/organization/ HTTP/1.1" 200 476
+[2020-11-02 15:36:00,187] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/permission/ HTTP/1.1" 200 5844
+[2020-11-02 15:36:00,199] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/role/ HTTP/1.1" 200 235
+[2020-11-02 15:36:04,667] [basehttp.py:157] [basehttp:log_message] [INFO]- "OPTIONS /system/role/1/ HTTP/1.1" 200 0
+[2020-11-02 15:36:04,912] [basehttp.py:157] [basehttp:log_message] [INFO]- "PUT /system/role/1/ HTTP/1.1" 200 236
+[2020-11-02 15:36:13,889] [basehttp.py:157] [basehttp:log_message] [INFO]- "PUT /system/role/1/ HTTP/1.1" 200 233
+[2020-11-02 15:45:58,479] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\django-vue-admin\server\apps\system\__init__.py changed, reloading.
+[2020-11-02 15:45:59,989] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-11-02 15:47:22,026] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-11-02 15:48:16,841] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\django-vue-admin\server\apps\system\apps.py changed, reloading.
+[2020-11-02 15:48:18,808] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-11-02 15:48:32,741] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/user/info/ HTTP/1.1" 200 136
+[2020-11-02 15:48:32,939] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/permission/ HTTP/1.1" 200 5844
+[2020-11-02 15:48:32,964] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/organization/ HTTP/1.1" 200 476
+[2020-11-02 15:48:33,001] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/role/ HTTP/1.1" 200 235
+[2020-11-02 15:48:37,795] [basehttp.py:157] [basehttp:log_message] [INFO]- "PUT /system/role/1/ HTTP/1.1" 200 236
+[2020-11-02 15:49:02,568] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\django-vue-admin\server\apps\system\signals.py changed, reloading.
+[2020-11-02 15:49:04,346] [autoreload.py:598] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2020-11-02 15:49:24,732] [basehttp.py:157] [basehttp:log_message] [INFO]- "GET /system/permission/ HTTP/1.1" 200 5844
+[2020-11-02 15:49:36,140] [basehttp.py:157] [basehttp:log_message] [INFO]- "OPTIONS /system/permission/6/ HTTP/1.1" 200 0
+[2020-11-02 15:49:36,725] [log.py:228] [log:log_response] [ERROR]- Internal Server Error: /system/permission/6/
+Traceback (most recent call last):
+  File "E:\cnas\server\venv\lib\site-packages\django\core\handlers\exception.py", line 34, in inner
+    response = get_response(request)
+  File "E:\cnas\server\venv\lib\site-packages\django\core\handlers\base.py", line 115, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "E:\cnas\server\venv\lib\site-packages\django\core\handlers\base.py", line 113, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\cnas\server\venv\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "E:\cnas\server\venv\lib\site-packages\rest_framework\viewsets.py", line 114, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "E:\cnas\server\venv\lib\site-packages\rest_framework\views.py", line 505, in dispatch
+    response = self.handle_exception(exc)
+  File "E:\cnas\server\venv\lib\site-packages\rest_framework\views.py", line 465, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "E:\cnas\server\venv\lib\site-packages\rest_framework\views.py", line 476, in raise_uncaught_exception
+    raise exc
+  File "E:\cnas\server\venv\lib\site-packages\rest_framework\views.py", line 502, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\cnas\server\venv\lib\site-packages\rest_framework\mixins.py", line 68, in update
+    self.perform_update(serializer)
+  File "E:\cnas\server\venv\lib\site-packages\rest_framework\mixins.py", line 78, in perform_update
+    serializer.save()
+  File "E:\cnas\server\venv\lib\site-packages\rest_framework\serializers.py", line 207, in save
+    self.instance = self.update(self.instance, validated_data)
+  File "E:\cnas\server\venv\lib\site-packages\rest_framework\serializers.py", line 992, in update
+    instance.save()
+  File "E:\cnas\server\venv\lib\site-packages\django\db\models\base.py", line 746, in save
+    force_update=force_update, update_fields=update_fields)
+  File "E:\cnas\server\venv\lib\site-packages\django\db\models\base.py", line 795, in save_base
+    update_fields=update_fields, raw=raw, using=using,
+  File "E:\cnas\server\venv\lib\site-packages\django\dispatch\dispatcher.py", line 175, in send
+    for receiver in self._live_receivers(sender)
+  File "E:\cnas\server\venv\lib\site-packages\django\dispatch\dispatcher.py", line 175, in <listcomp>
+    for receiver in self._live_receivers(sender)
+  File "E:\django-vue-admin\server\apps\system\signals.py", line 16, in update_perms_cache2
+    users = User.objects.filter(roles__in = instance.role__set.all())
+AttributeError: 'Permission' object has no attribute 'role__set'
+[2020-11-02 15:49:36,742] [basehttp.py:157] [basehttp:log_message] [ERROR]- "PUT /system/permission/6/ HTTP/1.1" 500 21539
+[2020-11-03 12:04:47,010] [autoreload.py:222] [autoreload:trigger_reload] [INFO]- E:\django-vue-admin\server\apps\system\signals.py changed, reloading.
