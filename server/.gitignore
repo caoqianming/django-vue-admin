@@ -1,7 +1,5 @@
 .vscode/
 .vs/
 venv/
-media/
-!media/default/
 __pycache__/
 *.pyc
