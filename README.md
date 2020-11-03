@@ -16,6 +16,7 @@ JWT认证,具有审计功能
 
 
 ### django后端
+定位到server文件夹
 
 建立虚拟环境 `python -m venv venv`
 
@@ -23,7 +24,9 @@ JWT认证,具有审计功能
 
 安装依赖包 `pip install -r requirements.txt`
 
-修改数据库连接 `server\settings_dev.py` 或者直接使用sqlite数据库(超管账户密码均为admin)
+修改数据库连接 `server\settings_dev.py` 导入测试数据 `python manage.py loaddata db.json`
+
+或者直接使用sqlite数据库(超管账户密码均为admin)
 
 同步数据库 `python manage.py makemigrations system`
 
