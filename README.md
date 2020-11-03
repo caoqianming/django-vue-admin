@@ -16,9 +16,6 @@ JWT认证,具有审计功能
 
 
 ### django后端
-定位到server文件夹
-
-新建log和media空文件夹
 
 建立虚拟环境 `python -m venv venv`
 
