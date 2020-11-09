@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_redis',
     'django_celery_beat',
+    'drf_yasg',
     'rest_framework',
     'corsheaders',
     "django_filters",
