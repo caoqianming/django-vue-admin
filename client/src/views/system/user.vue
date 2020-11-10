@@ -57,7 +57,7 @@
           >刷新重置</el-button>
         </div>
         <div style="margin-top:10px">
-          <el-button type="primary" icon="el-icon-plus" @click="handleAddUser" v-if="checkPermission['user_create']">新增</el-button>
+          <el-button type="primary" icon="el-icon-plus" @click="handleAddUser" v-if="checkPermission(['user_create'])">新增</el-button>
         </div>
         <el-table
           v-loading="listLoading"
