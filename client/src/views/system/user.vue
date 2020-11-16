@@ -14,7 +14,7 @@
           highlight-current
           :expand-on-click-node="false"
           :filter-node-method="filterNode"
-          style="margin-top:10px;"
+          style="margin-top:6px;"
           @node-click="handleOrgClick"
         />
       </el-col>
@@ -50,19 +50,18 @@
           >搜索</el-button>
           <el-button
             class="filter-item"
-            style="margin-left: 10px;"
             type="primary"
             icon="el-icon-refresh-left"
             @click="resetFilter"
-          >刷新重置</el-button>
+          >重置</el-button>
         </div>
-        <div style="margin-top:10px">
+        <div style="margin-top:6px">
           <el-button type="primary" icon="el-icon-plus" @click="handleAddUser" v-if="checkPermission(['user_create'])">新增</el-button>
         </div>
         <el-table
           v-loading="listLoading"
           :data="userList.results"
-          style="width: 100%;margin-top:10px;"
+          style="width: 100%;margin-top:6px;"
           border
           fit
           stripe

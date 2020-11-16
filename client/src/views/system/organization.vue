@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <div style="margin-top:10px">
+    <div >
       <el-input
         v-model="search"
         placeholder="输入部门名称进行搜索"

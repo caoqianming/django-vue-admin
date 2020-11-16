@@ -31,11 +31,10 @@
           >搜索</el-button>
           <el-button
             class="filter-item"
-            style="margin-left: 10px;"
             type="primary"
             icon="el-icon-refresh-left"
             @click="resetFilter"
-          >刷新重置</el-button>
+          >重置</el-button>
         </div>
         <el-table
           v-loading="listLoading"
