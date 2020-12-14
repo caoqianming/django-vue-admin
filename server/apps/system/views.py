@@ -85,6 +85,7 @@ class DictViewSet(ModelViewSet):
     def paginate_queryset(self, queryset):
         """
         如果查询参数里没有page但有type或type__code时则不分页,否则请求分页
+        也可用utils.pageornot方法
         """
         if self.paginator is None:
             return None
@@ -140,7 +141,7 @@ class OrganizationViewSet(ModelViewSet):
     queryset = Organization.objects.all()
     serializer_class = OrganizationSerializer
     pagination_class = None
-    search_fields = ['name', 'method']
+    search_fields = ['name', 'type']
     ordering_fields = ['pk']
     ordering = ['pk']
 

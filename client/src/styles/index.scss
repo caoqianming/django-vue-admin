@@ -107,3 +107,6 @@ div:focus {
 .pagination-container {
   padding: 0px 0px;
 }
+body .el-table th.gutter{
+  display: table-cell!important;
+}

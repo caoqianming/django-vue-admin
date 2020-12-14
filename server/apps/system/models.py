@@ -149,7 +149,6 @@ class Dict(SoftModel):
     """
     name = models.CharField('名称', max_length=1000)
     code = models.CharField('编号', max_length=30, null=True, blank=True)
-    fullname = models.CharField('全名', max_length=1000, null=True, blank=True)
     description = models.TextField('描述', blank=True, null=True)
     other = JSONField('其它信息', blank=True, null=True)
     type = models.ForeignKey(
@@ -167,14 +166,6 @@ class Dict(SoftModel):
 
     def __str__(self):
         return self.name
-    
-    def save(self, *args, **kwargs):
-        """
-        冗余一个字段,方便调用
-        """
-        if self.code and self.code not in self.name:
-            self.fullname = self.code + '-' + self.name
-        super().save(*args, **kwargs)
 
 class CommonAModel(SoftModel):
     """

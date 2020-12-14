@@ -76,7 +76,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="菜单权限">
+            <el-form-item label="功能权限">
               <el-tree
                 ref="tree"
                 v-model="role.perms"
@@ -220,10 +220,7 @@ export default {
         .then(async() => {
           await deleteRole(row.id)
           this.tableData.splice($index, 1)
-          this.$message({
-            type: 'success',
-            message: '成功删除!'
-          })
+          this.$message.success('成功')
         })
         .catch(err => {
           console.error(err)
@@ -256,15 +253,7 @@ export default {
 
       const { description, name } = this.role
       this.dialogVisible = false
-      this.$notify({
-        title: '成功',
-        dangerouslyUseHTMLString: true,
-        message: `
-            <div>角色名: ${name}</div>
-            <div>角色描述: ${description}</div>
-          `,
-        type: 'success'
-      })
+      this.$message.success('成功')
     }
   }
 }
