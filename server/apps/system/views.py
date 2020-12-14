@@ -115,7 +115,10 @@ class PositionViewSet(ModelViewSet):
 
 class TestView(APIView):
     perms_map = {'get': 'test_view'}  # 单个API控权
-    pass
+    authentication_classes = []
+    permission_classes = []
+    def get(self, request, format=None):
+        return Response('测试api接口')
 
 
 class PermissionViewSet(ModelViewSet):
