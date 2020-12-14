@@ -68,9 +68,13 @@ location / {
 后台地址 localhost:8000/admin
 
 ### 理念
-功能权限的核心代码在server/apps/system/permission.py下重写了has_permission方法
+首先得会使用django-rest-framework, 理解vue-element-admin前端方案
 
-数据权限因为跟具体业务有关,简单定义了几个规则，重写了has_object_permission方法
+本项目采用前端路由，后端根据用户角色读取用户权限代码返回给前端，由前端进行加载(核心代码是路由表中的perms属性以及checkpermission方法)
+
+后端功能权限的核心代码在server/apps/system/permission.py下重写了has_permission方法
+
+数据权限因为跟具体业务有关,简单定义了几个规则,重写了has_object_permission方法;根据需要使用即可
 
 ### 后续
 继续完善定时任务配置(借助django-celery-beat包实现定时任务的热更新)
