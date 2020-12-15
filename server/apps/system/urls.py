@@ -1,5 +1,5 @@
 from django.urls import path, include
-from .views import UserViewSet, OrganizationViewSet, PermissionViewSet, RoleViewSet, PositionViewSet, TestView, DictTypeViewSet, DictViewSet, TaskViewSet
+from .views import TaskcodeList, UserViewSet, OrganizationViewSet, PermissionViewSet, RoleViewSet, PositionViewSet, TestView, DictTypeViewSet, DictViewSet, TaskViewSet
 from rest_framework import routers
 
 
@@ -14,5 +14,6 @@ router.register('dict', DictViewSet, basename="dict")
 router.register('task', TaskViewSet, basename="task")
 urlpatterns = [
     path('', include(router.urls)),
+    path('taskcode/', TaskcodeList.as_view()),
     path('test/', TestView.as_view())
 ]

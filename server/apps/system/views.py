@@ -3,7 +3,7 @@ import logging
 from django.conf import settings
 from django.contrib.auth.hashers import check_password, make_password
 from django.core.cache import cache
-from django_celery_beat.models import PeriodicTask
+from django_celery_beat.models import PeriodicTask, IntervalSchedule, CrontabSchedule
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import status
 from rest_framework.decorators import action
@@ -38,6 +38,13 @@ logger = logging.getLogger('log')
 # logger.info('请求成功！ response_code:{}；response_headers:{}；response_body:{}'.format(response_code, response_headers, response_body[:251]))
 # logger.error('请求出错-{}'.format(error))
 
+from server.celery import app as celery_app
+class TaskcodeList(APIView):
+    permission_classes = ()
+
+    def get(self, requests):
+        tasks = list(sorted(name for name in celery_app.tasks if not name.startswith('celery.')))
+        return Response(tasks)
 
 class LogoutView(APIView):
     permission_classes = []

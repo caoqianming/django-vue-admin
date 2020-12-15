@@ -3,6 +3,10 @@
     <el-row :gutter="10">
 
       <el-col :md="6">
+        <el-card>
+          <div slot="header" class="clearfix">
+    <span>部门</span>
+  </div>
         <el-input v-model="filterOrgText" placeholder="输入部门名进行过滤" />
 
         <el-tree
@@ -17,8 +21,13 @@
           style="margin-top:6px;"
           @node-click="handleOrgClick"
         />
+        </el-card>
       </el-col>
       <el-col :md="18">
+        <el-card>
+          <div slot="header" class="clearfix">
+    <span>用户</span>
+  </div>
         <div>
           <el-select
             v-model="listQuery.is_active"
@@ -47,16 +56,18 @@
             type="primary"
             icon="el-icon-search"
             @click="handleFilter"
+            size="small"
           >搜索</el-button>
           <el-button
             class="filter-item"
             type="primary"
             icon="el-icon-refresh-left"
             @click="resetFilter"
+            size="small"
           >重置</el-button>
         </div>
         <div style="margin-top:6px">
-          <el-button type="primary" icon="el-icon-plus" @click="handleAddUser" v-if="checkPermission(['user_create'])">新增</el-button>
+          <el-button type="primary" icon="el-icon-plus" @click="handleAddUser" v-if="checkPermission(['user_create'])" size="small">新增</el-button>
         </div>
         <el-table
           v-loading="listLoading"
@@ -115,6 +126,7 @@
           :limit.sync="listQuery.page_size"
           @pagination="getList"
         />
+        </el-card>
       </el-col>
     </el-row>
 

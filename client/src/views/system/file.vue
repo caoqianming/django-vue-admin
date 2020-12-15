@@ -28,14 +28,15 @@
             type="primary"
             icon="el-icon-search"
             @click="handleFilter"
+            size="small"
           >搜索</el-button>
           <el-button
             class="filter-item"
-            style="margin-left: 10px;"
             type="primary"
             icon="el-icon-refresh-left"
             @click="resetFilter"
-          >刷新重置</el-button>
+            size="small"
+          >重置</el-button>
         </div>
         <el-table
           v-loading="listLoading"

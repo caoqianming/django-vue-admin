@@ -8,7 +8,7 @@
         class="filter-item"
         @keyup.native="handleFilter"
       />
-      <el-button type="primary" icon="el-icon-plus" @click="handleAdd" v-if="checkPermission(['role_create'])">新增</el-button>
+      <el-button type="primary" icon="el-icon-plus" @click="handleAdd" v-if="checkPermission(['role_create'])" size="small">新增</el-button>
     </div>
     <el-table
       v-loading="listLoading"

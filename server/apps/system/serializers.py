@@ -11,7 +11,6 @@ class TaskSerializer(serializers.ModelSerializer):
         model = PeriodicTask
         fields = '__all__'
 
-
 class FileSerializer(serializers.ModelSerializer):
     class Meta:
         model = File

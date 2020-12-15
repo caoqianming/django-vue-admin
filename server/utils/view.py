@@ -34,7 +34,8 @@ class GenSignature(APIView):
     """
     生成签名图片
     """
-    permission_classes=[]
+    authentication_classes = ()
+    permission_classes = ()
 
     def post(self, request, *args, **kwargs):
         path = (BASE_DIR + request.data['path']).replace('\\', '/')
