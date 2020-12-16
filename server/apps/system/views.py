@@ -53,8 +53,8 @@ class LogoutView(APIView):
         return Response(status=status.HTTP_200_OK)
 
 class PTaskViewSet(OptimizationMixin, ModelViewSet):
-    perms_map = {'get': '*', 'post': 'task_create',
-                 'put': 'task_update', 'delete': 'task_delete'}
+    perms_map = {'get': '*', 'post': 'ptask_create',
+                 'put': 'ptask_update', 'delete': 'ptask_delete'}
     queryset = PeriodicTask.objects.exclude(name__contains='celery.')
     serializer_class = PTaskSerializer
     search_fields = ['name']
@@ -327,7 +327,7 @@ class UserViewSet(ModelViewSet):
 
 class FileViewSet(CreateUpdateModelAMixin, ModelViewSet):
     """
-    文件-增删改查
+    文件上传用
     """
     perms_map = None
     permission_classes=[IsAuthenticated]
