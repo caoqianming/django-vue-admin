@@ -64,6 +64,9 @@
       <el-table-column align="center" label="名称">
         <template slot-scope="scope">{{ scope.row.name }} </template>
       </el-table-column>
+      <el-table-column align="center" label="执行代码">
+        <template slot-scope="scope">{{ scope.row.task }} </template>
+      </el-table-column>
       <el-table-column align="center" label="定时策略">
         <template slot-scope="scope">{{ scope.row.schedule }} </template>
       </el-table-column>
@@ -111,7 +114,7 @@
       :visible.sync="dialogVisible"
       :title="dialogType === 'update' ? '编辑' : '新增'"
     >
-    <div>简单配置,复杂的可以去admin后台操作</div>
+    <span>简单配置,复杂的可以去admin后台操作</span>
       <el-form ref="Form" :model="ptask" label-width="80px" :rules="dynamicRules">
         <el-form-item label="名称" prop="name">
           <el-input v-model="ptask.name" placeholder="名称" />
@@ -210,10 +213,10 @@
           />
         </el-form-item>
       </el-form>
-      <div style="text-align: right">
+      <span slot="footer">
         <el-button type="danger" @click="dialogVisible = false">取消</el-button>
         <el-button type="primary" @click="confirmForm('Form')">确认</el-button>
-      </div>
+      </span>
     </el-dialog>
   </div>
 </template>

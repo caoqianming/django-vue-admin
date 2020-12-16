@@ -77,10 +77,10 @@
         </el-form-item>
         
       </el-form>
-      <div style="text-align:right;">
+      <span slot="footer">
         <el-button type="danger" @click="dialogVisible=false">取消</el-button>
         <el-button type="primary" @click="confirmPerm('Form')">确认</el-button>
-      </div>
+      </span>
     </el-dialog>
   </div>
 </template>

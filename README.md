@@ -1,16 +1,16 @@
 # 简介
-基于RBAC模型的权限控制的基础开发平台,前后端分离,后端采用django+django-rest-framework,前端采用vue+ElementUI.
+基于RBAC模型权限控制的中小型应用的基础开发平台,前后端分离,后端采用django+django-rest-framework,前端采用vue+ElementUI,移动端采用uniapp+uView(可发布h5和小程序).
 
-JWT认证,具有审计功能
+JWT认证,可使用simple_history实现审计功能,支持swagger
 
-内置模块有组织机构\用户\角色\岗位\数据字典\文件库
+内置模块有组织机构\用户\角色\岗位\数据字典\文件库\定时任务
 
 支持功能权限(控权到每个接口)和简单的数据权限（全部、本级及以下、同级及以下、本人等）
 
 ## 部分截图
 ![image](https://github.com/caoqianming/django-vue-admin/blob/master/img/user.png)
 ![image](https://github.com/caoqianming/django-vue-admin/blob/master/img/dict.png)
-![image](https://github.com/caoqianming/django-vue-admin/blob/master/img/docs.png)
+![image](https://github.com/caoqianming/django-vue-admin/blob/master/img/task.png)
 
 ## 启动(以下是在windows下开发操作步骤)
 
@@ -76,6 +76,15 @@ location / {
 
 数据权限因为跟具体业务有关,简单定义了几个规则,重写了has_object_permission方法;根据需要使用即可
 
+### 关于定时任务
+使用celery以及django_celery_beat包实现
+
+需要安装redis并在默认端口启动, 并启动worker以及beat
+
+进入虚拟环境并启动worker: `celery -A server worker -l info -P eventlet`, linux系统不用加-P eventlet
+
+进入虚拟环境并启动beat: `celery -A server beat -l info`
+
 ### 后续
-继续完善定时任务配置(借助django-celery-beat包实现定时任务的热更新)
+考虑增加一个简易的工作流模块
 

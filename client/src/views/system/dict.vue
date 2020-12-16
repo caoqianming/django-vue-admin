@@ -125,10 +125,10 @@
           <treeselect v-model="dicttype.parent" :multiple="false" :options="dictTypeData" placeholder="父级"/>
         </el-form-item>
       </el-form>
-      <div style="text-align:right;">
+      <span slot="footer">
         <el-button type="danger" @click="dgV1=false">取消</el-button>
         <el-button type="primary" @click="confirm1('Form1')">确认</el-button>
-      </div>
+      </span>
     </el-dialog>
     <el-dialog :visible.sync="dgV2" :title="dgT2==='edit'?'编辑字典':'新建字典'">
       <el-form ref="Form2" :model="dict" label-width="80px" label-position="right" :rules="rule2">
@@ -154,10 +154,10 @@
 </el-switch>
         </el-form-item>
       </el-form>
-      <div style="text-align:right;">
+      <span slot="footer">
         <el-button type="danger" @click="dgV2=false">取消</el-button>
         <el-button type="primary" @click="confirm2('Form2')">确认</el-button>
-      </div>
+      </span>
     </el-dialog>
   </div>
 </template>
