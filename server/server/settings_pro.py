@@ -10,3 +10,6 @@ DATABASES = {
         'PORT': '5432',
     }
 }
+
+# celery配置
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'

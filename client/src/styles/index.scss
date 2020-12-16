@@ -86,12 +86,24 @@ div:focus {
 .el-dialog__header {
   padding: 10px 10px 6px;
 }
-.el-dialog__body {
+.el-dialog{
+  display: flex;
+  flex-direction: column;
+  margin:0 !important;
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  /*height:600px;*/
+  max-height:calc(100% - 30px);
+  max-width:calc(100% - 30px);
+}
+.el-dialog .el-dialog__body{
+  flex:1;
+  overflow: auto;
   padding: 8px 12px;
 }
-// .el-form-item--medium .el-form-item__label {
-//   line-height: 16px;
-// }
+ 
 .el-form--label-top .el-form-item__label {
   line-height: 16px;
 }

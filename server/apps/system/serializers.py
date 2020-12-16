@@ -1,15 +1,53 @@
 import re
 
-from django_celery_beat.models import PeriodicTask
+from django_celery_beat.models import PeriodicTask, CrontabSchedule, IntervalSchedule
 from rest_framework import serializers
 
 from .models import (Dict, DictType, File, Organization, Permission, Position,
                      Role, User)
 
-class TaskSerializer(serializers.ModelSerializer):
+class IntervalSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = IntervalSchedule
+        fields = '__all__'
+
+class CrontabSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CrontabSchedule
+        exclude = ['timezone']
+
+class PTaskCreateUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PeriodicTask
+        fields = ['name', 'task', 'interval', 'crontab', 'args', 'kwargs']
+
+class PTaskSerializer(serializers.ModelSerializer):
+    interval_ = IntervalSerializer(source='interval', read_only=True)
+    crontab_ = CrontabSerializer(source='crontab', read_only=True)
+    schedule = serializers.SerializerMethodField()
+    timetype = serializers.SerializerMethodField()
     class Meta:
         model = PeriodicTask
         fields = '__all__'
+    @staticmethod
+    def setup_eager_loading(queryset):
+        """ Perform necessary eager loading of data. """
+        queryset = queryset.select_related('interval','crontab')
+        return queryset
+    
+    def get_schedule(self, obj):
+        if obj.interval:
+            return obj.interval.__str__()
+        if obj.crontab:
+            return obj.crontab.__str__()
+        return ''
+    
+    def get_timetype(self, obj):
+        if obj.interval:
+            return 'interval'
+        if obj.crontab:
+            return 'crontab'
+        return 'interval'
 
 class FileSerializer(serializers.ModelSerializer):
     class Meta:

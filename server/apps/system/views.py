@@ -5,7 +5,7 @@ from django.contrib.auth.hashers import check_password, make_password
 from django.core.cache import cache
 from django_celery_beat.models import PeriodicTask, IntervalSchedule, CrontabSchedule
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import status
+from rest_framework import serializers, status
 from rest_framework.decorators import action
 from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.mixins import (CreateModelMixin, DestroyModelMixin,
@@ -19,18 +19,18 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet, ModelViewSet
 from rest_framework_simplejwt.tokens import RefreshToken
-
+from rest_framework.exceptions import ValidationError, ParseError
 from utils.queryset import get_child_queryset2
 
 from .filters import UserFilter
-from .mixins import CreateUpdateModelAMixin
+from .mixins import CreateUpdateModelAMixin, OptimizationMixin
 from .models import (Dict, DictType, File, Organization, Permission, Position,
                      Role, User)
 from .permission import RbacPermission, get_permission_list
 from .permission_data import RbacFilterSet
 from .serializers import (DictSerializer, DictTypeSerializer, FileSerializer,
                           OrganizationSerializer, PermissionSerializer,
-                          PositionSerializer, RoleSerializer, TaskSerializer,
+                          PositionSerializer, RoleSerializer, PTaskSerializer,PTaskCreateUpdateSerializer,
                           UserCreateSerializer, UserListSerializer,
                           UserModifySerializer)
 
@@ -39,7 +39,7 @@ logger = logging.getLogger('log')
 # logger.error('请求出错-{}'.format(error))
 
 from server.celery import app as celery_app
-class TaskcodeList(APIView):
+class TaskList(APIView):
     permission_classes = ()
 
     def get(self, requests):
@@ -52,13 +52,85 @@ class LogoutView(APIView):
     def get(self, request, *args, **kwargs):  # 可将token加入黑名单
         return Response(status=status.HTTP_200_OK)
 
-class TaskViewSet(ModelViewSet):
-    queryset = PeriodicTask.objects.all()
-    serializer_class = TaskSerializer
+class PTaskViewSet(OptimizationMixin, ModelViewSet):
+    perms_map = {'get': '*', 'post': 'task_create',
+                 'put': 'task_update', 'delete': 'task_delete'}
+    queryset = PeriodicTask.objects.exclude(name__contains='celery.')
+    serializer_class = PTaskSerializer
     search_fields = ['name']
     filterset_fields = ['enabled']
     ordering = ['-pk']
 
+    @action(methods=['put'], detail=True, perms_map={'put':'task_update'},
+            url_name='task_toggle')
+    def toggle(self, request, pk=None):
+        """
+        修改启用禁用状态
+        """
+        obj = self.get_object()
+        obj.enabled = False if obj.enabled else True
+        obj.save()
+        return Response(status=status.HTTP_200_OK)
+
+    def get_serializer_class(self):
+        if self.action in ['list', 'retrieve']:
+            return PTaskSerializer
+        return PTaskCreateUpdateSerializer
+
+    def create(self, request, *args, **kwargs):
+        data = request.data
+        timetype = data.get('timetype', None)
+        interval_ = data.get('interval_', None)
+        crontab_ = data.get('crontab_', None)
+        if timetype == 'interval' and interval_:
+            data['crontab'] = None
+            try:
+                interval, _ = IntervalSchedule.objects.get_or_create(**interval_, defaults = interval_)
+                data['interval'] = interval.id
+            except:
+                raise ValidationError('时间策略有误')
+        if timetype == 'crontab' and crontab_:
+            data['interval'] = None
+            try:
+                crontab_['timezone'] = 'Asia/Shanghai'
+                crontab, _ = CrontabSchedule.objects.get_or_create(**crontab_, defaults = crontab_)
+                data['crontab'] = crontab.id
+            except:
+                raise ValidationError('时间策略有误')
+        serializer = self.get_serializer(data=data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(status=status.HTTP_200_OK)
+    
+    def update(self, request, *args, **kwargs):
+        data = request.data
+        timetype = data.get('timetype', None)
+        interval_ = data.get('interval_', None)
+        crontab_ = data.get('crontab_', None)
+        if timetype == 'interval' and interval_:
+            data['crontab'] = None
+            try:
+                if 'id' in interval_:
+                    del interval_['id']
+                interval, _ = IntervalSchedule.objects.get_or_create(**interval_, defaults = interval_)
+                data['interval'] = interval.id
+            except:
+                raise ValidationError('时间策略有误')
+        if timetype == 'crontab' and crontab_:
+            data['interval'] = None
+            try:
+                crontab_['timezone'] = 'Asia/Shanghai'
+                if 'id'in crontab_:
+                    del crontab_['id'] 
+                crontab, _ = CrontabSchedule.objects.get_or_create(**crontab_, defaults = crontab_)
+                data['crontab'] = crontab.id
+            except:
+                raise ValidationError('时间策略有误')
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(status=status.HTTP_200_OK)
 
 
 class DictTypeViewSet(ModelViewSet):
