@@ -177,7 +177,7 @@
         >
           <el-input
             v-model="ptask.crontab_.day_of_week"
-            placeholder='Cron Days Of The Week to Run. Use "*" for "all". '
+            placeholder='Cron Days Of The Week to Run. Use "*" for "all". (Example: "0,5")'
           />
         </el-form-item>
         <el-form-item
@@ -187,7 +187,7 @@
         >
           <el-input
             v-model="ptask.crontab_.day_of_month"
-            placeholder='Cron Days Of The Month to Run. Use "*" for "all".'
+            placeholder='Cron Days Of The Month to Run. Use "*" for "all". (Example: "1,15")'
           />
         </el-form-item>
         <el-form-item
@@ -197,7 +197,7 @@
         >
           <el-input
             v-model="ptask.crontab_.month_of_year"
-            placeholder='Cron Days Of The Year to Run. Use "*" for "all".'
+            placeholder='Cron Months Of The Year to Run. Use "*" for "all". (Example: "0,6")'
           />
         </el-form-item>
         <el-form-item label="列表参数" prop="args">

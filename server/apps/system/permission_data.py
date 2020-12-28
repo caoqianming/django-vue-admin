@@ -12,6 +12,8 @@ class RbacFilterSet(CreateUpdateModelBMixin, object):
     需要控数据权限的表需有belong_dept, create_by, update_by字段(部门, 创建人, 编辑人)
     带性能优化
     包括必要的创建和编辑操作
+
+    此处对性能有较大影响,根据业务需求进行修改或取舍
     """
     def get_queryset(self):
         assert self.queryset is not None, (
@@ -21,11 +23,16 @@ class RbacFilterSet(CreateUpdateModelBMixin, object):
         )
         
         queryset = self.queryset
-        if hasattr(self.get_serializer_class(), 'setup_eager_loading'):
-            queryset = self.get_serializer_class().setup_eager_loading(queryset)  # 性能优化
         if isinstance(queryset, QuerySet):
             # Ensure queryset is re-evaluated on each request.
             queryset = queryset.all()
+
+        if hasattr(self.get_serializer_class(), 'setup_eager_loading'):
+            queryset = self.get_serializer_class().setup_eager_loading(queryset)  # 性能优化
+        
+        if self.request.user.is_superuser:
+            return queryset
+
         if hasattr(queryset.model, 'belong_dept'):
             user = self.request.user
             roles = user.roles
@@ -51,8 +58,6 @@ class RbacFilterSet(CreateUpdateModelBMixin, object):
             elif '仅本人' in data_range:
                 queryset = queryset.filter(Q(create_by=user)|Q(update_by=user))
                 return queryset
-        if hasattr(self.get_serializer_class(), 'setup_eager_loading'):
-            queryset = self.get_serializer_class().setup_eager_loading(queryset)  # 性能优化    
         return queryset
 
 
@@ -62,6 +67,9 @@ def rbac_filter_queryset(user, queryset):
     需要控数据权限的表需有belong_dept, create_by, update_by字段(部门, 创建人, 编辑人)
     传入user实例,queryset
     """
+    if user.is_superuser:
+            return queryset
+
     roles = user.roles
     data_range = roles.values_list('datas', flat=True)
     if hasattr(queryset.model, 'belong_dept'):
