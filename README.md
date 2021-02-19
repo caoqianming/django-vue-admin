@@ -67,6 +67,38 @@ location / {
 
 后台地址 localhost:8000/admin
 
+### docker-compose 方式运行
+
+前端 `./client` 和后端 `./server` 目录下都有Dockerfile，如果需要单独构建镜像，可以自行构建。
+
+这里主要说docker-compose启动这种方式。
+
+按照注释修改docker-compose.yml文件。里面主要有两个服务，一个是`backend`后端,一个是`frontend`前端。
+
+默认是用开发模式跑的后端和前端。如果需要单机部署，又想用docker-compose的话，改为生产模式性能会好些。
+
+
+启动
+```
+cd <path-to-your-project>
+docker-compose up -d
+```
+
+启动成功后，访问端口同前面的，接口8000端口，前端8012端口，如需改动，自己改docker-compose.yml
+
+如果要执行里面的命令
+docker-compose exec <服务名> <命令>
+
+举个栗子：
+
+如果我要执行后端生成数据变更命令。`python manage.py makemigrations`
+
+则用如下语句
+
+```
+docker-compose exec backend python manage.py makemigrations
+```
+
 ### 理念
 首先得会使用django-rest-framework, 理解vue-element-admin前端方案
 
