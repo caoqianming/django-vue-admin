@@ -172,12 +172,6 @@ class DictViewSet(ModelViewSet):
             return None
         return self.paginator.paginate_queryset(queryset, self.request, view=self)
 
-    @action(methods=['get'], detail=False, permission_classes=[], authentication_classes=[],url_name='correct_dict')
-    def correct(self, request, pk=None):
-        for i in Dict.objects.all():
-            i.save()
-        return Response(status=status.HTTP_200_OK)
-
 class PositionViewSet(ModelViewSet):
     """
     岗位-增删改查
@@ -259,7 +253,7 @@ class UserViewSet(ModelViewSet):
         if hasattr(self.get_serializer_class(), 'setup_eager_loading'):
             queryset = self.get_serializer_class().setup_eager_loading(queryset)  # 性能优化
         dept = self.request.query_params.get('dept', None)  # 该部门及其子部门所有员工
-        if dept is not None:
+        if dept:
             deptqueryset = get_child_queryset2(Organization.objects.get(pk=dept))
             queryset = queryset.filter(dept__in=deptqueryset)
         return queryset
@@ -281,9 +275,7 @@ class UserViewSet(ModelViewSet):
             password = make_password('0000')
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        instance = serializer.save(password=password)
-        # from apps.employee.models import Employee
-        # Employee.objects.create(user=instance,create_by=request.user)
+        serializer.save(password=password)
         return Response(serializer.data)
 
     @action(methods=['put'], detail=False, permission_classes=[IsAuthenticated], # perms_map={'put':'change_password'}
@@ -319,13 +311,12 @@ class UserViewSet(ModelViewSet):
             'username': user.username,
             'name': user.name,
             'roles': user.roles.values_list('name', flat=True),
-            # 'avatar': request._request._current_scheme_host + '/media/' + str(user.image),
             'avatar': user.avatar,
             'perms': perms,
         }
         return Response(data)
 
-class FileViewSet(CreateUpdateModelAMixin, ModelViewSet):
+class FileViewSet(CreateModelMixin, DestroyModelMixin, RetrieveModelMixin, ListModelMixin, GenericViewSet):
     """
     文件上传用
     """

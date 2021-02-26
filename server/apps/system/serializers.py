@@ -67,15 +67,10 @@ class DictSerializer(serializers.ModelSerializer):
     """
     数据字典序列化
     """
-    # fullname = serializers.SerializerMethodField(read_only=True)
     class Meta:
         model = Dict
         fields = '__all__'
 
-    # def get_fullname(self, obj):
-    #     if (obj.code) and (obj.code not in obj.name):
-    #         return obj.code + obj.name
-    #     return obj.name
 
 class PositionSerializer(serializers.ModelSerializer):
     """
