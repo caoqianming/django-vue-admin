@@ -24,9 +24,7 @@ JWT认证,可使用simple_history实现审计功能,支持swagger
 
 安装依赖包 `pip install -r requirements.txt`
 
-修改数据库连接 `server\settings_dev.py` 导入测试数据 `python manage.py loaddata db.json`
-
-或者直接使用sqlite数据库(超管账户密码均为admin)
+修改数据库连接 `server\settings_dev.py` 导入测试数据 `python manage.py loaddata db.json`(超管账户密码均为admin)
 
 同步数据库 `python manage.py makemigrations system`
 
