@@ -52,7 +52,24 @@ export const constantRoutes = [
       component: () => import('@/views/dashboard/index'),
       meta: { title: '首页', icon: 'dashboard' }
     }]
-  }
+  },
+  {
+    path: '/changepassword',
+    component: Layout,
+    redirect: '/changepassword',
+    name: 'ChangePW',
+    meta: { title: '修改密码', icon: 'tree' },
+    hidden:true,
+    children: [
+      {
+        path: '',
+        name: 'ChangePassword',
+        component: () => import('@/views/system/changepassword'),
+        meta: { title: '修改密码', noCache: true, icon: ''},
+        hidden: true
+      },
+    ]
+  },
 
 ]
 
@@ -73,13 +90,6 @@ export const asyncRoutes = [
         name: 'User',
         component: () => import('@/views/system/user.vue'),
         meta: { title: '用户管理', icon: 'user', perms: ['user_manage'] }
-      },
-     {
-        path: 'user/password',
-        name: 'ChangePassword',
-        component: () => import('@/views/system/changepassword'),
-        meta: { title: '修改密码', noCache: true, icon: ''},
-        hidden: true
       },
       {
         path: 'organization',
