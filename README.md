@@ -24,13 +24,11 @@ JWT认证,可使用simple_history实现审计功能,支持swagger
 
 安装依赖包 `pip install -r requirements.txt`
 
-修改数据库连接 `server\settings_dev.py` 导入测试数据 `python manage.py loaddata db.json`
-
-或者直接使用sqlite数据库(超管账户密码均为admin)
-
-同步数据库 `python manage.py makemigrations system`
+修改数据库连接 `server\settings_dev.py` 
 
 同步数据库 `python manage.py migrate`
+
+可导入初始数据 `python manage.py loaddata db.json` 或直接使用sqlite数据库(超管账户密码均为admin)
 
 创建超级管理员 `python manage.py createsuperuser`
 
@@ -104,7 +102,7 @@ docker-compose exec backend python manage.py makemigrations
 
 本项目采用前端路由，后端根据用户角色读取用户权限代码返回给前端，由前端进行加载(核心代码是路由表中的perms属性以及checkpermission方法)
 
-后端功能权限的核心代码在server/apps/system/permission.py下重写了has_permission方法
+后端功能权限的核心代码在server/apps/system/permission.py下重写了has_permission方法, 在APIView和ViewSet中定义perms权限代码
 
 数据权限因为跟具体业务有关,简单定义了几个规则,重写了has_object_permission方法;根据需要使用即可
 

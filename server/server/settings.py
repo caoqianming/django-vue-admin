@@ -38,11 +38,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django_redis',
+    'corsheaders',
     'django_celery_beat',
     'drf_yasg',
     'rest_framework',
-    'corsheaders',
     "django_filters",
     'simple_history',
     'apps.system.apps.SystemConfig',
@@ -159,7 +158,7 @@ SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
 }
 
-# 跨域配置
+# 跨域配置/可用nginx处理,无需引入corsheaders
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = False
 
@@ -169,19 +168,19 @@ AUTHENTICATION_BACKENDS = (
     'apps.system.authentication.CustomBackend',
 )
 
-# 缓存配置
-CACHES = {
-    "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://redis:6379/1",
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-            # "PICKLE_VERSION": -1
-        }
-    }
-}
+# 缓存配置,有需要可更改为redis
+# CACHES = {
+#     "default": {
+#         "BACKEND": "django_redis.cache.RedisCache",
+#         "LOCATION": "redis://redis:6379/1",
+#         "OPTIONS": {
+#             "CLIENT_CLASS": "django_redis.client.DefaultClient",
+#             "PICKLE_VERSION": -1
+#         }
+#     }
+# }
 
-# celery配置
+# celery配置,celery正常运行必须安装redis
 CELERY_BROKER_URL = "redis://redis:6379/0"   # 任务存储
 CELERYD_MAX_TASKS_PER_CHILD = 100  # 每个worker最多执行300个任务就会被销毁，可防止内存泄露
 CELERY_TIMEZONE = 'Asia/Shanghai'  # 设置时区

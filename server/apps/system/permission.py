@@ -19,7 +19,6 @@ def get_permission_list(user):
         perms_list = perms.values_list('method', flat=True)
         perms_list = list(set(perms_list))
     cache.set(user.username + '__perms', perms_list)
-    # cache.persist(user.username)
     return perms_list
 
 

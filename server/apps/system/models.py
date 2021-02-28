@@ -109,7 +109,7 @@ class User(AbstractUser):
     phone = models.CharField('手机号', max_length=11,
                              null=True, blank=True, unique=True)
     avatar = models.CharField(
-        '头像', default='/media/default/avatar.png', max_length=1000, null=True, blank=True)
+        '头像', default='/media/default/avatar.png', max_length=100, null=True, blank=True)
     dept = models.ForeignKey(
         Organization, null=True, blank=True, on_delete=models.SET_NULL, verbose_name='组织')
     position = models.ManyToManyField(Position, blank=True, verbose_name='岗位')
@@ -146,7 +146,7 @@ class Dict(SoftModel):
     """
     数据字典
     """
-    name = models.CharField('名称', max_length=1000)
+    name = models.CharField('名称', max_length=60)
     code = models.CharField('编号', max_length=30, null=True, blank=True)
     description = models.TextField('描述', blank=True, null=True)
     type = models.ForeignKey(
@@ -196,7 +196,7 @@ class File(CommonAModel):
     """
     文件存储表,业务表根据具体情况选择是否外键关联
     """
-    name = models.CharField('名称', max_length=300, null=True, blank=True)
+    name = models.CharField('名称', max_length=100, null=True, blank=True)
     size = models.IntegerField('文件大小', default=1, null=True, blank=True)
     file = models.FileField('文件', upload_to='%Y/%m/%d/')
     type_choices = (
@@ -206,9 +206,9 @@ class File(CommonAModel):
         ('图片', '图片'),
         ('其它', '其它')
     )
-    mime = models.CharField('文件格式', max_length=300, null=True, blank=True)
+    mime = models.CharField('文件格式', max_length=120, null=True, blank=True)
     type = models.CharField('文件类型', max_length=50, choices=type_choices, default='文档')
-    path = models.CharField('地址', max_length=1000, null=True, blank=True)
+    path = models.CharField('地址', max_length=200, null=True, blank=True)
 
     class Meta:
         verbose_name = '文件库'
