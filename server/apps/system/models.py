@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.db.models.base import Model
 import django.utils.timezone as timezone
 from django.db.models.query import QuerySet
 
@@ -100,6 +101,11 @@ class Role(SoftModel):
     def __str__(self):
         return self.name
 
+class Roledata(Model):
+    """
+    角色的功能-数据权限表
+    """
+    pass
 
 class User(AbstractUser):
     """

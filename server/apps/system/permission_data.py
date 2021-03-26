@@ -68,7 +68,7 @@ def rbac_filter_queryset(user, queryset):
     传入user实例,queryset
     """
     if user.is_superuser:
-            return queryset
+        return queryset
 
     roles = user.roles
     data_range = roles.values_list('datas', flat=True)

@@ -43,6 +43,7 @@ service.interceptors.response.use(
    */
   response => {
     const res = response.data
+    console.log(response)
     // 50008: Illegal token; 50012: Other clients logged in; 50014: Token expired;
     if (res.code === 401) {
       if(res.msg.indexOf('No active account')!=-1){
@@ -77,7 +78,7 @@ service.interceptors.response.use(
   error => {
     // console.log(error,response) // for debug
     Message({
-      message: error.message,
+      message: "网络故障",
       type: 'error',
       duration: 5 * 1000
     })
