@@ -9,8 +9,8 @@ class PageOrNot:
     def paginate_queryset(self, queryset):
         if (self.paginator is None):
             return None
-        elif self.request.query_params.get('pageoff', None) and self.get_queryset().count()<500:
+        elif self.request.query_params.get('pageoff', None) and queryset.count()<500:
             return None
-        elif self.request.query_params.get('pageoff', None) and self.get_queryset().count()>=500:
-            return ParseError('单次请求数据量大,请求中止')
+        elif self.request.query_params.get('pageoff', None) and queryset.count()>=500:
+            raise ParseError('单次请求数据量大,请求中止')
         return self.paginator.paginate_queryset(queryset, self.request, view=self)
