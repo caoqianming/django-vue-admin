@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     'rest_framework',
     "django_filters",
     'simple_history',
-    'apps.system.apps.SystemConfig',
+    'apps.system',
+    'apps.monitor'
 ]
 
 MIDDLEWARE = [
@@ -237,6 +238,7 @@ LOGGING = {
         'console': {
             'level': 'DEBUG',
             'class': 'logging.StreamHandler',
+            'filters': ['require_debug_true'],
             'formatter': 'standard'
         },
         # 输出info日志

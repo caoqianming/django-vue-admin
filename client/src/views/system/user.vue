@@ -1,7 +1,6 @@
 <template>
   <div class="app-container">
     <el-row :gutter="10">
-
       <el-col :md="6">
         <el-card>
           <div slot="header" class="clearfix">
@@ -73,11 +72,12 @@
           v-loading="listLoading"
           :data="userList.results"
           style="width: 100%;margin-top:6px;"
-          border
-          fit
-          stripe
           highlight-current-row
-          max-height="600"
+          row-key="id"
+          height="100"
+          stripe
+          border
+          v-el-height-adaptive-table="{bottomOffset: 50}"
         >
           <el-table-column type="index" width="50" />
           <el-table-column align="center" label="姓名">

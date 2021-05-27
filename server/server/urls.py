@@ -44,7 +44,10 @@ urlpatterns = [
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('token/black/', LogoutView.as_view(), name='token_black'),
+
     path('system/', include('apps.system.urls')),
+    path('monitor/', include('apps.monitor.urls')),
+
     path('docs/', include_docs_urls(title="接口文档", authentication_classes=[], permission_classes=[])),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),

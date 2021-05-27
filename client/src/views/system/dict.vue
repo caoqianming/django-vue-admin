@@ -53,12 +53,12 @@
           v-loading="listLoading"
           :data="dictList"
           style="width: 100%;margin-top:10px;"
-          border
-          fit
-          stripe
           highlight-current-row
-          max-height="600"
           row-key="id"
+          height="100"
+          stripe
+          border
+          v-el-height-adaptive-table="{bottomOffset: 50}"
           default-expand-all
           :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
         >

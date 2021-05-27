@@ -42,11 +42,12 @@
           v-loading="listLoading"
           :data="fileList.results"
           style="width: 100%;margin-top:10px;"
-          border
-          fit
-          stripe
           highlight-current-row
-          max-height="600"
+          row-key="id"
+          height="100"
+          stripe
+          border
+          v-el-height-adaptive-table="{bottomOffset: 50}"
         >
           <el-table-column type="index" width="50" />
           <el-table-column align="center" label="名称">

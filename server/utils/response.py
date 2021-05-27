@@ -39,7 +39,7 @@ class FitJSONRenderer(JSONRenderer):
                 class UserCountView(APIView):
                     renderer_classes = [FitJSONRenderer]
 
-        :param data: {"msg":"X"}
+        :param data:
         :param accepted_media_type:
         :param renderer_context:
         :return: {"code":200,"data":"X","msg":"X"}
@@ -47,8 +47,12 @@ class FitJSONRenderer(JSONRenderer):
         response_body = BaseResponse()
         response = renderer_context.get("response")
         response_body.code = response.status_code
-        if response_body.code >= 400:  # 响应异常
-            response_body.msg = data['detail'] if 'detail' in data else data
+        if response_body.code >= 400:  # 响应异常;如果drf异常截取一部分
+            if isinstance(data, dict):
+                data = data[list(data.keys())[0]]
+            if isinstance(data, list):
+                data = data[0]
+            response_body.msg = data
         else:
             response_body.data = data
         renderer_context.get("response").status_code = 200  # 统一成200响应,用code区分

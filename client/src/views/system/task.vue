@@ -54,11 +54,12 @@
       v-loading="listLoading"
       :data="dataList.results"
       style="width: 100%; margin-top: 10px"
-      border
-      fit
-      stripe
       highlight-current-row
-      max-height="600"
+      row-key="id"
+      height="100"
+      stripe
+      border
+      v-el-height-adaptive-table="{ bottomOffset: 50 }"
     >
       <el-table-column type="index" width="50" />
       <el-table-column align="center" label="名称">
@@ -79,10 +80,11 @@
       <el-table-column label="是否启用">
         <template slot-scope="scope">
           <el-switch
-  v-model="scope.row.enabled"
-  :disabled = "!checkPermission(['task_update'])"
-  @change="handleToggle(scope)">
-</el-switch>
+            v-model="scope.row.enabled"
+            :disabled="!checkPermission(['task_update'])"
+            @change="handleToggle(scope)"
+          >
+          </el-switch>
         </template>
       </el-table-column>
       <el-table-column align="center" label="操作">
@@ -92,13 +94,15 @@
             size="small"
             :disabled="!checkPermission(['task_update'])"
             @click="handleUpdate(scope)"
-          >编辑</el-button>
+            >编辑</el-button
+          >
           <el-button
             type="danger"
             size="small"
             :disabled="!checkPermission(['task_delete'])"
             @click="handleDelete(scope)"
-          >删除</el-button>
+            >删除</el-button
+          >
         </template>
       </el-table-column>
     </el-table>
@@ -114,13 +118,21 @@
       :visible.sync="dialogVisible"
       :title="dialogType === 'update' ? '编辑' : '新增'"
     >
-    <span>简单配置,复杂的可以去admin后台操作</span>
-      <el-form ref="Form" :model="ptask" label-width="80px" :rules="dynamicRules">
+      <span>简单配置,复杂的可以去admin后台操作</span>
+      <el-form
+        ref="Form"
+        :model="ptask"
+        label-width="80px"
+        :rules="dynamicRules"
+      >
         <el-form-item label="名称" prop="name">
           <el-input v-model="ptask.name" placeholder="名称" />
         </el-form-item>
         <el-form-item label="执行代码" prop="task">
-          <el-input v-model="ptask.task" placeholder="例:apps.system.tasks.show" />
+          <el-input
+            v-model="ptask.task"
+            placeholder="例:apps.system.tasks.show"
+          />
         </el-form-item>
         <el-form-item label="时间策略">
           <el-radio-group v-model="ptask.timetype">
@@ -128,10 +140,7 @@
             <el-radio label="crontab">crontab</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item
-          label="每隔"
-          v-if="ptask.timetype == 'interval'"
-        >
+        <el-form-item label="每隔" v-if="ptask.timetype == 'interval'">
           <el-input-number
             v-model="ptask.interval_.every"
             :min="1"
@@ -221,7 +230,13 @@
   </div>
 </template>
 <script>
-import { getptaskList, createptask, updateptask, deleteptask, toggletask } from "@/api/task";
+import {
+  getptaskList,
+  createptask,
+  updateptask,
+  deleteptask,
+  toggletask,
+} from "@/api/task";
 import Pagination from "@/components/Pagination";
 import checkPermission from "@/utils/permission";
 const defaultptask = {
@@ -256,11 +271,21 @@ export default {
       rule2: {
         name: [{ required: true, message: "请输入", trigger: "blur" }],
         task: [{ required: true, message: "请输入", trigger: "blur" }],
-        'crontab_.minute':[{ required: true, message: "请输入", trigger: "blur" }],
-        'crontab_.hour':[{ required: true, message: "请输入", trigger: "blur" }],
-        'crontab_.day_of_week':[{ required: true, message: "请输入", trigger: "blur" }],
-        'crontab_.day_of_month':[{ required: true, message: "请输入", trigger: "blur" }],
-        'crontab_.month_of_year':[{ required: true, message: "请输入", trigger: "blur" }]
+        "crontab_.minute": [
+          { required: true, message: "请输入", trigger: "blur" },
+        ],
+        "crontab_.hour": [
+          { required: true, message: "请输入", trigger: "blur" },
+        ],
+        "crontab_.day_of_week": [
+          { required: true, message: "请输入", trigger: "blur" },
+        ],
+        "crontab_.day_of_month": [
+          { required: true, message: "请输入", trigger: "blur" },
+        ],
+        "crontab_.month_of_year": [
+          { required: true, message: "请输入", trigger: "blur" },
+        ],
       },
       periodOptions: [
         {
@@ -282,10 +307,10 @@ export default {
       ],
     };
   },
-  computed:{
-    dynamicRules(){
-      return this.timetype == 'interval'? this.rule1: this.rule2
-    }
+  computed: {
+    dynamicRules() {
+      return this.timetype == "interval" ? this.rule1 : this.rule2;
+    },
   },
   created() {
     this.getList();
@@ -321,58 +346,64 @@ export default {
       });
     },
     handleUpdate(scope) {
-      this.ptask = Object.assign({}, scope.row) // copy obj
-      if(!this.ptask.interval_){this.ptask.interval_ = {}}
-      if(!this.ptask.crontab_){this.ptask.crontab_ = {}}
-      this.dialogType = 'update'
-      this.dialogVisible = true
+      this.ptask = Object.assign({}, scope.row); // copy obj
+      if (!this.ptask.interval_) {
+        this.ptask.interval_ = {};
+      }
+      if (!this.ptask.crontab_) {
+        this.ptask.crontab_ = {};
+      }
+      this.dialogType = "update";
+      this.dialogVisible = true;
       this.$nextTick(() => {
-        this.$refs['Form'].clearValidate()
-      })
+        this.$refs["Form"].clearValidate();
+      });
     },
     handleDelete(scope) {
-      this.$confirm('确认删除?', '警告', {
-        confirmButtonText: '确认',
-        cancelButtonText: '取消',
-        type: 'error'
+      this.$confirm("确认删除?", "警告", {
+        confirmButtonText: "确认",
+        cancelButtonText: "取消",
+        type: "error",
       })
-        .then(async() => {
-          await deleteptask(scope.row.id)
-          this.getList()
-          this.$message.success('成功')
+        .then(async () => {
+          await deleteptask(scope.row.id);
+          this.getList();
+          this.$message.success("成功");
         })
-        .catch(err => {
-          console.error(err)
-        })
+        .catch((err) => {
+          console.error(err);
+        });
     },
     handleToggle(scope) {
-      toggletask(scope.row.id).then(res=>{
-        this.$message.success('成功')
-      }).catch(e=>{
-        this.getList()
-      })
+      toggletask(scope.row.id)
+        .then((res) => {
+          this.$message.success("成功");
+        })
+        .catch((e) => {
+          this.getList();
+        });
     },
     confirmForm() {
-this.$refs["Form"].validate(valid => {
+      this.$refs["Form"].validate((valid) => {
         if (valid) {
-          const isEdit = this.dialogType === 'update'
+          const isEdit = this.dialogType === "update";
           if (isEdit) {
             updateptask(this.ptask.id, this.ptask).then(() => {
-              this.getList()
-              this.dialogVisible = false
-              this.$message.success('成功')
-            })
+              this.getList();
+              this.dialogVisible = false;
+              this.$message.success("成功");
+            });
           } else {
-            createptask(this.ptask).then(res => {
-              this.getList()
-              this.dialogVisible = false
-              this.$message.success('成功')
-            })
+            createptask(this.ptask).then((res) => {
+              this.getList();
+              this.dialogVisible = false;
+              this.$message.success("成功");
+            });
           }
         } else {
-          return false
+          return false;
         }
-      })
+      });
     },
   },
 };
