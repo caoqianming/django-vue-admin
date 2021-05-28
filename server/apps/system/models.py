@@ -101,11 +101,6 @@ class Role(SoftModel):
     def __str__(self):
         return self.name
 
-class Roledata(Model):
-    """
-    角色的功能-数据权限表
-    """
-    pass
 
 class User(AbstractUser):
     """

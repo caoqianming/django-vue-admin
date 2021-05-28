@@ -2,25 +2,8 @@ from rest_framework.renderers import JSONRenderer
 from rest_framework.views import exception_handler
 from rest_framework.response import Response
 import rest_framework.status as status
-
-def my_exception_hander(exc, context):
-    """
-    自定义异常处理
-    :param exc: 异常
-    :param context: 抛出异常的上下文
-    :return: Response响应对象
-    """
-    # 调用drf框架原生的异常处理方法
-    response = exception_handler(exc, context)
-
-    if response is None:
-        view = context['view']
-        if isinstance(exc, DatabaseError) or isinstance(exc, RedisError):
-            # 数据库异常
-            logger.error('[%s] %s' % (view, exc))
-            response = Response({'message': '服务器内部错误'}, status=status.HT)
-
-    return response
+import logging
+logger = logging.getLogger('log')
 
 class BaseResponse(object):
     """
@@ -65,12 +48,13 @@ class FitJSONRenderer(JSONRenderer):
         response_body = BaseResponse()
         response = renderer_context.get("response")
         response_body.code = response.status_code
-        if response_body.code >= 400:  # 响应异常;如果drf异常截取一部分
+        if response_body.code >= 400:  # 响应异常
+            response_body.data = data  # data里是详细异常信息
             if isinstance(data, dict):
                 data = data[list(data.keys())[0]]
-            if isinstance(data, list):
+            elif isinstance(data, list):
                 data = data[0]
-            response_body.msg = data
+            response_body.msg = data # 取一部分放入msg,方便前端alert
         else:
             response_body.data = data
         renderer_context.get("response").status_code = 200  # 统一成200响应,用code区分
