@@ -2,5 +2,6 @@ FROM node:10-alpine3.9
 ENV NODE_ENV=development
 WORKDIR /code
 COPY . .
-RUN npm install --registry=https://registry.npm.taobao.org 
+RUN npm config set sass_binary_site=https://npm.taobao.org/mirrors/node-sass &&\ 
+    npm install --registry=https://registry.npm.taobao.org 
 ENTRYPOINT ["npm","run","dev:docker"]

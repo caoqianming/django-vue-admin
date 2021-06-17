@@ -2,7 +2,7 @@
 if [ v"$DJANGO_ENV" == 'vdev' ]; then
     python manage.py makemigrations system  
     python manage.py migrate
-    python manage.py runserver 80
+    python manage.py runserver 0.0.0.0:80
     else
     python manage.py migrate
     python manage.py collectstatic --noinput
