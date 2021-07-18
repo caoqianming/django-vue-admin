@@ -40,8 +40,7 @@ class Permission(SoftModel):
     sort = models.IntegerField('排序标记', default=1)
     parent = models.ForeignKey('self', null=True, blank=True,
                             on_delete=models.SET_NULL, verbose_name='父')
-    method = models.CharField('方法/代号', max_length=50,
-                              unique=True, null=True, blank=True)
+    method = models.CharField('方法/代号', max_length=50, null=True, blank=True)
 
     def __str__(self):
         return self.name

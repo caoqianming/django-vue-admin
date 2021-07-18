@@ -24,9 +24,10 @@ from rest_framework import routers
 from rest_framework.documentation import include_docs_urls
 from rest_framework_simplejwt.views import (TokenObtainPairView,
                                             TokenRefreshView)
+from django.views.generic import TemplateView
 
 router = routers.DefaultRouter()
-router.register('file', FileViewSet, basename="file")
+router.register('', FileViewSet, basename="file")
 
 schema_view = get_schema_view(
    openapi.Info(
@@ -40,18 +41,24 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('token/black/', LogoutView.as_view(), name='token_black'),
+    path('api/admin/doc/', include('django.contrib.admindocs.urls')),
+    path('api/admin/', admin.site.urls),
 
-    path('system/', include('apps.system.urls')),
-    path('monitor/', include('apps.monitor.urls')),
+    # api
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/token/black/', LogoutView.as_view(), name='token_black'),
+    path('api/file/', include(router.urls)),
+    path('api/system/', include('apps.system.urls')),
+    path('api/monitor/', include('apps.monitor.urls')),
 
-    path('docs/', include_docs_urls(title="接口文档", authentication_classes=[], permission_classes=[])),
-    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
-    path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
-    path('', include(router.urls)),
+    # api文档
+    path('api/docs/', include_docs_urls(title="接口文档", authentication_classes=[], permission_classes=[])),
+    path('api/swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    path('api/redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
+    
+    # 前端页面入口
+    path('',TemplateView.as_view(template_name="index.html"))
 ] + \
 static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + \
 static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

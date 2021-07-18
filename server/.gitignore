@@ -4,6 +4,7 @@ venv/
 __pycache__/
 *.pyc
 media/*
+vuedist/*
 !media/default/
 celerybeat.pid
 celerybeat-schedule.bak
