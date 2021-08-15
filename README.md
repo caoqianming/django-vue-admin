@@ -12,6 +12,10 @@ JWT认证,可使用simple_history实现审计功能,支持swagger
 ![image](https://github.com/caoqianming/django-vue-admin/blob/master/img/dict.png)
 ![image](https://github.com/caoqianming/django-vue-admin/blob/master/img/task.png)
 
+## 预览地址
+预览地址直接使用的runserver,账户admin,密码admin。请谨慎操作
+<http://47.95.0.242:1111/>
+
 ## 启动(以下是在windows下开发操作步骤)
 
 

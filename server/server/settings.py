@@ -130,6 +130,9 @@ STATICFILES_DIRS = (
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+# 默认主键
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
 # restframework配置
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
