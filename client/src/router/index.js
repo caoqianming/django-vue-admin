@@ -153,12 +153,22 @@ export const asyncRoutes = [
         ]
       },
       {
-        path: 'docs-link',
+        path: 'docs',
         component: Layout,
         children: [
           {
             path: process.env.VUE_APP_BASE_API + '/docs/',
             meta: { title: '接口文档', icon: 'link', perms: ['dev_docs'] }
+          }
+        ]
+      },
+      {
+        path: 'swagger',
+        component: Layout,
+        children: [
+          {
+            path: process.env.VUE_APP_BASE_API + '/swagger/',
+            meta: { title: 'Swagger文档', icon: 'link', perms: ['dev_docs'] }
           }
         ]
       },
