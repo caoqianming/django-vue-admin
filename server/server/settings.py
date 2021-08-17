@@ -193,6 +193,11 @@ CELERYD_MAX_TASKS_PER_CHILD = 100  # 每个worker最多执行300个任务就会�
 CELERY_TIMEZONE = 'Asia/Shanghai'  # 设置时区
 CELERY_ENABLE_UTC = True  # 启动时区设置
 
+# swagger配置
+SWAGGER_SETTINGS = {
+   'LOGIN_URL':'/api/admin/login/',
+   'LOGOUT_URL':'/api/admin/logout/'
+}
 
 # 日志配置
 # 创建日志的路径
