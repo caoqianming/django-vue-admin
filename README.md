@@ -7,6 +7,8 @@ JWT认证,可使用simple_history实现审计功能,支持swagger
 
 支持功能权限(控权到每个接口)和简单的数据权限（全部、本级及以下、同级及以下、本人等）
 
+工作流模块将于近两月加入
+
 ## 部分截图
 ![image](https://github.com/caoqianming/django-vue-admin/blob/master/img/user.png)
 ![image](https://github.com/caoqianming/django-vue-admin/blob/master/img/dict.png)
@@ -69,6 +71,11 @@ location / {
 
 后台地址 localhost:8000/admin
 
+## 部署
+部署时使用的是settings_pro.py。注意修改
+
+可以前后端分开部署, nginx代理。也可打包之后放在server/vuedist文件夹, 然后执行collectstatic
+
 ### docker-compose 方式运行
 
 前端 `./client` 和后端 `./server` 目录下都有Dockerfile，如果需要单独构建镜像，可以自行构建。
@@ -110,6 +117,8 @@ docker-compose exec backend python manage.py makemigrations
 
 数据权限因为跟具体业务有关,简单定义了几个规则,重写了has_object_permission方法;根据需要使用即可
 
+由于实际情况比较复杂，这里建议根据不同情况自己写drf的permission_class
+
 ### 关于定时任务
 使用celery以及django_celery_beat包实现
 
@@ -120,5 +129,5 @@ docker-compose exec backend python manage.py makemigrations
 进入虚拟环境并启动beat: `celery -A server beat -l info`
 
 ### 后续
-考虑增加一个简易的工作流模块
+工作流模块即将上线, 参考loonflow的实现, 以app方式加入
 
