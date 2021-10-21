@@ -7,7 +7,6 @@ JWT认证,可使用simple_history实现审计功能,支持swagger
 
 支持功能权限(控权到每个接口)和简单的数据权限（全部、本级及以下、同级及以下、本人等）
 
-工作流模块将于近两月加入
 
 ## 部分截图
 ![image](https://github.com/caoqianming/django-vue-admin/blob/master/img/user.png)
@@ -129,5 +128,5 @@ docker-compose exec backend python manage.py makemigrations
 进入虚拟环境并启动beat: `celery -A server beat -l info`
 
 ### 后续
-工作流模块即将上线, 参考loonflow的实现, 以app方式加入
+工作流模块今年底前加入, 参考loonflow的实现
 
