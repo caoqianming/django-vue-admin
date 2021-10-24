@@ -130,6 +130,21 @@ export const asyncRoutes = [
     ]
   },
   {
+    path: '/monitor',
+    component: Layout,
+    redirect: '/monitor/service',
+    name: 'Monitor',
+    meta: { title: '系统监控', icon: 'example', perms: ['monitor_set'] },
+    children: [
+      {
+        path: 'service',
+        name: 'service',
+        component: () => import('@/views/monitor/service'),
+        meta: { title: '服务监控', icon: 'example', perms: ['service_manage'] }
+      }
+    ]
+  },
+  {
     path: '/develop',
     component: Layout,
     redirect: '/develop/perm',
@@ -153,12 +168,22 @@ export const asyncRoutes = [
         ]
       },
       {
-        path: 'docs-link',
+        path: 'docs',
         component: Layout,
         children: [
           {
             path: process.env.VUE_APP_BASE_API + '/docs/',
             meta: { title: '接口文档', icon: 'link', perms: ['dev_docs'] }
+          }
+        ]
+      },
+      {
+        path: 'swagger',
+        component: Layout,
+        children: [
+          {
+            path: process.env.VUE_APP_BASE_API + '/swagger/',
+            meta: { title: 'Swagger文档', icon: 'link', perms: ['dev_docs'] }
           }
         ]
       },
