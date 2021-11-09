@@ -10,6 +10,7 @@ body {
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
+  // background-color: #e9e9e9;
 }
 
 label {
@@ -61,7 +62,7 @@ div:focus {
 
 // main-container global css
 .app-container {
-  padding: 10px;
+  padding: 2px;
 }
 
 .el-table--medium td,   .el-table--medium th {
@@ -86,21 +87,21 @@ div:focus {
 .el-dialog__header {
   padding: 10px 10px 6px;
 }
-// .el-dialog{
-//   display: flex;
-//   flex-direction: column;
-//   margin:0 !important;
-//   position:absolute;
-//   top:50%;
-//   left:50%;
-//   transform:translate(-50%,-50%);
-//   /*height:600px;*/
-//   max-height:calc(100% - 30px);
-//   max-width:calc(100% - 30px);
-// }
+ .el-dialog{
+   display: flex;
+   flex-direction: column;
+   margin:0 !important;
+   position:absolute;
+   top:50%;
+   left:50%;
+   transform:translate(-50%,-50%);
+   /*height:600px;*/
+   max-height:calc(100% - 30px);
+   max-width:calc(100% - 30px);
+ }
 .el-dialog .el-dialog__body{
-  // flex:1;
-  // overflow: auto;
+   flex:1;
+   overflow: auto;
   padding: 8px 12px;
 }
  
