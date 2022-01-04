@@ -7,6 +7,8 @@ JWT认证,可使用simple_history实现审计功能,支持swagger
 
 支持功能权限(控权到每个接口)和简单的数据权限（全部、本级及以下、同级及以下、本人等）
 
+欢迎提issue
+
 
 ## 部分截图
 ![image](https://github.com/caoqianming/django-vue-admin/blob/master/img/user.png)
