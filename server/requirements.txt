@@ -1,4 +1,4 @@
-﻿celery==5.1.2
+﻿celery==5.2.2
 Django==3.2.6
 django-celery-beat==2.2.1
 django-cors-headers==3.7.0
