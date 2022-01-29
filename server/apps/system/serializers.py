@@ -110,6 +110,10 @@ class OrganizationSerializer(serializers.ModelSerializer):
         model = Organization
         fields = '__all__'
 
+class UserSimpleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'name']
 
 class UserListSerializer(serializers.ModelSerializer):
     """

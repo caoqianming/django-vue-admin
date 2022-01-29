@@ -51,6 +51,7 @@ urlpatterns = [
     path('api/file/', include(router.urls)),
     path('api/system/', include('apps.system.urls')),
     path('api/monitor/', include('apps.monitor.urls')),
+    path('api/wf/', include('apps.wf.urls')),
 
     # api文档
     path('api/docs/', include_docs_urls(title="接口文档", authentication_classes=[], permission_classes=[])),

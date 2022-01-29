@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     "django_filters",
     'simple_history',
     'apps.system',
-    'apps.monitor'
+    'apps.monitor',
+    'apps.wf'
 ]
 
 MIDDLEWARE = [

@@ -58,3 +58,13 @@ def get_child_queryset2(obj, hasParent=True):
         queryset = queryset | child_queryset
         child_queryset = cls.objects.filter(parent__in=child_queryset)
     return queryset
+
+def get_parent_queryset(obj, hasSelf=True):
+    cls = type(obj)
+    ids = []
+    if hasSelf:
+        ids.append(obj.id)
+    while obj.parent:
+        obj = obj.parent
+        ids.append(obj.id)
+    return cls.objects.filter(id__in=ids)

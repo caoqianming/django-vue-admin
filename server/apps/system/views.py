@@ -262,9 +262,11 @@ class UserViewSet(ModelViewSet):
         # 根据请求类型动态变更serializer
         if self.action == 'create':
             return UserCreateSerializer
+        elif self.action == 'update':
+            return UserModifySerializer
         elif self.action == 'list':
             return UserListSerializer
-        return UserModifySerializer
+        return super().get_serializer_class()
 
     def create(self, request, *args, **kwargs):
         # 创建用户默认添加密码
