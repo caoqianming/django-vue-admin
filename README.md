@@ -3,7 +3,7 @@
 
 JWT认证,可使用simple_history实现审计功能,支持swagger
 
-内置模块有组织机构\用户\角色\岗位\数据字典\文件库\定时任务
+内置模块有组织机构\用户\角色\岗位\数据字典\文件库\定时任务\工作流(暂时上传了后端代码位于apps/wf)
 
 支持功能权限(控权到每个接口)和简单的数据权限（全部、本级及以下、同级及以下、本人等）
 
@@ -131,4 +131,5 @@ docker-compose exec backend python manage.py makemigrations
 
 ### 后续
 工作流模块今年底前加入, 参考loonflow的实现
+目前工作流后端代码已上传, 可查看swagger
 
