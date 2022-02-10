@@ -1,5 +1,5 @@
 ﻿celery==5.1.2
-Django==3.2.6
+Django==3.2.12
 django-celery-beat==2.2.1
 django-cors-headers==3.7.0
 django-filter==2.4.0
