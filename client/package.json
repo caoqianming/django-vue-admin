@@ -18,6 +18,8 @@
   "dependencies": {
     "@riophae/vue-treeselect": "^0.4.0",
     "axios": "0.18.1",
+    "d3": "^7.3.0",
+    "dagre-d3": "^0.6.4",
     "element-ui": "^2.15.6",
     "file-saver": "^2.0.2",
     "js-cookie": "2.2.0",
@@ -25,6 +27,7 @@
     "nprogress": "0.2.0",
     "path-to-regexp": "2.4.0",
     "vue": "2.6.10",
+    "vue-json-editor": "^1.4.3",
     "vue-router": "3.0.6",
     "vuex": "3.1.0",
     "xlsx": "^0.15.5"

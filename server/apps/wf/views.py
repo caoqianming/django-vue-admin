@@ -88,7 +88,8 @@ class WorkflowViewSet(CreateUpdateModelAMixin, ModelViewSet):
         return Response(ret)
 
 class StateViewSet(CreateModelMixin, UpdateModelMixin, RetrieveModelMixin, DestroyModelMixin, GenericViewSet):
-    perms_map = {'*':'*'}
+    perms_map = {'get':'*', 'post':'workflow_update',
+                'put':'workflow_update', 'delete':'workflow_update'}
     queryset = State.objects.all()
     serializer_class = StateSerializer
     search_fields = ['name']
@@ -96,7 +97,8 @@ class StateViewSet(CreateModelMixin, UpdateModelMixin, RetrieveModelMixin, Destr
     ordering = ['sort']
 
 class TransitionViewSet(CreateModelMixin, UpdateModelMixin, RetrieveModelMixin, DestroyModelMixin, GenericViewSet):
-    perms_map = {'*':'*'}
+    perms_map = {'get':'*', 'post':'workflow_update',
+                'put':'workflow_update', 'delete':'workflow_update'}
     queryset = Transition.objects.all()
     serializer_class = TransitionSerializer
     search_fields = ['name']
@@ -104,7 +106,8 @@ class TransitionViewSet(CreateModelMixin, UpdateModelMixin, RetrieveModelMixin, 
     ordering = ['id']
 
 class CustomFieldViewSet(CreateModelMixin, UpdateModelMixin, RetrieveModelMixin, DestroyModelMixin, GenericViewSet):
-    perms_map = {'*':'*'}
+    perms_map = {'get':'*', 'post':'workflow_update',
+                'put':'workflow_update', 'delete':'workflow_update'}
     queryset = CustomField.objects.all()
     serializer_class = CustomFieldSerializer
     search_fields = ['field_name']
@@ -117,7 +120,7 @@ class CustomFieldViewSet(CreateModelMixin, UpdateModelMixin, RetrieveModelMixin,
         return super().get_serializer_class()
 
 class TicketViewSet(OptimizationMixin, CreateUpdateCustomMixin, CreateModelMixin, ListModelMixin, RetrieveModelMixin, GenericViewSet):
-    perms_map = {'*':'*'}
+    perms_map = {'get':'*', 'post':'ticket_create'}
     queryset = Ticket.objects.all()
     serializer_class = TicketSerializer
     search_fields = ['title']
@@ -348,7 +351,7 @@ class TicketViewSet(OptimizationMixin, CreateUpdateCustomMixin, CreateModelMixin
         else:
             return Response('工单不可关闭', status=status.HTTP_400_BAD_REQUEST)
 
-    @action(methods=['post'], detail=False, perms_map={'post':'*'}, serializer_class=TicketDestorySerializer)
+    @action(methods=['post'], detail=False, perms_map={'post':'ticket_deletes'}, serializer_class=TicketDestorySerializer)
     def destory(self, request, pk=None):
         """
         批量物理删除
@@ -362,7 +365,7 @@ class TicketFlowViewSet(ListModelMixin, RetrieveModelMixin, GenericViewSet):
     """
     工单日志
     """
-    perms_map = {'*':'*'}
+    perms_map = {'get':'*'}
     queryset = TicketFlow.objects.all()
     serializer_class = TicketFlowSerializer
     search_fields = ['suggestion']

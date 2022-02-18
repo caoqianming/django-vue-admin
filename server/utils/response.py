@@ -50,11 +50,13 @@ class FitJSONRenderer(JSONRenderer):
         response_body.code = response.status_code
         if response_body.code >= 400:  # 响应异常
             response_body.data = data  # data里是详细异常信息
+            prefix = ""
             if isinstance(data, dict):
-                data = data[list(data.keys())[0]]
-            elif isinstance(data, list):
+                prefix = list(data.keys())[0]
+                data = data[prefix]
+            if isinstance(data, list):
                 data = data[0]
-            response_body.msg = data # 取一部分放入msg,方便前端alert
+            response_body.msg = prefix + ":" + str(data) # 取一部分放入msg,方便前端alert
         else:
             response_body.data = data
         renderer_context.get("response").status_code = 200  # 统一成200响应,用code区分

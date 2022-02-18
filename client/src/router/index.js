@@ -79,6 +79,55 @@ export const constantRoutes = [
  */
 export const asyncRoutes = [
   {
+    path: '/workflow',
+    component: Layout,
+    redirect: '/workflow/index',
+    name: 'workflow',
+    meta: { title: '工作流', icon: 'example', perms: ['workflow_manage']  },
+    children: [
+      {
+        path: 'index',
+        name: 'index',
+        component: () => import('@/views/workflow/index'),
+        meta: { title: '工作流', icon: 'example', perms: ['workflow_index'] }
+      },
+      {
+        path: 'ticket',
+        name: 'ticket',
+        component: () => import('@/views/workflow/ticket'),
+        meta: { title: '工单管理', icon: 'example' ,noCache: true, perms: ['workflow_ticket'] },
+      },
+      {
+        path: 'workFlowTickets',
+        name: 'workFlowTickets',
+        component: () => import('@/views/workflow/workFlowTickets'),
+        meta: { title: '工单', icon: 'example' ,noCache: true,},
+        hidden: true
+      },
+      {
+        path: 'configuration',
+        name: 'configuration',
+        component: () => import('@/views/workflow/configuration'),
+        meta: { title: '工作流配置', icon: 'example' },
+        hidden: true
+      },
+      {
+        path: 'ticketHandle',
+        name: 'ticketHandle',
+        component: () => import('@/views/workflow/ticketHandle'),
+        meta: { title: '工单处理', icon: 'example',noCache: true,},
+        hidden: true
+      },
+      {
+        path: 'ticketDetail',
+        name: 'ticketDetail',
+        component: () => import('@/views/workflow/ticketDetail'),
+        meta: { title: '工单详情', icon: 'example',noCache: true,},
+        hidden: true
+      },
+    ]
+  },
+  {
     path: '/system',
     component: Layout,
     redirect: '/system/user',
