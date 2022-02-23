@@ -137,7 +137,7 @@ class UserModifySerializer(serializers.ModelSerializer):
     """
     用户编辑序列化
     """
-    phone = serializers.CharField(max_length=11)
+    phone = serializers.CharField(max_length=11, required=False)
 
     class Meta:
         model = User
@@ -156,7 +156,7 @@ class UserCreateSerializer(serializers.ModelSerializer):
     创建用户序列化
     """
     username = serializers.CharField(required=True)
-    phone = serializers.CharField(max_length=11)
+    phone = serializers.CharField(max_length=11, required=False)
 
     class Meta:
         model = User
