@@ -2,6 +2,7 @@ from django.db.models import Q
 from django.db.models.query import QuerySet
 from rest_framework.generics import GenericAPIView
 from apps.system.mixins import CreateUpdateModelBMixin
+from apps.system.models import Organization
 from utils.queryset import get_child_queryset2
 
 
@@ -40,9 +41,8 @@ class RbacFilterSet(CreateUpdateModelBMixin, object):
             if '全部' in data_range:
                 return queryset
             elif '自定义' in data_range:
-                if roles.depts.exists():
-                    queryset = queryset.filter(belong_dept__in = roles.depts)
-                    return queryset
+                queryset = queryset.filter(belong_dept__roles__in=roles)
+                return queryset
             elif '同级及以下' in data_range:
                 if user.dept.parent:
                     belong_depts = get_child_queryset2(user.dept.parent)

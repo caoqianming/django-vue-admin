@@ -90,7 +90,7 @@ class Role(SoftModel):
     datas = models.CharField('数据权限', max_length=50,
                              choices=data_type_choices, default='本级及以下')
     depts = models.ManyToManyField(
-        Organization, blank=True, verbose_name='权限范围')
+        Organization, blank=True, verbose_name='权限范围', related_name='roles')
     description = models.CharField('描述', max_length=50, blank=True, null=True)
 
     class Meta:
