@@ -1,7 +1,7 @@
 from django.core.cache import cache
 from rest_framework.permissions import BasePermission
 from utils.queryset import get_child_queryset2
-from .models import Permission
+from .models import Organization, Permission
 from django.db.models import Q
 
 def get_permission_list(user):
@@ -79,9 +79,9 @@ def has_obj_perm(user, obj):
     if '全部' in data_range:
         return True
     elif '自定义' in data_range:
-        if roles.depts.exists():
-            if obj.belong_dept not in roles.depts:
-                return False
+        depts = Organization.objects.filter(roles__in = roles)
+        if obj.belong_dept not in depts:
+            return False
     elif '同级及以下' in data_range:
         if user.dept.parent:
             belong_depts = get_child_queryset2(user.dept.parent)
