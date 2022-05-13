@@ -135,3 +135,6 @@ docker-compose exec backend python manage.py makemigrations
 工作流模块参考loonflow的实现可查看其文档(逻辑一样, 感谢loonflow)
 目前大部分代码已上传, 可查看swagger
 
+### 下一步
+功能权限和数据权限的处理有大的优化空间, 可实现更加合理的权限划分, 但对目前代码改动较大，在考虑中
+
