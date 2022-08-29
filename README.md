@@ -37,7 +37,7 @@ JWT认证,可使用simple_history实现审计功能,支持swagger
 
 同步数据库 `python manage.py migrate`
 
-可导入初始数据 `python manage.py loaddata db.json` 或直接使用sqlite数据库(超管账户密码均为admin)
+可导入初始数据 `python manage.py loaddata db.json` 或直接使用sqlite数据库(超管账户密码均为admin,每隔一段时间数据库会重置)
 
 创建超级管理员 `python manage.py createsuperuser`
 
