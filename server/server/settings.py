@@ -189,7 +189,7 @@ AUTHENTICATION_BACKENDS = (
 # }
 
 # celery配置,celery正常运行必须安装redis
-CELERY_BROKER_URL = "redis://redis:6379/0"   # 任务存储
+CELERY_BROKER_URL = "redis://localhost:6379/0"   # 任务存储
 CELERYD_MAX_TASKS_PER_CHILD = 100  # 每个worker最多执行300个任务就会被销毁，可防止内存泄露
 CELERY_TIMEZONE = 'Asia/Shanghai'  # 设置时区
 CELERY_ENABLE_UTC = True  # 启动时区设置
