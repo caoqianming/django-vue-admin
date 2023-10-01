@@ -160,7 +160,7 @@ class WfService(object):
 
         elif destination_participant_type == State.PARTICIPANT_TYPE_FORMCODE:#代码获取
             destination_participant = getattr(GetParticipants, destination_participant)(
-                state=state, ticket=ticket, new_ticket_data=new_ticket_data, hander=handler)
+                state=state, ticket=ticket, new_ticket_data=new_ticket_data, handler=handler)
 
         elif destination_participant_type == State.PARTICIPANT_TYPE_DEPT:#部门
             destination_participant = list(User.objects.filter(dept__in=destination_participant).values_list('id', flat=True))
