@@ -138,3 +138,6 @@ docker-compose exec backend python manage.py makemigrations
 ### 下一步
 功能权限和数据权限的处理有大的优化空间, 可实现更加合理的权限划分, 但对目前代码改动较大，在考虑中
 
+### 微信群
+愿意交流的话可以加微信群
+![image](https://github.com/caoqianming/django-vue-admin/blob/master/img/wechat_group.jpg)
