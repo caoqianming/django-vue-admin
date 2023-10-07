@@ -1,5 +1,5 @@
-﻿celery==5.2.3
-Django==3.2.18
+celery==5.2.3
+Django==3.2.20
 django-celery-beat==2.3.0
 django-celery-results==2.4.0
 django-cors-headers==3.11.0
