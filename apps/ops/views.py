@@ -98,7 +98,7 @@ class BackupMedia(APIView):
 class CpuView(APIView):
     permission_classes = [IsAuthenticated]
 
-    @swagger_auto_schema(operation_summary="获取服务器cpu当前状态", responses=CpuSerializer, request_body=None)
+    @swagger_auto_schema(operation_summary="获取服务器cpu当前状态", responses={200: CpuSerializer}, request_body=None)
     def get(self, request, *args, **kwargs):
         return Response(ServerService.get_cpu_dict())
 
@@ -106,7 +106,7 @@ class CpuView(APIView):
 class MemoryView(APIView):
     permission_classes = [IsAuthenticated]
 
-    @swagger_auto_schema(operation_summary="获取服务器内存当前状态", responses=MemDiskSerializer, request_body=None)
+    @swagger_auto_schema(operation_summary="获取服务器内存当前状态", responses={200: MemDiskSerializer}, request_body=None)
     def get(self, request, *args, **kwargs):
         return Response(ServerService.get_memory_dict())
 
@@ -114,7 +114,7 @@ class MemoryView(APIView):
 class DiskView(APIView):
     permission_classes = [IsAuthenticated]
 
-    @swagger_auto_schema(operation_summary="获取服务器硬盘当前状态", responses=MemDiskSerializer, request_body=None)
+    @swagger_auto_schema(operation_summary="获取服务器硬盘当前状态", responses={200: MemDiskSerializer}, request_body=None)
     def get(self, request, *args, **kwargs):
         return Response(ServerService.get_disk_dict())
 
@@ -136,7 +136,7 @@ def get_file_list(file_path):
 class LogView(APIView):
     permission_classes = [IsAuthenticated]
 
-    @swagger_auto_schema(operation_summary="查看最近的日志列表", responses=TextListSerializer(many=True), request_body=None)
+    @swagger_auto_schema(operation_summary="查看最近的日志列表", responses={200: TextListSerializer(many=True)}, request_body=None)
     def get(self, request, *args, **kwargs):
         logs = []
         name = request.GET.get('name', None)
@@ -200,7 +200,7 @@ class DbBackupView(APIView):
                 os.remove(i)
         return Response()
 
-    @swagger_auto_schema(operation_summary="查看最近的备份列表", responses=TextListSerializer(many=True), request_body=None)
+    @swagger_auto_schema(operation_summary="查看最近的备份列表", responses={200: TextListSerializer(many=True)}, request_body=None)
     def get(self, request, *args, **kwargs):
         items = []
         name = request.GET.get('name', None)
