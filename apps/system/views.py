@@ -17,7 +17,6 @@ from rest_framework.serializers import Serializer
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from apps.hrm.models import Employee
 from apps.system.errors import OLD_PASSWORD_WRONG, PASSWORD_NOT_SAME, SCHEDULE_WRONG
 from apps.system.filters import DeptFilterSet, UserFilterSet
 # from django_q.models import Task as QTask, Schedule as QSchedule
@@ -383,14 +382,16 @@ class UserPostViewSet(CreateModelMixin, DestroyModelMixin, ListModelMixin, Custo
         with transaction.atomic():
             instance = serializer.save()
             user = instance.user
-            up = UserPost.objects.filter(user=user).order_by('sort', 'create_time').first()
+            up = UserPost.objects.filter(user=user).order_by(
+                'sort', 'create_time').first()
             if up:
                 user.belong_dept = up.dept
                 user.post = up.post
                 user.update_by = self.request.user
                 user.save()
                 # 更新人员表
-                ep = Employee.objects.get_queryset(all=True).filter(user=user).first()
+                ep = Employee.objects.get_queryset(
+                    all=True).filter(user=user).first()
                 if ep:
                     ep.belong_dept = user.belong_dept
                     ep.post = user.post
@@ -401,7 +402,8 @@ class UserPostViewSet(CreateModelMixin, DestroyModelMixin, ListModelMixin, Custo
         with transaction.atomic():
             user = instance.user
             instance.delete()
-            up = UserPost.objects.filter(user=user).order_by('sort', 'create_time').first()
+            up = UserPost.objects.filter(user=user).order_by(
+                'sort', 'create_time').first()
             if up:
                 user.belong_dept = up.dept
                 user.post = up.post
@@ -411,7 +413,8 @@ class UserPostViewSet(CreateModelMixin, DestroyModelMixin, ListModelMixin, Custo
             user.update_by = self.request.user
             user.save()
             # 更新人员表
-            ep = Employee.objects.get_queryset(all=True).filter(user=user).first()
+            ep = Employee.objects.get_queryset(
+                all=True).filter(user=user).first()
             if ep:
                 ep.belong_dept = user.belong_dept
                 ep.post = user.post
@@ -431,14 +434,16 @@ class UserViewSet(CustomModelViewSet):
     ordering = ['create_time', 'type']
 
     def get_queryset(self):
-        if self.request.method == 'GET'  and (not self.request.query_params.get('is_deleted', None)):
+        if self.request.method == 'GET' and (not self.request.query_params.get('is_deleted', None)):
             self.queryset = User.objects.all()
         return super().get_queryset()
-    
+
     def perform_update(self, serializer):
         instance = serializer.save()
-        ep = Employee.objects.get_queryset(all=True).filter(user=instance).first()
-        ep2 = Employee.objects.get_queryset(all=True).filter(phone=instance.phone).first()
+        ep = Employee.objects.get_queryset(
+            all=True).filter(user=instance).first()
+        ep2 = Employee.objects.get_queryset(
+            all=True).filter(phone=instance.phone).first()
         if ep:
             pass
         elif ep2:
@@ -461,8 +466,10 @@ class UserViewSet(CustomModelViewSet):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         instance = serializer.save(password=password, belong_dept=None)
-        ep = Employee.objects.get_queryset(all=True).filter(user=instance).first()
-        ep2 = Employee.objects.get_queryset(all=True).filter(phone=instance.phone).first()
+        ep = Employee.objects.get_queryset(
+            all=True).filter(user=instance).first()
+        ep2 = Employee.objects.get_queryset(
+            all=True).filter(phone=instance.phone).first()
         if ep:
             pass
         elif ep2:
@@ -500,7 +507,7 @@ class UserViewSet(CustomModelViewSet):
                 raise ParseError(**PASSWORD_NOT_SAME)
         else:
             raise ValidationError(**OLD_PASSWORD_WRONG)
-    
+
     @action(methods=['post'], detail=True, perms_map={'post': '*'}, serializer_class=Serializer)
     def reset_password(self, request, pk=None):
         user = self.get_object()
@@ -548,7 +555,8 @@ class UserViewSet(CustomModelViewSet):
         if openid:
             user = request.user
             if user.wxmp_openid != openid:
-                User.objects.filter(wxmp_openid=openid).update(wxmp_openid=None)
+                User.objects.filter(wxmp_openid=openid).update(
+                    wxmp_openid=None)
                 user.wxmp_openid = openid
                 user.save()
         return Response({'wxmp_openid': openid})
@@ -668,16 +676,17 @@ class ApkViewSet(MyLoggingMixin, ListModelMixin, CreateModelMixin, GenericViewSe
         sr.is_valid(raise_exception=True)
         vdata = sr.validated_data
         update_sysconfig({
-            "apk":{
+            "apk": {
                 "apk_version": vdata['version'],
                 "apk_file": vdata['file']
             }
         })
         return Response()
-    
+
 
 class MyScheduleViewSet(ListModelMixin, CreateModelMixin, DestroyModelMixin, CustomGenericViewSet):
-    perms_map = {'get': '*', 'post': 'myschedule.create', 'delete': 'myschedule.delete'}
+    perms_map = {'get': '*', 'post': 'myschedule.create',
+                 'delete': 'myschedule.delete'}
     serializer_class = MyScheduleSerializer
     create_serializer_class = MyScheduleCreateSerializer
     queryset = MySchedule.objects.all()
@@ -689,7 +698,8 @@ class MyScheduleViewSet(ListModelMixin, CreateModelMixin, DestroyModelMixin, Cus
         "seconds": "秒",
         "microseconds": "毫秒"
     }
-    def get_chinese_description(self, type:str = 'interval', data: dict = {}):
+
+    def get_chinese_description(self, type: str = 'interval', data: dict = {}):
         """转换为汉语描述
         """
         if type == 'interval':
@@ -698,22 +708,24 @@ class MyScheduleViewSet(ListModelMixin, CreateModelMixin, DestroyModelMixin, Cus
             locale.setlocale(locale.LC_ALL, 'zh_CN.UTF-8')
             return get_description(f"{data['minute']} {data['hour']} {data['day_of_month']} {data['month_of_year']} {data['day_of_week']}")
         return ''
-        
+
     @transaction.atomic
     def perform_create(self, serializer):
         vdata = serializer.validated_data
-        vdata['create_by'] = self.request.user  #不可少
+        vdata['create_by'] = self.request.user  # 不可少
         interval_data = vdata.pop('interval_', None)
         crontab_data = vdata.pop('crontab_', None)
         if vdata['type'] == 10:
-            interval, _ = IntervalSchedule.objects.get_or_create(**interval_data, defaults=interval_data)
+            interval, _ = IntervalSchedule.objects.get_or_create(
+                **interval_data, defaults=interval_data)
             obj = MySchedule(**vdata)
             obj.name = self.get_chinese_description('interval', vdata)
             obj.interval = interval
             obj.save()
         elif vdata['type'] == 20:
             crontab_data['timezone'] = 'Asia/Shanghai'
-            crontab, _ = CrontabSchedule.objects.get_or_create(**crontab_data, defaults=crontab_data)
+            crontab, _ = CrontabSchedule.objects.get_or_create(
+                **crontab_data, defaults=crontab_data)
             obj = MySchedule(**vdata)
             obj.name = self.get_chinese_description('crontab', vdata)
             obj.crontab = crontab
@@ -732,12 +744,14 @@ class SysBaseConfigView(APIView):
         获取系统基本信息
         """
         config = get_sysconfig()
-        base_dict = {key: config[key] for key in self.read_keys if key in config}
+        base_dict = {key: config[key]
+                     for key in self.read_keys if key in config}
         return Response(base_dict)
+
 
 class SysConfigView(MyLoggingMixin, APIView):
     perms_map = {'get': 'sysconfig.view', 'put': 'sysconfig.update'}
-    
+
     def get(self, request, format=None):
         """
         获取config json
@@ -748,7 +762,7 @@ class SysConfigView(MyLoggingMixin, APIView):
         if request.query_params.get('reload', None):
             reload = True
         return Response(get_sysconfig(reload=reload))
-    
+
     @swagger_auto_schema(request_body=Serializer)
     def put(self, request, format=None):
         """

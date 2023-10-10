@@ -2,9 +2,7 @@
 from django_celery_beat.models import PeriodicTask, CrontabSchedule, IntervalSchedule
 from rest_framework import serializers
 from django_celery_results.models import TaskResult
-from apps.hrm.errors import PHONE_EXIST
 from apps.system.errors import USERNAME_EXIST
-from apps.system.services import sync_dahua_dept
 from apps.utils.fields import MyFilePathField
 from apps.utils.serializers import CustomModelSerializer
 from apps.utils.constants import EXCLUDE_FIELDS, EXCLUDE_FIELDS_BASE
@@ -13,7 +11,6 @@ from .models import (Dictionary, DictType, File, Dept, MySchedule, Permission, P
                      Role, User, UserPost)
 from rest_framework.exceptions import ParseError, ValidationError
 from django.db import transaction
-from apps.third.tapis import dhapis
 from rest_framework.validators import UniqueValidator
 from django.conf import settings
 from django.db.models import Q
@@ -255,7 +252,8 @@ class DeptCreateUpdateSerializer(CustomModelSerializer):
     """
     部门序列化
     """
-    parent = serializers.PrimaryKeyRelatedField(queryset=Dept.objects.all(), required=True)
+    parent = serializers.PrimaryKeyRelatedField(
+        queryset=Dept.objects.all(), required=True)
 
     class Meta:
         model = Dept
@@ -281,7 +279,9 @@ class UserSimpleSerializer(CustomModelSerializer):
 
 
 class UserSignatureSerializer(CustomModelSerializer):
-    signature = serializers.CharField(source='employee.signature', read_only=True)
+    signature = serializers.CharField(
+        source='employee.signature', read_only=True)
+
     class Meta:
         model = User
         fields = ['id', 'username', 'name', 'phone', 'signature']
@@ -291,7 +291,8 @@ class UserListSerializer(CustomModelSerializer):
     """
     用户列表序列化
     """
-    belong_dept_name = serializers.CharField(source='belong_dept.name', read_only=True)
+    belong_dept_name = serializers.CharField(
+        source='belong_dept.name', read_only=True)
     post_name = serializers.CharField(source='post.name', read_only=True)
     # posts_ = PostSimpleSerializer(source='posts', many=True)
     avatar_f = MyFilePathField(source='avatar', read_only=True)
@@ -394,7 +395,8 @@ class UserInfoSerializer(CustomModelSerializer):
 
     class Meta:
         model = User
-        fields = ['id', 'username', 'name', 'post', 'avatar', 'belong_dept', 'type']
+        fields = ['id', 'username', 'name', 'post',
+                  'avatar', 'belong_dept', 'type']
 
 
 class ApkSerializer(serializers.Serializer):
