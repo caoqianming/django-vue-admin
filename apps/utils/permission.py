@@ -1,7 +1,7 @@
 from django.core.cache import cache
 from rest_framework.permissions import BasePermission
 from apps.utils.queryset import get_child_queryset2
-from apps.system.models import DataFilter, Dept, Permission, PostRole, UserPost
+from apps.system.models import DataFilter, Dept, Permission, PostRole, UserPost, User
 from django.db.models.query import QuerySet
 
 ALL_PERMS = [
@@ -39,6 +39,16 @@ def get_user_perms_map(user):
                                 user_perms_map[code] = {dept_id: pr.data_range}
     cache.set('perms_' + str(user.id), user_perms_map, timeout=300)
     return user_perms_map
+
+
+def has_perm(user: User, perm_codes):
+    user_perms_map = cache.get(f'perms_{user.id}', None)
+    if user_perms_map is None:
+        user_perms_map = get_user_perms_map(user)
+    for item in perm_codes:
+        if item in user_perms_map:
+            return True
+    return False
 
 
 class RbacPermission(BasePermission):
