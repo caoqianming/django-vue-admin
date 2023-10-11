@@ -389,14 +389,6 @@ class UserPostViewSet(CreateModelMixin, DestroyModelMixin, ListModelMixin, Custo
                 user.post = up.post
                 user.update_by = self.request.user
                 user.save()
-                # 更新人员表
-                ep = Employee.objects.get_queryset(
-                    all=True).filter(user=user).first()
-                if ep:
-                    ep.belong_dept = user.belong_dept
-                    ep.post = user.post
-                    ep.is_deleted = False
-                    ep.save()
 
     def perform_destroy(self, instance):
         with transaction.atomic():
@@ -412,14 +404,6 @@ class UserPostViewSet(CreateModelMixin, DestroyModelMixin, ListModelMixin, Custo
                 user.post = None
             user.update_by = self.request.user
             user.save()
-            # 更新人员表
-            ep = Employee.objects.get_queryset(
-                all=True).filter(user=user).first()
-            if ep:
-                ep.belong_dept = user.belong_dept
-                ep.post = user.post
-                ep.is_deleted = False
-                ep.save()
 
 
 class UserViewSet(CustomModelViewSet):
@@ -438,25 +422,6 @@ class UserViewSet(CustomModelViewSet):
             self.queryset = User.objects.all()
         return super().get_queryset()
 
-    def perform_update(self, serializer):
-        instance = serializer.save()
-        ep = Employee.objects.get_queryset(
-            all=True).filter(user=instance).first()
-        ep2 = Employee.objects.get_queryset(
-            all=True).filter(phone=instance.phone).first()
-        if ep:
-            pass
-        elif ep2:
-            ep = ep2
-        else:
-            ep = Employee()
-        ep.user = instance
-        ep.name = instance.name
-        ep.phone = instance.phone
-        ep.type = instance.type
-        ep.is_deleted = False
-        ep.save()
-
     def create(self, request, *args, **kwargs):
         """创建用户
 
@@ -465,23 +430,7 @@ class UserViewSet(CustomModelViewSet):
         password = make_password('abc!0000')
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        instance = serializer.save(password=password, belong_dept=None)
-        ep = Employee.objects.get_queryset(
-            all=True).filter(user=instance).first()
-        ep2 = Employee.objects.get_queryset(
-            all=True).filter(phone=instance.phone).first()
-        if ep:
-            pass
-        elif ep2:
-            ep = ep2
-        else:
-            ep = Employee()
-        ep.user = instance
-        ep.name = instance.name
-        ep.phone = instance.phone
-        ep.type = instance.type
-        ep.is_deleted = False
-        ep.save()
+        serializer.save(password=password, belong_dept=None)
         return Response(data=serializer.data)
 
     @action(methods=['put'], detail=False,
