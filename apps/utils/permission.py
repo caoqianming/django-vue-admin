@@ -3,6 +3,7 @@ from rest_framework.permissions import BasePermission
 from apps.utils.queryset import get_child_queryset2
 from apps.system.models import DataFilter, Dept, Permission, PostRole, UserPost, User
 from django.db.models.query import QuerySet
+from typing import List
 
 ALL_PERMS = [
 
@@ -41,7 +42,10 @@ def get_user_perms_map(user):
     return user_perms_map
 
 
-def has_perm(user: User, perm_codes):
+def has_perm(user: User, perm_codes: List[str]):
+    """
+    返回用户是否具有给定权限列表中的权限
+    """
     user_perms_map = cache.get(f'perms_{user.id}', None)
     if user_perms_map is None:
         user_perms_map = get_user_perms_map(user)
