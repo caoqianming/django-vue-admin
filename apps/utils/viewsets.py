@@ -85,6 +85,14 @@ class CustomGenericViewSet(MyLoggingMixin, GenericViewSet):
             for k, v in self.perms_map.items():
                 if v not in ALL_PERMS and v != '*':
                     ALL_PERMS.append(v)
+        if not hasattr(self, 'filterset_fields'):
+            self.filterset_fields = self.select_related_fields
+
+    def filter_custom(self, queryset):
+        """
+        自定义过滤方法可复写
+        """
+        return queryset
 
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -92,6 +100,7 @@ class CustomGenericViewSet(MyLoggingMixin, GenericViewSet):
             queryset = queryset.select_related(*self.select_related_fields)
         if self.prefetch_related_fields:
             queryset = queryset.prefetch_related(*self.prefetch_related_fields)
+        queryset = self.filter_custom(queryset)
         if self.data_filter:
             user = self.request.user
             if user.is_superuser:
