@@ -6,6 +6,23 @@ from datetime import datetime
 from openpyxl import Workbook, styles
 from openpyxl.drawing.image import Image
 from openpyxl.utils import get_column_letter, column_index_from_string
+from docxtpl import DocxTemplate
+
+
+def export_docx(template_path: str, context_data: dict, file_name: str):
+    """
+    Word导出
+    :param template_path: 模板路径
+    :param context_data: 数据
+    :param file_name: 保存的文件名
+    :return:返回文件路径
+    """
+    docx = DocxTemplate(settings.BASE_DIR + template_path)
+    docx.render(context_data)
+    file_path = f'/media/temp/{file_name}'
+    save_path = settings.BASE_DIR + file_path
+    docx.save(save_path)
+    return file_path
 
 
 def len_byte(value):
@@ -26,7 +43,8 @@ def export_excel(field_data: list, data: list, FileName: str):
     :return:返回文件的下载url完整路径
     """
     wbk = xlwt.Workbook(encoding='utf-8')
-    sheet = wbk.add_sheet('Sheet1', cell_overwrite_ok=True)  # 第二参数用于确认同一个cell单元是否可以重设值。
+    # 第二参数用于确认同一个cell单元是否可以重设值。
+    sheet = wbk.add_sheet('Sheet1', cell_overwrite_ok=True)
     style = xlwt.XFStyle()  # 赋值style为XFStyle()，初始化样式
     # 设置居中
     wbk.set_colour_RGB(0x23, 0, 60, 139)
@@ -62,7 +80,8 @@ def export_excel(field_data: list, data: list, FileName: str):
     style.font = tab_fnt  # 设置单元格内字体样式
     style.borders = tab_borders
     for index, ele in enumerate(field_data):
-        sheet.write_merge(0, 0, index, index, ele, style)  # (列开始, 列结束, 行开始, 行结束, '数据内容')
+        # (列开始, 列结束, 行开始, 行结束, '数据内容')
+        sheet.write_merge(0, 0, index, index, ele, style)
 
     # 确定栏位宽度
     col_width = []
@@ -147,7 +166,7 @@ def export_excel_img(field_data: list, data: list, FileName: str):
                     img.width, img.height = (90, 90)
                     imgs.append((img, field_data[i2]['letter'] + str(i1+2)))
                 except:  # 这里先不做处理
-                    pass 
+                    pass
             else:
                 cell.value = v2
 
@@ -155,7 +174,7 @@ def export_excel_img(field_data: list, data: list, FileName: str):
         ws.add_image(i[0], i[1])
 
     FileNameF = FileName + datetime.now().strftime('%Y%m%d%H%M%S') + '.xlsx'
-    path = '/temp/'
+    path = '/media/temp/'
     pathRoot = settings.BASE_DIR + path
     if not os.path.exists(pathRoot):
         os.makedirs(pathRoot)
