@@ -94,12 +94,16 @@ class CustomGenericViewSet(MyLoggingMixin, GenericViewSet):
         """
         return queryset
 
-    def get_queryset(self):
-        queryset = super().get_queryset()
+    def filter_queryset(self, queryset):
+        queryset = super().filter_queryset(queryset)
         if self.select_related_fields:
             queryset = queryset.select_related(*self.select_related_fields)
         if self.prefetch_related_fields:
             queryset = queryset.prefetch_related(*self.prefetch_related_fields)
+        return queryset
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
         queryset = self.filter_custom(queryset)
         if self.data_filter:
             user = self.request.user
