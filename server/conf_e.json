@@ -1,0 +1,13 @@
+{
+    "base": {
+        "base_name": "xx平台",
+        "base_logo": "/media/default/logo.png",
+        "base_name_short": "xx",
+        "base_logo_side": ""
+    },
+    "apk": {
+        "apk_version": "1.0",
+        "apk_file": "/media/default/xx.apk",
+        "apk_remark": "修复了部分错误"
+    }
+}
