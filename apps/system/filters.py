@@ -22,5 +22,6 @@ class DeptFilterSet(filters.FilterSet):
     class Meta:
         model = Dept
         fields = {
-            'type': ['exact', 'in']
+            'type': ['exact', 'in'],
+            'name': ['exact', 'in', 'contains']
         }
