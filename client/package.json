@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "@riophae/vue-treeselect": "^0.4.0",
-    "axios": "0.18.1",
+    "axios": "1.6.0",
     "d3": "^7.3.0",
     "dagre-d3": "^0.6.4",
     "element-ui": "^2.15.6",
