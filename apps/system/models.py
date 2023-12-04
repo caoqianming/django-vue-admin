@@ -26,10 +26,11 @@ class Permission(BaseModel):
         (PERM_TYPE_BUTTON, '按钮')
     )
     name = models.CharField('名称', max_length=30)
-    type = models.PositiveSmallIntegerField('类型', choices=menu_type_choices, default=30)
+    type = models.PositiveSmallIntegerField(
+        '类型', choices=menu_type_choices, default=30)
     sort = models.PositiveSmallIntegerField('排序标记', default=1)
     parent = models.ForeignKey('self', null=True, blank=True,
-                               on_delete=models.SET_NULL, verbose_name='父')
+                               on_delete=models.SET_NULL, verbose_name='父', db_constraint=False)
     codes = models.JSONField('权限标识', default=list, null=True, blank=True)
 
     def __str__(self):
@@ -67,7 +68,8 @@ class Role(CommonADModel):
     """
     name = models.CharField('名称', max_length=32)
     code = models.CharField('角色标识', max_length=32, null=True, blank=True)
-    perms = models.ManyToManyField(Permission, blank=True, verbose_name='功能权限', related_name='role_perms')
+    perms = models.ManyToManyField(
+        Permission, blank=True, verbose_name='功能权限', related_name='role_perms')
     description = models.CharField('描述', max_length=50, blank=True, null=True)
 
     class Meta:
@@ -106,8 +108,10 @@ class PostRole(BaseModel):
     """
     data_range = models.PositiveSmallIntegerField('数据权限范围', choices=DataFilter.choices,
                                                   default=DataFilter.THISLEVEL_AND_BELOW)
-    post = models.ForeignKey(Post, verbose_name='关联岗位', on_delete=models.CASCADE)
-    role = models.ForeignKey(Role, verbose_name='关联角色', on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, verbose_name='关联岗位',
+                             on_delete=models.CASCADE)
+    role = models.ForeignKey(Role, verbose_name='关联角色',
+                             on_delete=models.CASCADE)
 
 
 class SoftDeletableUserManager(SoftDeletableManagerMixin, UserManager):
@@ -127,16 +131,21 @@ class User(AbstractUser, CommonBModel):
         'self', null=True, blank=True, on_delete=models.SET_NULL, verbose_name='上级主管')
     post = models.ForeignKey(Post, verbose_name='主要岗位', on_delete=models.SET_NULL,
                              null=True, blank=True)
-    posts = models.ManyToManyField(Post, through='system.userpost', related_name='user_posts')
+    posts = models.ManyToManyField(
+        Post, through='system.userpost', related_name='user_posts')
     depts = models.ManyToManyField(Dept, through='system.userpost')
     roles = models.ManyToManyField(Role, verbose_name='关联角色')
 
     # 关联账号
     secret = models.CharField('密钥', max_length=100, null=True, blank=True)
-    wx_openid = models.CharField('微信公众号OpenId', max_length=100, null=True, blank=True)
-    wx_nickname = models.CharField('微信昵称', max_length=100, null=True, blank=True)
-    wx_headimg = models.CharField('微信头像', max_length=100, null=True, blank=True)
-    wxmp_openid = models.CharField('微信小程序OpenId', max_length=100, null=True, blank=True)
+    wx_openid = models.CharField(
+        '微信公众号OpenId', max_length=100, null=True, blank=True)
+    wx_nickname = models.CharField(
+        '微信昵称', max_length=100, null=True, blank=True)
+    wx_headimg = models.CharField(
+        '微信头像', max_length=100, null=True, blank=True)
+    wxmp_openid = models.CharField(
+        '微信小程序OpenId', max_length=100, null=True, blank=True)
 
     objects = SoftDeletableUserManager()
 
@@ -154,9 +163,12 @@ class UserPost(BaseModel):
     用户岗位关系表
     """
     name = models.CharField('名称', max_length=20, null=True, blank=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='up_user')
-    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='up_post')
-    dept = models.ForeignKey(Dept, on_delete=models.CASCADE, related_name='up_dept')
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='up_user')
+    post = models.ForeignKey(
+        Post, on_delete=models.CASCADE, related_name='up_post')
+    dept = models.ForeignKey(
+        Dept, on_delete=models.CASCADE, related_name='up_dept')
     sort = models.PositiveSmallIntegerField('排序', default=1)
 
     class Meta:
@@ -229,7 +241,8 @@ class File(CommonAModel):
         (FILE_TYPE_OTHER, '其它')
     )
     mime = models.CharField('文件格式', max_length=120, null=True, blank=True)
-    type = models.CharField('文件类型', max_length=50, choices=type_choices, default='文档')
+    type = models.CharField('文件类型', max_length=50,
+                            choices=type_choices, default='文档')
     path = models.CharField('地址', max_length=200, null=True, blank=True)
 
     class Meta:
@@ -250,5 +263,7 @@ class MySchedule(CommonAModel):
     )
     name = models.CharField('名称', max_length=200)
     type = models.PositiveSmallIntegerField('周期类型', default=10)
-    interval = models.ForeignKey(IntervalSchedule, on_delete=models.PROTECT, null=True, blank=True)
-    crontab = models.ForeignKey(CrontabSchedule, on_delete=models.PROTECT, null=True, blank=True)
+    interval = models.ForeignKey(
+        IntervalSchedule, on_delete=models.PROTECT, null=True, blank=True)
+    crontab = models.ForeignKey(
+        CrontabSchedule, on_delete=models.PROTECT, null=True, blank=True)
