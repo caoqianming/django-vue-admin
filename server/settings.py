@@ -258,7 +258,7 @@ AUTHENTICATION_BACKENDS = (
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/2",
+        "LOCATION": conf.REDIS_LOCATION,
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
@@ -266,7 +266,7 @@ CACHES = {
 }
 
 # celery配置,celery正常运行必须安装redis
-CELERY_BROKER_URL = "redis://127.0.0.1:6379/3"   # 任务存储
+CELERY_BROKER_URL = conf.CELERY_BROKER_URL   # 任务存储
 CELERYD_MAX_TASKS_PER_CHILD = 100  # 每个worker最多执行100个任务就会被销毁，可防止内存泄露
 CELERY_TIMEZONE = 'Asia/Shanghai'  # 设置时区
 CELERY_ENABLE_UTC = True  # 启动时区设置
