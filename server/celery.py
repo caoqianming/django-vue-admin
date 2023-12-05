@@ -1,11 +1,11 @@
 import os
-
+from . import conf
 from celery import Celery
 
 # set the default Django settings module for the 'celery' program.
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'server.settings')
 
-app = Celery('happy-drf')
+app = Celery(conf.BASE_PROJECT_CODE)
 
 # Using a string here means the worker doesn't have to serialize
 # the configuration object to child processes.
