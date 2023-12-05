@@ -57,6 +57,7 @@ def update_sysconfig(new_dict):
         f.write(json.dumps(config, indent=4, ensure_ascii=False).encode('utf-8'))
     cache.set('system_config', config)
 
+
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = conf.SECRET_KEY
 
@@ -66,7 +67,7 @@ DEBUG = conf.DEBUG
 ALLOWED_HOSTS = ['*']
 
 SYS_NAME = 'HAPPY-DRF'
-SYS_VERSION = '2.2.2'
+SYS_VERSION = '2.3.0'
 
 
 # Application definition
