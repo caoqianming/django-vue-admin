@@ -8,6 +8,7 @@ h5/*
 *.pyc
 media/*
 dist/*
+pkgs/*
 !media/default/
 celerybeat.pid
 celerybeat-schedule.bak

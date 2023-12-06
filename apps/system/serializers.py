@@ -262,13 +262,11 @@ class DeptCreateUpdateSerializer(CustomModelSerializer):
     @transaction.atomic
     def create(self, validated_data):
         ins = super().create(validated_data)
-        sync_dahua_dept(ins)
         return ins
 
     @transaction.atomic
     def update(self, instance, validated_data):
         ins = super().update(instance, validated_data)
-        sync_dahua_dept(ins)
         return ins
 
 
@@ -304,7 +302,7 @@ class UserListSerializer(CustomModelSerializer):
 
 def phone_exist(phone):
     if User.objects.filter(phone=phone).exists():
-        raise serializers.ValidationError(**PHONE_EXIST)
+        raise serializers.ValidationError('手机号已存在')
 
 
 def user_exist(username):
