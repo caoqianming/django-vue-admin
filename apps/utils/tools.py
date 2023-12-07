@@ -9,10 +9,11 @@ import requests
 from io import BytesIO
 from rest_framework.serializers import ValidationError
 
+
 def tran64(s):
     missing_padding = len(s) % 4
     if missing_padding != 0:
-        s = s+'='* (4 - missing_padding)
+        s = s+'=' * (4 - missing_padding)
     return s
 
 
@@ -203,3 +204,36 @@ def check_phone_e(phone):
     if not re.match(re_phone, phone):
         raise ValidationError('手机号格式错误')
     return phone
+
+
+def compare_dicts(dict1, dict2, ignore_order=False):
+    if ignore_order:
+        for key in sorted(dict1.keys()):
+            if key not in dict2 or not compare_values(dict1[key], dict2[key], ignore_order):
+                return False
+        return True
+    else:
+        return dict1 == dict2
+
+
+def compare_lists_of_dicts(list1, list2, ignore_order=False):
+    """比较两个列表，这里的列表包含字典（对象）"""
+    if ignore_order:
+        # 转换列表中的字典为元组列表，然后排序进行比较
+        sorted_list1 = sorted((tuple(sorted(d.items())) for d in list1))
+        sorted_list2 = sorted((tuple(sorted(d.items())) for d in list2))
+        return sorted_list1 == sorted_list2
+    else:
+        # 按顺序比较列表中的字典
+        return all(compare_dicts(obj1, obj2) for obj1, obj2 in zip(list1, list2))
+
+
+def compare_values(val1, val2, ignore_order=False):
+    """通用比较函数，也可以处理字典和列表。"""
+    if isinstance(val1, list) and isinstance(val2, list):
+        # 假设这里我们关心列表中对象的顺序
+        return compare_lists_of_dicts(val1, val2, ignore_order)
+    elif isinstance(val1, dict) and isinstance(val2, dict):
+        return compare_dicts(val1, val2, ignore_order)
+    else:
+        return val1 == val2
