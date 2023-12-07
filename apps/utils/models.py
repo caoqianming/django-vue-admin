@@ -1,6 +1,7 @@
 import time
 import django.utils.timezone as timezone
 from django.db import models
+from django.db.models import Model
 from django.db.models.query import QuerySet
 from apps.utils.snowflake import idWorker
 from django.db import IntegrityError
@@ -184,8 +185,17 @@ class CommonBDModel(BaseModel):
         abstract = True
 
 
-# class Smslog(BaseModel):
-#     """
-#     短信发送记录表
-#     """
-#     phone = models.CharField('号码')
+def get_model_info(cls_or_instance):
+    """
+    返回类似 system.dept 的字符
+    """
+    if isinstance(cls_or_instance, Model):
+        # 是一个模型实例
+        app_label = cls_or_instance._meta.app_label
+        model_name = cls_or_instance._meta.model_name
+    else:
+        # 假定是一个模型类
+        app_label = cls_or_instance._meta.app_label
+        model_name = cls_or_instance._meta.model_name
+
+    return f'{app_label}.{model_name}'
