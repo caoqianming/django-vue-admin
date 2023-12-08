@@ -137,7 +137,7 @@ class UserModifySerializer(serializers.ModelSerializer):
     """
     用户编辑序列化
     """
-    phone = serializers.CharField(max_length=11, required=False)
+    phone = serializers.CharField(max_length=11, required=False, allow_null=True)
 
     class Meta:
         model = User
@@ -145,9 +145,10 @@ class UserModifySerializer(serializers.ModelSerializer):
                   'position', 'avatar', 'is_active', 'roles', 'is_superuser']
 
     def validate_phone(self, phone):
-        re_phone = '^1[358]\d{9}$|^147\d{8}$|^176\d{8}$'
-        if not re.match(re_phone, phone):
-            raise serializers.ValidationError('手机号码不合法')
+        if phone is not None:
+            re_phone = '^1[358]\d{9}$|^147\d{8}$|^176\d{8}$'
+            if not re.match(re_phone, phone):
+                raise serializers.ValidationError('手机号码不合法')
         return phone
 
 
