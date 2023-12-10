@@ -38,7 +38,8 @@ JWT认证,可使用simple_history实现审计功能,支持swagger
 
 安装依赖包 `pip install -r requirements.txt`
 
-修改数据库连接 `server\settings_dev.py` 
+复制server文件夹下的conf_e.py为conf.py
+根据需要修改里面的数据库连接及DEBUG参数
 
 同步数据库 `python manage.py migrate`
 
@@ -80,9 +81,9 @@ location / {
 后台地址 localhost:8000/admin
 
 ## 部署
-部署时使用的是settings_pro.py。注意修改
+部署时注意修改conf.py
 
-可以前后端分开部署, nginx代理。也可打包之后放在server/vuedist文件夹, 然后执行collectstatic
+可以前后端分开部署, nginx代理。也可打包之后将前端dist替换server/dist, 然后执行collectstatic
 
 ### docker-compose 方式运行
 
@@ -136,12 +137,9 @@ docker-compose exec backend python manage.py makemigrations
 
 进入虚拟环境并启动beat: `celery -A server beat -l info`
 
-### 后续
+### 工作流
 工作流模块参考loonflow的实现可查看其文档(逻辑一样, 感谢loonflow)
 目前大部分代码已上传, 可查看swagger
-
-### 下一步
-功能权限和数据权限的处理有大的优化空间, 可实现更加合理的权限划分, 但对目前代码改动较大，在考虑中
 
 ### 微信群
 愿意交流的话可以加微信群
