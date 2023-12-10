@@ -76,9 +76,9 @@ location / {
 ### 运行
 打开localhost:8012即可访问
 
-接口文档 localhost:8000/docs
+接口文档 localhost:8000/api/swagger/
 
-后台地址 localhost:8000/admin
+后台地址 localhost:8000/django/admin/
 
 ## 部署
 部署时注意修改conf.py
