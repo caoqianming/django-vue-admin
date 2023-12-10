@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 from datetime import datetime, timedelta
 import os
+from . import conf
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -24,7 +25,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'ez9z3a4m*$%srn9ve_t71yd!v+&xn9@0k(e(+l6#g1h=e5i4da'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-
+DEBUG = conf.DEBUG
 
 ALLOWED_HOSTS = ['*']
 
@@ -84,7 +85,7 @@ WSGI_APPLICATION = 'server.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
-
+DATABASES = conf.DATABASES
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -123,10 +124,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'vuedist/static'),
-)
+STATIC_ROOT = os.path.join(BASE_DIR, 'dist/static')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -176,35 +174,32 @@ AUTHENTICATION_BACKENDS = (
     'apps.system.authentication.CustomBackend',
 )
 
-# 缓存配置,有需要可更改为redis
-# CACHES = {
-#     "default": {
-#         "BACKEND": "django_redis.cache.RedisCache",
-#         "LOCATION": "redis://redis:6379/1",
-#         "OPTIONS": {
-#             "CLIENT_CLASS": "django_redis.client.DefaultClient",
-#             "PICKLE_VERSION": -1
-#         }
-#     }
-# }
+# 缓存配置,使用redis
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/1",
+    }
+}
 
 # celery配置,celery正常运行必须安装redis
 CELERY_BROKER_URL = "redis://localhost:6379/0"   # 任务存储
 CELERYD_MAX_TASKS_PER_CHILD = 100  # 每个worker最多执行300个任务就会被销毁，可防止内存泄露
 CELERY_TIMEZONE = 'Asia/Shanghai'  # 设置时区
 CELERY_ENABLE_UTC = True  # 启动时区设置
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 
 # swagger配置
 SWAGGER_SETTINGS = {
-   'LOGIN_URL':'/api/admin/login/',
-   'LOGOUT_URL':'/api/admin/logout/'
+   'LOGIN_URL':'/django/admin/login/',
+   'LOGOUT_URL':'/django/admin/logout/'
 }
 
 # 日志配置
 # 创建日志的路径
 LOG_PATH = os.path.join(BASE_DIR, 'log')
 # 如果地址不存在，则自动创建log文件夹
-if not os.path.join(LOG_PATH):
+if not os.path.exists(LOG_PATH):
     os.mkdir(LOG_PATH)
 LOGGING = {
     'version': 1,
