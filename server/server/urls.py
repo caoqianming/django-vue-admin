@@ -41,8 +41,8 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = [
-    path('api/admin/doc/', include('django.contrib.admindocs.urls')),
-    path('api/admin/', admin.site.urls),
+    path('django/admin/doc/', include('django.contrib.admindocs.urls')),
+    path('django/admin/', admin.site.urls),
 
     # api
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
