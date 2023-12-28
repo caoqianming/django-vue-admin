@@ -301,8 +301,8 @@ class UserListSerializer(CustomModelSerializer):
 
 
 def phone_exist(phone):
-    if User.objects.filter(phone=phone).exists():
-        raise serializers.ValidationError('手机号已存在')
+    if phone and User.objects.filter(phone=phone).exists():
+        raise serializers.ValidationError("手机号已存在")
 
 
 def user_exist(username):
@@ -315,7 +315,8 @@ class UserUpdateSerializer(CustomModelSerializer):
     """
     用户编辑序列化
     """
-    phone = serializers.CharField(required=False)
+    phone = serializers.CharField(
+        required=False, allow_blank=True, allow_null=True)
 
     class Meta:
         model = User
@@ -333,7 +334,8 @@ class UserCreateSerializer(CustomModelSerializer):
     创建用户序列化
     """
     username = serializers.CharField(required=True, validators=[user_exist])
-    phone = serializers.CharField(required=False, validators=[phone_exist])
+    phone = serializers.CharField(required=False, validators=[
+                                  phone_exist], allow_blank=True, allow_null=True)
 
     class Meta:
         model = User
