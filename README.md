@@ -59,7 +59,7 @@ JWT认证,可使用simple_history实现审计功能,支持swagger
 运行服务 `npm run dev` 
 
 ### nginx
-修改nginx.conf
+本地跑时修改nginx.conf，可显示资源文件
 
 ```
 listen 8012
@@ -84,6 +84,51 @@ location / {
 部署时注意修改conf.py
 
 可以前后端分开部署, nginx代理。也可打包之后将前端dist替换server/dist, 然后执行collectstatic
+
+使用gunicorn启动: 进入虚拟环境执行 gunicorn -w 5 -b 0.0.0.0:2251 server.wsgi
+
+如果需要webscoket还需要配置daphne启动，可使用supervisor监控
+
+Nginx配置可参考如下:
+```
+server {
+        listen 2250;
+        client_max_body_size 1024m;
+        location /media/ {
+                alias /home/lighthouse/xx/media/;
+                limit_rate 800k;
+        }
+        location / {
+                alias /home/lighthouse/xx/dist/;
+                index index.html;
+        }
+        location ~ ^/(api|django)/ {
+                set $CSRFTOKEN "";
+                if ($http_cookie ~* "CSRFTOKEN=(.+?)(?=;|$)") {
+                        set $CSRFTOKEN "$1";
+                }
+                proxy_set_header X-CSRFToken $CSRFTOKEN;
+                proxy_pass http://localhost:2251;
+                proxy_pass_header  Authorization;
+                proxy_pass_header  WWW-Authenticate;
+                proxy_set_header Host $host;
+                proxy_set_header X-Real-IP $remote_addr;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        }
+        location /ws/ {
+                proxy_pass http://localhost:2252;
+                proxy_http_version 1.1;
+                proxy_set_header Upgrade $http_upgrade;
+                proxy_set_header Connection "upgrade";
+                proxy_redirect off;
+                proxy_set_header Host $host;
+                proxy_set_header X-Real-IP $remote_addr;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_set_header X-Forwarded-Host $server_name;
+        }
+
+}
+```
 
 ### docker-compose 方式运行
 
