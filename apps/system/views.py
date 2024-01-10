@@ -719,9 +719,6 @@ class SysConfigView(MyLoggingMixin, APIView):
         reload = False
         if request.query_params.get('reload', None):
             reload = True
-<<<<<<< HEAD
-        return Response(get_sysconfig(reload=reload))
-=======
         project_code = request.query_params.get('project_code', '')
         if project_code:
             from apps.develop.models import Project
@@ -733,7 +730,6 @@ class SysConfigView(MyLoggingMixin, APIView):
         else:
             config = get_sysconfig(reload=reload)
         return Response(config)
->>>>>>> 1eec1c2 (feat: base- 基于项目code返回或更改配置信息)
 
     @swagger_auto_schema(request_body=Serializer)
     def put(self, request, format=None):
