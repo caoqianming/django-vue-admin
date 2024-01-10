@@ -745,8 +745,8 @@ class SysConfigView(MyLoggingMixin, APIView):
             try:
                 project = Project.objects.get(code=project_code)
                 config = project.config_json
-                new_config = update_dict(config, data)
-                project.config_json = new_config
+                update_dict(config, data)
+                project.config_json = config
                 project.save()
             except Project.DoesNotExist:
                 raise ParseError('项目不存在')
