@@ -40,7 +40,7 @@ from rest_framework.viewsets import GenericViewSet
 from cron_descriptor import get_description
 import locale
 from drf_yasg.utils import swagger_auto_schema
-from server.settings import get_sysconfig, update_sysconfig
+from server.settings import get_sysconfig, update_sysconfig, update_dict
 
 # logger.info('请求成功！ response_code:{}；response_headers:{}；
 # response_body:{}'.format(response_code, response_headers, response_body[:251]))
@@ -692,7 +692,16 @@ class SysBaseConfigView(APIView):
 
         获取系统基本信息
         """
-        config = get_sysconfig()
+        project_code = request.query_params.get('project_code', '')
+        if project_code:
+            from apps.develop.models import Project
+            try:
+                project = Project.objects.get(code=project_code)
+                config = project.config_json
+            except Project.DoesNotExist:
+                raise ParseError('项目不存在')
+        else:
+            config = get_sysconfig()
         base_dict = {key: config[key]
                      for key in self.read_keys if key in config}
         return Response(base_dict)
@@ -710,7 +719,21 @@ class SysConfigView(MyLoggingMixin, APIView):
         reload = False
         if request.query_params.get('reload', None):
             reload = True
+<<<<<<< HEAD
         return Response(get_sysconfig(reload=reload))
+=======
+        project_code = request.query_params.get('project_code', '')
+        if project_code:
+            from apps.develop.models import Project
+            try:
+                project = Project.objects.get(code=project_code)
+                config = project.config_json
+            except Project.DoesNotExist:
+                raise ParseError('项目不存在')
+        else:
+            config = get_sysconfig(reload=reload)
+        return Response(config)
+>>>>>>> 1eec1c2 (feat: base- 基于项目code返回或更改配置信息)
 
     @swagger_auto_schema(request_body=Serializer)
     def put(self, request, format=None):
@@ -720,5 +743,17 @@ class SysConfigView(MyLoggingMixin, APIView):
         修改config json
         """
         data = request.data
-        update_sysconfig(data)
+        project_code = data.get('project_code', '')
+        if project_code:
+            from apps.develop.models import Project
+            try:
+                project = Project.objects.get(code=project_code)
+                config = project.config_json
+                new_config = update_dict(config, data)
+                project.config_json = new_config
+                project.save()
+            except Project.DoesNotExist:
+                raise ParseError('项目不存在')
+        else:
+            update_sysconfig(data)
         return Response()
