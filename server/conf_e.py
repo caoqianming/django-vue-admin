@@ -1,5 +1,6 @@
 # 基本配置
 SECRET_KEY = 'xxxxxx'
+BASE_PROJECT_CODE = 'xxxxxx'  # 一旦配置不要轻易改变
 BASE_URL = 'http://127.0.0.1:8000'
 BASE_URL_IN = 'http://127.0.0.1:8000'
 BASE_URL_OUT = 'http://127.0.0.1:8000'
@@ -13,6 +14,9 @@ EMAIL_USE_TLS = True
 
 
 # 数据库配置
+CACHE_LOCATION = "redis://127.0.0.1:6379/2"
+CELERY_BROKER_URL = "redis://127.0.0.1:6379/3"
+CELERY_TASK_DEFAULT_QUEUE = BASE_PROJECT_CODE
 DEBUG = True
 DATABASES = {
     'default': {
