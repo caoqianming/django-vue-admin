@@ -5,6 +5,7 @@ __pycache__/
 *.pyc
 media/*
 vuedist/*
+dist/*
 !media/default/
 celerybeat.pid
 celerybeat-schedule.bak
