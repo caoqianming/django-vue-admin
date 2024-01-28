@@ -125,10 +125,11 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'dist/static')
-# 如果需要runserver下使用静态文件，注释掉STATIC_ROOT并取消STATICFILES_DIRS的注释
-# STATICFILES_DIRS = (
-#     os.path.join(BASE_DIR, 'dist/static/'),
-# )
+if DEBUG:
+    STATIC_ROOT = None
+    STATICFILES_DIRS = (
+        os.path.join(BASE_DIR, 'dist/static'),
+    )
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
