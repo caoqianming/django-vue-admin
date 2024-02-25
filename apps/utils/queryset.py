@@ -1,4 +1,5 @@
 from django.apps import apps
+from django.db.models import Q
 
 
 def get_child_queryset_u(checkQueryset, obj, hasParent=True):
@@ -10,11 +11,10 @@ def get_child_queryset_u(checkQueryset, obj, hasParent=True):
     '''
     cls = type(obj)
     queryset = cls.objects.none()
-    fatherQueryset = cls.objects.filter(pk=obj.id)
     if hasParent:
-        queryset = queryset | fatherQueryset
+        queryset = cls.objects.filter(pk=obj.id)
     child_queryset = checkQueryset.filter(parent=obj)
-    while child_queryset:
+    while child_queryset.exists():
         queryset = queryset | child_queryset
         child_queryset = checkQueryset.filter(parent__in=child_queryset)
     return queryset
@@ -33,9 +33,9 @@ def get_child_queryset(name, pk, hasParent=True):
     fatherQueryset = cls.objects.filter(pk=pk)
     if fatherQueryset.exists():
         if hasParent:
-            queryset = queryset | fatherQueryset
+            queryset = fatherQueryset
         child_queryset = cls.objects.filter(parent=fatherQueryset.first())
-        while child_queryset:
+        while child_queryset.exists():
             queryset = queryset | child_queryset
             child_queryset = cls.objects.filter(parent__in=child_queryset)
     return queryset
@@ -50,11 +50,10 @@ def get_child_queryset2(obj, hasParent=True):
     '''
     cls = type(obj)
     queryset = cls.objects.none()
-    fatherQueryset = cls.objects.filter(pk=obj.id)
     if hasParent:
-        queryset = queryset | fatherQueryset
+        queryset = cls.objects.filter(pk=obj.id)
     child_queryset = cls.objects.filter(parent=obj)
-    while child_queryset:
+    while child_queryset.exists():
         queryset = queryset | child_queryset
         child_queryset = cls.objects.filter(parent__in=child_queryset)
     return queryset
