@@ -2,22 +2,27 @@ from django.apps import apps
 from django.db.models import Q
 
 
-def get_child_queryset_u(checkQueryset, obj, hasParent=True):
+def get_child_queryset_u(checkQueryset, hasParent=True):
     '''
     获取所有子集
     查的范围checkQueryset
     父obj
     是否包含父默认True
     '''
-    cls = type(obj)
-    queryset = cls.objects.none()
-    if hasParent:
-        queryset = cls.objects.filter(pk=obj.id)
-    child_queryset = checkQueryset.filter(parent=obj)
-    while child_queryset.exists():
-        queryset = queryset | child_queryset
-        child_queryset = checkQueryset.filter(parent__in=child_queryset)
-    return queryset
+    cls = type(checkQueryset.model)
+    if hasattr(cls, 'parent'):
+        queryset = cls.objects.none()
+        if hasParent:
+            queryset = checkQueryset
+        child_queryset = checkQueryset.filter(parent__in=queryset)
+        while child_queryset.exists():
+            queryset = queryset | child_queryset
+            child_queryset = checkQueryset.filter(parent__in=child_queryset)
+        return queryset
+    elif hasParent:
+        return checkQueryset
+    else:
+        return checkQueryset.none()
 
 
 def get_child_queryset(name, pk, hasParent=True):

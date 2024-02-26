@@ -12,7 +12,7 @@ from apps.system.models import DataFilter, Dept, User
 from apps.utils.errors import PKS_ERROR
 from apps.utils.mixins import MyLoggingMixin, BulkCreateModelMixin, BulkUpdateModelMixin, BulkDestroyModelMixin
 from apps.utils.permission import ALL_PERMS, RbacPermission, get_user_perms_map
-from apps.utils.queryset import get_child_queryset2
+from apps.utils.queryset import get_child_queryset2, get_child_queryset_u
 from apps.utils.serializers import PkSerializer, ComplexSerializer
 from rest_framework.throttling import UserRateThrottle
 from drf_yasg.utils import swagger_auto_schema
@@ -100,6 +100,15 @@ class CustomGenericViewSet(MyLoggingMixin, GenericViewSet):
             queryset = queryset.select_related(*self.select_related_fields)
         if self.prefetch_related_fields:
             queryset = queryset.prefetch_related(*self.prefetch_related_fields)
+
+        # 查询出子集数据,请谨慎使用
+        has_children = self.request.query_params.get('has_children', 'no')
+        if has_children == 'hasparent':
+            queryset = get_child_queryset_u(queryset, True)
+        elif has_children == 'noparent':
+            queryset = get_child_queryset_u(queryset, False)
+        else:
+            pass
         return queryset
 
     def get_queryset(self):
