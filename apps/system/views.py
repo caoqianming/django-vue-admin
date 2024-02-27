@@ -2,6 +2,7 @@ import configparser
 import os
 import importlib
 import json
+from drf_yasg import openapi
 from django.contrib.auth.hashers import check_password, make_password
 from django.db import transaction
 from django_celery_beat.models import (CrontabSchedule, IntervalSchedule,
@@ -686,6 +687,10 @@ class SysBaseConfigView(APIView):
     permission_classes = []
     read_keys = ['base', 'apk']
 
+    @swagger_auto_schema(manual_parameters=[
+        openapi.Parameter(name="project_code", in_=openapi.IN_QUERY,
+                          type=openapi.TYPE_STRING, required=False)
+    ])
     def get(self, request, format=None):
         """
         获取系统基本信息
@@ -710,6 +715,12 @@ class SysBaseConfigView(APIView):
 class SysConfigView(MyLoggingMixin, APIView):
     perms_map = {'get': 'sysconfig.view', 'put': 'sysconfig.update'}
 
+    @swagger_auto_schema(manual_parameters=[
+        openapi.Parameter(name="project_code", in_=openapi.IN_QUERY,
+                          type=openapi.TYPE_STRING, required=False),
+        openapi.Parameter(name="reload", in_=openapi.IN_QUERY,
+                          type=openapi.TYPE_BOOLEAN, required=False),
+    ])
     def get(self, request, format=None):
         """
         获取config json
