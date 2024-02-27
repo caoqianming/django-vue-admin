@@ -16,6 +16,7 @@ from apps.utils.queryset import get_child_queryset2, get_child_queryset_u
 from apps.utils.serializers import PkSerializer, ComplexSerializer
 from rest_framework.throttling import UserRateThrottle
 from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
 from apps.utils.decorators import idempotent
 from django.db import transaction
 import json
@@ -199,6 +200,13 @@ class CustomModelViewSet(BulkCreateModelMixin, BulkUpdateModelMixin, ListModelMi
         for k, v in self.perms_map.items():
             if v not in ALL_PERMS and v != '*':
                 ALL_PERMS.append(v)
+
+    @swagger_auto_schema(manual_parameters=[
+        openapi.Parameter(name="query", in_=openapi.IN_QUERY, description="定制返回数据",
+                          type=openapi.TYPE_STRING, required=False),
+    ])
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
 
     @swagger_auto_schema(request_body=ComplexSerializer, responses={200: {}})
     @action(methods=['post'], detail=False, perms_map={'post': '*'})
