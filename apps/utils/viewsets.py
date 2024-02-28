@@ -206,7 +206,24 @@ class CustomModelViewSet(BulkCreateModelMixin, BulkUpdateModelMixin, ListModelMi
                           type=openapi.TYPE_STRING, required=False),
     ])
     def list(self, request, *args, **kwargs):
-        return super().list(request, *args, **kwargs)
+        queryset = self.filter_queryset(self.get_queryset())
+
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            data = self.add_info_for_list(serializer.data)
+            return self.get_paginated_response(data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        data = self.add_info_for_list(serializer.data)
+        return Response(data)
+
+    def add_info_for_list(self, data):
+        """给list返回数据添加额外信息
+
+        给list返回数据添加额外信息
+        """
+        return data
 
     @swagger_auto_schema(request_body=ComplexSerializer, responses={200: {}})
     @action(methods=['post'], detail=False, perms_map={'post': '*'})
