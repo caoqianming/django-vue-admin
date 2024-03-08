@@ -6,8 +6,10 @@ from rest_framework.request import Request
 
 
 class PkSerializer(serializers.Serializer):
-    ids = serializers.ListField(child=serializers.CharField(max_length=20), label="主键ID列表")
-    soft = serializers.BooleanField(label="是否软删除", default=True, required=False)
+    ids = serializers.ListField(
+        child=serializers.CharField(max_length=20), label="主键ID列表")
+    soft = serializers.BooleanField(
+        label="是否软删除", default=True, required=False)
 
 
 class GenSignatureSerializer(serializers.Serializer):
@@ -39,17 +41,20 @@ class CustomModelSerializer(DynamicFieldsMixin, serializers.ModelSerializer):
     def update(self, instance, validated_data):
         if self.request:
             if hasattr(instance, 'update_by'):
-                validated_data['update_by'] = getattr(self.request, 'user', None)
+                validated_data['update_by'] = getattr(
+                    self.request, 'user', None)
         return super().update(instance, validated_data)
+
 
 class QuerySerializer(serializers.Serializer):
     field = serializers.CharField(label='字段名')
-    compare = serializers.ChoiceField(label='比较式', choices=["", "!", "gte", "gt", "lte", "lt", "in", "contains"])
+    compare = serializers.ChoiceField(
+        label='比较式', choices=["", "!", "gte", "gt", "lte", "lt", "in", "contains"])
     value = serializers.CharField(label='值')
 
 
 class ComplexSerializer(serializers.Serializer):
-    # page = serializers.IntegerField(min_value=0)
-    # page_size = serializers.IntegerField(min_value=1)
-    # query = serializers.CharField(label='获取字段名')
-    querys = serializers.ListField(child=QuerySerializer(many=True), label="查询列表", required=False)
+    page = serializers.IntegerField(min_value=0)
+    page_size = serializers.IntegerField(min_value=1)
+    querys = serializers.ListField(child=QuerySerializer(
+        many=True), label="查询列表", required=False)
