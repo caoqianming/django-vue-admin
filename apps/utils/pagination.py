@@ -1,4 +1,4 @@
-from rest_framework.pagination import PageNumberPagination
+from rest_framework.pagination import PageNumberPagination, _positive_int
 from rest_framework.exceptions import ParseError
 
 
@@ -11,14 +11,19 @@ class MyPagination(PageNumberPagination):
 
     def get_page_number(self, request, paginator):
         if 'page' in request.data:
-            request.query_params['page'] = request.data['page']
-            del request.data['page']
+            return request.data['page']
         return super().get_page_number(request, paginator)
 
     def get_page_size(self, request):
         if 'page_size' in request.data:
-            request.query_params['page_size'] = request.data['page_size']
-            del request.data['page_size']
+            try:
+                return _positive_int(
+                    request.data['page_size'],
+                    strict=True,
+                    cutoff=self.max_page_size
+                )
+            except (KeyError, ValueError):
+                pass
         return super().get_page_size(request)
 
     def paginate_queryset(self, queryset, request, view=None):
