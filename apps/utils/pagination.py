@@ -27,8 +27,8 @@ class MyPagination(PageNumberPagination):
         return super().get_page_size(request)
 
     def paginate_queryset(self, queryset, request, view=None):
-        if request.query_params.get('pageoff', None) or request.query_params.get('page', None) == '0':
-            if queryset.count() < 800:
+        if request.query_params.get('pageoff', None) or request.query_params.get('page', None) == '0' or request.data.get('page', None) in (0, '0'):
+            if queryset.count() < 3000:
                 return None
             raise ParseError('单次请求数据量大,请分页获取')
         return super().paginate_queryset(queryset, request, view=view)
