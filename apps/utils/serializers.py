@@ -54,7 +54,7 @@ class QuerySerializer(serializers.Serializer):
 
 
 class ComplexSerializer(serializers.Serializer):
-    page = serializers.IntegerField(min_value=0)
-    page_size = serializers.IntegerField(min_value=1)
+    page = serializers.IntegerField(min_value=0, required=False)
+    page_size = serializers.IntegerField(min_value=1, required=False)
     querys = serializers.ListField(child=QuerySerializer(
         many=True), label="查询列表", required=False)
