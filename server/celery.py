@@ -1,6 +1,7 @@
 import os
 from . import conf
 from celery import Celery
+from celery.app.control import Control, Inspect
 
 # set the default Django settings module for the 'celery' program.
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'server.settings')
@@ -15,6 +16,9 @@ app.config_from_object('django.conf:settings', namespace='CELERY')
 
 # Load task modules from all registered Django app configs.
 app.autodiscover_tasks()
+
+celery_control: Control = Control(app=app)
+celery_inspect: Inspect = celery_control.inspect()
 
 
 @app.task(bind=True)
