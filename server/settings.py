@@ -14,7 +14,7 @@ from datetime import datetime, timedelta
 import os
 import json
 import sys
-from . import conf
+from .conf import *
 from django.core.cache import cache
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -23,46 +23,12 @@ sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
-SYS_JSON_PATH = os.path.join(BASE_DIR, 'server/conf.json')
-
-
-def get_sysconfig(reload=False):
-    config = cache.get('system_config', None)
-    if config is None or reload:
-        # 读取配置文件
-        if not os.path.exists(SYS_JSON_PATH):
-            raise SystemError('未找到配置文件')
-        with open(SYS_JSON_PATH, 'r', encoding='utf-8') as f:
-            config = json.loads(f.read())
-            cache.set('system_config', config)
-            return config
-    return config
-
-
-def update_dict(dict1, dict2):
-    for key, value in dict2.items():
-        if key == 'apk_file':  # apk_file拷贝到固定位置
-            from shutil import copyfile
-            copyfile(BASE_DIR + value, BASE_DIR + '/media/zc_ehs.apk')
-        if key in dict1 and isinstance(dict1[key], dict) and isinstance(value, dict):
-            update_dict(dict1[key], value)
-        else:
-            dict1[key] = value
-
-
-def update_sysconfig(new_dict):
-    config = get_sysconfig()
-    update_dict(config, new_dict)
-    with open(SYS_JSON_PATH, 'wb') as f:
-        f.write(json.dumps(config, indent=4, ensure_ascii=False).encode('utf-8'))
-    cache.set('system_config', config)
-
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = conf.SECRET_KEY
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = conf.DEBUG
+
 
 ALLOWED_HOSTS = ['*']
 
@@ -139,7 +105,7 @@ CHANNEL_LAYERS = {
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
-DATABASES = conf.DATABASES
+
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -193,17 +159,9 @@ if not os.path.exists(FACE_PATH):
     os.makedirs(FACE_PATH)
 
 
-# 邮箱配置
-EMAIL_HOST = conf.EMAIL_HOST
-EMAIL_PORT = conf.EMAIL_PORT
-EMAIL_HOST_USER = conf.EMAIL_HOST_USER
-EMAIL_HOST_PASSWORD = conf.EMAIL_HOST_PASSWORD
-EMAIL_USE_TLS = conf.EMAIL_USE_TLS
-
 # 默认主键
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-# 雪花ID生成配置
-SNOW_DATACENTER_ID = conf.SNOW_DATACENTER_ID
+
 
 # restframework配置
 REST_FRAMEWORK = {
@@ -255,20 +213,8 @@ AUTHENTICATION_BACKENDS = (
     'apps.auth1.authentication.CustomBackend',
 )
 
-# 缓存配置,有需要可更改为redis
-CACHES = {
-    "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": conf.CACHE_LOCATION,
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        }
-    }
-}
 
 # celery配置,celery正常运行必须安装redis
-CELERY_BROKER_URL = conf.CELERY_BROKER_URL   # 任务存储
-CELERY_TASK_DEFAULT_QUEUE = conf.CELERY_TASK_DEFAULT_QUEUE  # 任务队列
 CELERYD_MAX_TASKS_PER_CHILD = 100  # 每个worker最多执行100个任务就会被销毁，可防止内存泄露
 CELERY_TIMEZONE = 'Asia/Shanghai'  # 设置时区
 CELERY_ENABLE_UTC = True  # 启动时区设置
@@ -370,29 +316,36 @@ LOGGING = {
     }
 }
 
-# 项目
-BASE_URL = conf.BASE_URL
-BASE_URL_IN = conf.BASE_URL_IN
-BASE_URL_OUT = conf.BASE_URL_OUT
+##### 加载客户可自定义配置并提供操作方法 #####
+SYS_JSON_PATH = os.path.join(BASE_DIR, 'server/conf.json')
+
+def get_sysconfig(reload=False):
+    config = cache.get('system_config', None)
+    if config is None or reload:
+        # 读取配置文件
+        if not os.path.exists(SYS_JSON_PATH):
+            raise SystemError('未找到配置文件')
+        with open(SYS_JSON_PATH, 'r', encoding='utf-8') as f:
+            config = json.loads(f.read())
+            cache.set('system_config', config)
+            return config
+    return config
 
 
-# 运维相关
-SD_PWD = conf.SD_PWD
-BACKUP_PATH = conf.BACKUP_PATH
-SH_PATH = conf.SH_PATH
+def update_dict(dict1, dict2):
+    for key, value in dict2.items():
+        if key == 'apk_file':  # apk_file拷贝到固定位置
+            from shutil import copyfile
+            copyfile(BASE_DIR + value, BASE_DIR + '/media/zc_ehs.apk')
+        if key in dict1 and isinstance(dict1[key], dict) and isinstance(value, dict):
+            update_dict(dict1[key], value)
+        else:
+            dict1[key] = value
 
 
-# 百度语音
-BD_SP_ID = conf.BD_SP_ID
-BD_SP_KEY = conf.BD_SP_KEY
-BD_SP_SECRET = conf.BD_SP_SECRET
-
-
-# 微信有关
-WXMP_ENABLED = conf.WXMP_ENABLED
-WXMP_APPID = conf.WXMP_APPID
-WXMP_APPSECRET = conf.WXMP_APPSECRET
-
-WX_ENABLED = conf.WX_ENABLED
-WX_APPID = conf.WX_APPID
-WX_APPSECRET = conf.WX_APPSECRET
+def update_sysconfig(new_dict):
+    config = get_sysconfig()
+    update_dict(config, new_dict)
+    with open(SYS_JSON_PATH, 'wb') as f:
+        f.write(json.dumps(config, indent=4, ensure_ascii=False).encode('utf-8'))
+    cache.set('system_config', config)
