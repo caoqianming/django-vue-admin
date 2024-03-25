@@ -30,7 +30,7 @@ from .permission import RbacPermission, get_permission_list
 from .permission_data import RbacFilterSet
 from .serializers import (DictSerializer, DictTypeSerializer, FileSerializer,
                           OrganizationSerializer, PermissionSerializer,
-                          PositionSerializer, RoleSerializer, PTaskSerializer,PTaskCreateUpdateSerializer,
+                          PositionSerializer, RoleSerializer, PTaskSerializer, PTaskCreateUpdateSerializer,
                           UserCreateSerializer, UserListSerializer,
                           UserModifySerializer)
 
@@ -39,6 +39,8 @@ logger = logging.getLogger('log')
 # logger.error('请求出错-{}'.format(error))
 
 from server.celery import app as celery_app
+
+
 class TaskList(APIView):
     permission_classes = ()
 
@@ -46,11 +48,13 @@ class TaskList(APIView):
         tasks = list(sorted(name for name in celery_app.tasks if not name.startswith('celery.')))
         return Response(tasks)
 
+
 class LogoutView(APIView):
     permission_classes = []
 
     def get(self, request, *args, **kwargs):  # 可将token加入黑名单
         return Response(status=status.HTTP_200_OK)
+
 
 class PTaskViewSet(OptimizationMixin, ModelViewSet):
     perms_map = {'get': '*', 'post': 'ptask_create',
@@ -61,7 +65,7 @@ class PTaskViewSet(OptimizationMixin, ModelViewSet):
     filterset_fields = ['enabled']
     ordering = ['-pk']
 
-    @action(methods=['put'], detail=True, perms_map={'put':'task_update'},
+    @action(methods=['put'], detail=True, perms_map={'put': 'task_update'},
             url_name='task_toggle')
     def toggle(self, request, pk=None):
         """
@@ -85,7 +89,7 @@ class PTaskViewSet(OptimizationMixin, ModelViewSet):
         if timetype == 'interval' and interval_:
             data['crontab'] = None
             try:
-                interval, _ = IntervalSchedule.objects.get_or_create(**interval_, defaults = interval_)
+                interval, _ = IntervalSchedule.objects.get_or_create(**interval_, defaults=interval_)
                 data['interval'] = interval.id
             except:
                 raise ValidationError('时间策略有误')
@@ -93,7 +97,7 @@ class PTaskViewSet(OptimizationMixin, ModelViewSet):
             data['interval'] = None
             try:
                 crontab_['timezone'] = 'Asia/Shanghai'
-                crontab, _ = CrontabSchedule.objects.get_or_create(**crontab_, defaults = crontab_)
+                crontab, _ = CrontabSchedule.objects.get_or_create(**crontab_, defaults=crontab_)
                 data['crontab'] = crontab.id
             except:
                 raise ValidationError('时间策略有误')
@@ -101,7 +105,7 @@ class PTaskViewSet(OptimizationMixin, ModelViewSet):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(status=status.HTTP_200_OK)
-    
+
     def update(self, request, *args, **kwargs):
         data = request.data
         timetype = data.get('timetype', None)
@@ -112,7 +116,7 @@ class PTaskViewSet(OptimizationMixin, ModelViewSet):
             try:
                 if 'id' in interval_:
                     del interval_['id']
-                interval, _ = IntervalSchedule.objects.get_or_create(**interval_, defaults = interval_)
+                interval, _ = IntervalSchedule.objects.get_or_create(**interval_, defaults=interval_)
                 data['interval'] = interval.id
             except:
                 raise ValidationError('时间策略有误')
@@ -120,9 +124,9 @@ class PTaskViewSet(OptimizationMixin, ModelViewSet):
             data['interval'] = None
             try:
                 crontab_['timezone'] = 'Asia/Shanghai'
-                if 'id'in crontab_:
-                    del crontab_['id'] 
-                crontab, _ = CrontabSchedule.objects.get_or_create(**crontab_, defaults = crontab_)
+                if 'id' in crontab_:
+                    del crontab_['id']
+                crontab, _ = CrontabSchedule.objects.get_or_create(**crontab_, defaults=crontab_)
                 data['crontab'] = crontab.id
             except:
                 raise ValidationError('时间策略有误')
@@ -151,6 +155,7 @@ class DictViewSet(ModelViewSet):
     """
     数据字典-增删改查
     """
+    logger.info("test")
     perms_map = {'get': '*', 'post': 'dict_create',
                  'put': 'dict_update', 'delete': 'dict_delete'}
     # queryset = Dict.objects.get_queryset(all=True) # 获取全部的,包括软删除的
@@ -168,9 +173,11 @@ class DictViewSet(ModelViewSet):
         """
         if self.paginator is None:
             return None
-        elif (not self.request.query_params.get('page', None)) and ((self.request.query_params.get('type__code', None)) or (self.request.query_params.get('type', None))):
+        elif (not self.request.query_params.get('page', None)) and (
+                (self.request.query_params.get('type__code', None)) or (self.request.query_params.get('type', None))):
             return None
         return self.paginator.paginate_queryset(queryset, self.request, view=self)
+
 
 class PositionViewSet(ModelViewSet):
     """
@@ -181,7 +188,7 @@ class PositionViewSet(ModelViewSet):
     queryset = Position.objects.all()
     serializer_class = PositionSerializer
     pagination_class = None
-    search_fields = ['name','description']
+    search_fields = ['name', 'description']
     ordering_fields = ['pk']
     ordering = ['pk']
 
@@ -190,6 +197,7 @@ class TestView(APIView):
     perms_map = {'get': 'test_view'}  # 单个API控权
     authentication_classes = []
     permission_classes = []
+
     def get(self, request, format=None):
         return Response('测试api接口')
 
@@ -234,6 +242,10 @@ class RoleViewSet(ModelViewSet):
     search_fields = ['name']
     ordering_fields = ['pk']
     ordering = ['pk']
+
+    def get_queryset(self):
+        all = self.request.query_params.get('all', True)
+        return Role.objects.get_queryset(all=all)
 
 
 class UserViewSet(ModelViewSet):
@@ -280,7 +292,7 @@ class UserViewSet(ModelViewSet):
         serializer.save(password=password)
         return Response(serializer.data)
 
-    @action(methods=['put'], detail=False, permission_classes=[IsAuthenticated], # perms_map={'put':'change_password'}
+    @action(methods=['put'], detail=False, permission_classes=[IsAuthenticated],  # perms_map={'put':'change_password'}
             url_name='change_password')
     def password(self, request, pk=None):
         """
@@ -318,12 +330,13 @@ class UserViewSet(ModelViewSet):
         }
         return Response(data)
 
+
 class FileViewSet(CreateModelMixin, DestroyModelMixin, RetrieveModelMixin, ListModelMixin, GenericViewSet):
     """
     文件上传用
     """
     perms_map = None
-    permission_classes=[IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     parser_classes = [MultiPartParser, JSONParser]
     queryset = File.objects.all()
     serializer_class = FileSerializer
@@ -345,6 +358,6 @@ class FileViewSet(CreateModelMixin, DestroyModelMixin, RetrieveModelMixin, ListM
             type = '音频'
         elif 'application' or 'text' in mime:
             type = '文档'
-        instance = serializer.save(create_by = self.request.user, name=name, size=size, type=type, mime=mime)
+        instance = serializer.save(create_by=self.request.user, name=name, size=size, type=type, mime=mime)
         instance.path = settings.MEDIA_URL + instance.file.name
         instance.save()

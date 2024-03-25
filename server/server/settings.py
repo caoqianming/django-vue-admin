@@ -47,7 +47,8 @@ INSTALLED_APPS = [
     'simple_history',
     'apps.system',
     'apps.monitor',
-    'apps.wf'
+    'apps.wf',
+    'apps.ftz'
 ]
 
 MIDDLEWARE = [
