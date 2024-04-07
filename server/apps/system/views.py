@@ -205,7 +205,7 @@ class PermissionViewSet(ModelViewSet):
     pagination_class = None
     search_fields = ['name']
     ordering_fields = ['sort']
-    ordering = ['pk']
+    ordering = ['sort', 'pk']
 
 
 class OrganizationViewSet(ModelViewSet):
@@ -247,6 +247,11 @@ class UserViewSet(ModelViewSet):
     filterset_class = UserFilter
     search_fields = ['username', 'name', 'phone', 'email']
     ordering_fields = ['-pk']
+
+    def perform_destroy(self, instance):
+        if instance.is_superuser:
+            raise ParseError('不能删除超级用户')
+        instance.delete()
 
     def get_queryset(self):
         queryset = self.queryset
