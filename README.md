@@ -188,4 +188,4 @@ docker-compose exec backend python manage.py makemigrations
 
 ### 微信群
 愿意交流的话可以加微信群
-![image](https://github.com/caoqianming/django-vue-admin/blob/master/img/wechat_group.jpg)
+![image](http://49.232.29.236:2222/media/wechat_group.jpg)
