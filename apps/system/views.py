@@ -646,7 +646,7 @@ class MyScheduleViewSet(ListModelMixin, CreateModelMixin, DestroyModelMixin, Cus
         "hours": "小时",
         "minutes": "分钟",
         "seconds": "秒",
-        "microseconds": "毫秒"
+        "microseconds": "微秒"
     }
 
     def get_chinese_description(self, type: str = 'interval', data: dict = {}):
