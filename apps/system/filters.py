@@ -13,7 +13,11 @@ class UserFilterSet(filters.FilterSet):
             'post': ['exact'],
             'belong_dept': ['exact'],
             'depts': ['exact'],
-            'type': ['exact', 'in']
+            'type': ['exact', 'in'],
+            'belong_dept__name': ['exact'],
+            'depts__name': ["exact"],
+            'posts__name': ["exact"],
+            'posts__code': ["exact"], 
         }
 
 
