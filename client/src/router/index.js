@@ -59,17 +59,17 @@ export const constantRoutes = [
     redirect: '/changepassword',
     name: 'ChangePW',
     meta: { title: '修改密码', icon: 'tree' },
-    hidden:true,
+    hidden: true,
     children: [
       {
         path: '',
         name: 'ChangePassword',
         component: () => import('@/views/system/changepassword'),
-        meta: { title: '修改密码', noCache: true, icon: ''},
+        meta: { title: '修改密码', noCache: true, icon: '' },
         hidden: true
-      },
+      }
     ]
-  },
+  }
 
 ]
 
@@ -79,11 +79,44 @@ export const constantRoutes = [
  */
 export const asyncRoutes = [
   {
+    path: '/ftz',
+    component: Layout,
+    redirect: '/ftz/index',
+    name: 'new',
+    meta: { title: '课包管理', icon: 'example', perms: ['new_manage'] },
+    children: [
+      {
+        path: 'index',
+        name: 'index',
+        component: () => import('@/views/ftz/course.vue'),
+        meta: { title: '课程管理', icon: 'example', perms: ['course_create'] }
+      },
+      {
+        path: 'test',
+        name: 'test',
+        component: () => import('@/views/ftz/test'),
+        meta: { title: '课时管理', icon: 'example', perms: ['new_test'] }
+      },
+      {
+        path: 'card',
+        name: 'card',
+        component: () => import('@/views/ftz/card'),
+        meta: { title: '卡片管理', icon: 'example', perms: ['new_card'] }
+      },
+      {
+        path: 'material',
+        name: 'material',
+        component: () => import('@/views/ftz/material'),
+        meta: { title: '素材管理', icon: 'example', perms: ['new_material'] }
+      }
+    ]
+  },
+  {
     path: '/workflow',
     component: Layout,
     redirect: '/workflow/index',
     name: 'workflow',
-    meta: { title: '工作流', icon: 'example', perms: ['workflow_manage']  },
+    meta: { title: '工作流', icon: 'example', perms: ['workflow_manage'] },
     children: [
       {
         path: 'index',
@@ -95,13 +128,13 @@ export const asyncRoutes = [
         path: 'ticket',
         name: 'ticket',
         component: () => import('@/views/workflow/ticket'),
-        meta: { title: '工单管理', icon: 'example' ,noCache: true, perms: ['workflow_ticket'] },
+        meta: { title: '工单管理', icon: 'example', noCache: true, perms: ['workflow_ticket'] }
       },
       {
         path: 'workFlowTickets',
         name: 'workFlowTickets',
         component: () => import('@/views/workflow/workFlowTickets'),
-        meta: { title: '工单', icon: 'example' ,noCache: true,},
+        meta: { title: '工单', icon: 'example', noCache: true },
         hidden: true
       },
       {
@@ -115,16 +148,16 @@ export const asyncRoutes = [
         path: 'ticketHandle',
         name: 'ticketHandle',
         component: () => import('@/views/workflow/ticketHandle'),
-        meta: { title: '工单处理', icon: 'example',noCache: true,},
+        meta: { title: '工单处理', icon: 'example', noCache: true },
         hidden: true
       },
       {
         path: 'ticketDetail',
         name: 'ticketDetail',
         component: () => import('@/views/workflow/ticketDetail'),
-        meta: { title: '工单详情', icon: 'example',noCache: true,},
+        meta: { title: '工单详情', icon: 'example', noCache: true },
         hidden: true
-      },
+      }
     ]
   },
   {
@@ -137,9 +170,16 @@ export const asyncRoutes = [
       {
         path: 'user',
         name: 'User',
+        component: () => import('@/views/system/add.vue'),
+        meta: { title: '课程列表', icon: 'user', perms: ['add_manage'] }
+      },
+      {
+        path: 'user',
+        name: 'User',
         component: () => import('@/views/system/user.vue'),
         meta: { title: '用户管理', icon: 'user', perms: ['user_manage'] }
       },
+
       {
         path: 'organization',
         name: 'Organization',

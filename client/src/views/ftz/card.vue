@@ -2,42 +2,31 @@
   <div class="app-container">
     <el-card>
       <div>
-        <el-button type="primary" icon="el-icon-plus" @click="handleAdd">新增课程</el-button>
+        <el-button type="primary" icon="el-icon-plus" @click="handleAdd">新增卡片</el-button>
+        <el-select v-model="tableData.type" placeholder="卡片类型" style="width: 120px">
+          <el-option v-for="(item, index) in typeOptions" :key="index" :label="item.label"
+                     :value="item.value"></el-option>
+        </el-select>
         <el-input
-        v-model="search"
-        placeholder="输入课程名称进行搜索"
-        style="width: 200px"
-        class="filter-item"
-        @keyup.native="handleFilter"
-      />
+          v-model="tableDataList.search"
+          placeholder="分组"
+          style="width: 120px"
+          class="filter-item"
+          @keyup.enter.native="handleFilter"
+        />
+        <el-input v-model="listQuery.field110" style="width: 120px" placeholder="输入卡片ID"></el-input>
+        <el-input v-model="listQuery.field110" style="width: 150px" placeholder="卡片完整名称"></el-input>
         <el-button
           class="filter-item"
           type="primary"
           icon="el-icon-search"
-          @click="resetFilter"
+          @click="handleFilter"
         >查询
         </el-button
         >
       </div>
     </el-card>
-<!--    <div>-->
-<!--      <el-input-->
-<!--        v-model="search"-->
-<!--        placeholder="输入课程名称进行搜索"-->
-<!--        style="width: 200px"-->
-<!--        class="filter-item"-->
-<!--        @keyup.native="resetFilter"-->
-<!--      />-->
-<!--      <el-button-->
-<!--        type="primary"-->
-<!--        icon="el-icon-plus"-->
-<!--        @click="handleAdd"-->
-<!--        v-if="checkPermission(['position_create'])"-->
-<!--        size="small"-->
-<!--      >新增-->
-<!--      </el-button-->
-<!--      >-->
-<!--    </div>-->
+
     <el-table
       v-loading="listLoading"
       :data="
@@ -57,28 +46,28 @@
       <el-table-column label="ID" width="60">
         <template slot-scope="scope">{{ scope.row.id }}</template>
       </el-table-column>
-      <el-table-column label="课程名称">
+      <el-table-column label="标题">
         <template slot-scope="scope">{{ scope.row.title }}</template>
       </el-table-column>
-      <el-table-column label="课程类型">
+      <el-table-column label="类型">
         <template slot-scope="scope">{{ scope.row.type }}</template>
       </el-table-column>
-      <el-table-column label="课程数量">
-        <template slot-scope="scope">{{ scope.row.lesson_count }}</template>
+      <el-table-column label="分组">
+        <template slot-scope="scope">{{ scope.row.group_name }}</template>
       </el-table-column>
-      <el-table-column label="课程描述">
-        <template slot-scope="scope">{{ scope.row.description }}</template>
+      <el-table-column label="难度">
+        <template slot-scope="scope">{{ scope.row.difficulty }}</template>
       </el-table-column>
-      <el-table-column label="创建日期">
-        <template slot-scope="scope">
-          <span>{{ scope.row.create_time }}</span>
-        </template>
+      <el-table-column label="话题">
+        <template slot-scope="scope">{{ scope.row.topic }}</template>
       </el-table-column>
-      <el-table-column label="创建更新时间">
-        <template slot-scope="scope">
-          <span>{{ scope.row.update_time }}</span>
-        </template>
+      <el-table-column label="状态">
+        <template slot-scope="scope">{{ scope.row.status }}</template>
       </el-table-column>
+      <el-table-column label="预览链接">
+        <template slot-scope="scope">{{ scope.row.id }}</template>
+      </el-table-column>
+
       <el-table-column align="center" label="操作">
         <template slot-scope="scope">
           <el-button
@@ -101,7 +90,7 @@
 
     <el-dialog
       :visible.sync="dialogVisible"
-      :title="dialogType === 'edit' ? '编辑课程' : '新增课程'"
+      :title="dialogType === 'edit' ? '编辑卡片' : '新增卡片'"
     >
       <el-form
         ref="Form"
@@ -109,27 +98,58 @@
         label-width="80px"
         label-position="right"
       >
-        <el-form-item label="课程名称" prop="title">
-          <el-input v-model="tableData.title" placeholder="课程名称"/>
+        <el-form-item label="卡片标题" prop="title">
+          <el-input v-model="tableData.title" placeholder="卡片标题"/>
         </el-form-item>
-        <el-form-item label="课程类型" prop="type">
+        <el-form-item label="卡片类型" prop="type">
           <el-select
-                v-model="tableData.type"
-                placeholder="请选择"
-                style="width: 90%"
-              >
-                <el-option
-                  v-for="item in dataOptions"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                />
-              </el-select>
+            v-model="tableData.type"
+            placeholder="请选择"
+            style="width: 90%"
+          >
+            <el-option
+              v-for="item in typeOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
+          </el-select>
         </el-form-item>
-        <el-form-item label="课时数量" prop="lesson_count">
-          <el-input-number v-model="tableData.lesson_count" placeholder="课时数量"/>
+        <el-form-item label="分组" prop="group_name">
+          <el-input v-model="tableData.group_name" placeholder="分组"/>
         </el-form-item>
-        <el-form-item label="课程描述" prop="description">
+        <el-form-item label="状态">
+           <el-radio-group v-model="tableData.status">
+            <el-radio label=0>下线</el-radio>
+            <el-radio label=1>上线</el-radio>
+           </el-radio-group>
+        </el-form-item>
+        <!-- todo 这里要支持图片上传，然后将相对路径赋值-> 多选 -->
+        <el-form-item label="核心图" prop="card_core_image">
+          <el-input v-model="tableData.card_core_image" placeholder="核心图"/>
+        </el-form-item>
+        <el-form-item label="话题" prop="topic">
+          <el-input v-model="tableData.topic" placeholder="话题"/>
+        </el-form-item>
+        <el-form-item label="难度" prop="difficulty">
+           <el-select
+            v-model="tableData.difficulty"
+            placeholder="请选择"
+            style="width: 90%"
+          >
+            <el-option
+              v-for="item in difficultyOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
+          </el-select>
+        </el-form-item>
+        <!-- todo 这里需要支持获取素材列表，搜索-> 多选 -->
+        <el-form-item label="关联素材" prop="study_materials">
+          <el-input v-model="tableData.study_materials" placeholder="关联素材"/>
+        </el-form-item>
+        <el-form-item label="描述" prop="description">
           <el-input v-model="tableData.description" placeholder="课程描述" :autosize="{ minRows: 2, maxRows: 4 }"
                     type="textarea"/>
         </el-form-item>
@@ -144,19 +164,25 @@
 
 <script>
 import {
-  getCourseById,
-  getCourseList,
-  createCourse,
-  updateCourse,
-  deleteCourse
-} from "@/api/course";
+  getCardById,
+  getCardList,
+  createCard,
+  updateCard,
+  deleteCard
+} from "@/api/card";
 import {genTree, deepClone} from "@/utils";
 import checkPermission from "@/utils/permission";
 
 const defaultM = {
   title: "",
   type: "",
-  description: ""
+  description: "",
+  status: 0,
+  card_core_image: "",
+  group_name: "",
+  topic: "",
+  difficulty: "",
+  study_materials: []
 };
 export default {
   data() {
@@ -166,28 +192,41 @@ export default {
         title: "",
         type: "",
         description: "",
-        create_time: "",
-        update_time: ""
+        status: 0,
+        card_core_image: "",
+        group_name: "",
+        topic: "",
+        difficulty: "",
+        study_materials: []
       },
       search: "",
       tableDataList: [],
       listLoading: true,
       dialogVisible: false,
       dialogType: "new",
-      dataOptions: [
+      difficultyOptions: [
         {
-          value: "公开课",
-          label: "公开课",
-        },
+          "label": "简单",
+          "value": 'easy'
+        }, {
+          "label": "中等",
+          "value": 'medium'
+        }, {
+          "label": "困难",
+          "value": 'difficult'
+        }],
+      typeOptions: [
         {
-          value: "入门课",
-          label: "入门课",
-        },
-        {
-          value: "进阶课",
-          label: "进阶课",
-        }
-      ],
+          "label": "编程课",
+          "value": "编程课"
+        }, {
+          "label": "编程卡",
+          "value": "编程卡"
+        }],
+      listQuery: {
+        page: 1,
+        page_size: 20,
+      },
     };
   },
   computed: {},
@@ -196,9 +235,12 @@ export default {
   },
   methods: {
     checkPermission,
+    changeStatus(value) {
+      this.tableData.status = value;
+    },
     getList() {
       this.listLoading = true;
-      getCourseList(this.search).then((response) => {
+      getCardList(this.search).then((response) => {
         this.tableDataList = response.data;
         this.tableData = response.data;
         this.listLoading = false;
@@ -238,7 +280,7 @@ export default {
         type: "error",
       })
         .then(async () => {
-          await deleteCourse(scope.row.id);
+          await deleteCard(scope.row.id);
           this.getList();
           this.$message({
             type: "success",
@@ -254,7 +296,7 @@ export default {
         if (valid) {
           const isEdit = this.dialogType === "edit";
           if (isEdit) {
-            updateCourse(this.tableData.id, this.tableData).then(() => {
+            updateCard(this.tableData.id, this.tableData).then(() => {
               this.getList();
               this.dialogVisible = false;
               this.$message({
@@ -263,7 +305,7 @@ export default {
               });
             });
           } else {
-            createCourse(this.tableData).then((res) => {
+            createCard(this.tableData).then((res) => {
               this.getList();
               this.dialogVisible = false;
               this.$message({

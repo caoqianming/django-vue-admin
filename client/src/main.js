@@ -14,8 +14,24 @@ import router from './router'
 
 import '@/icons' // icon
 import '@/permission' // permission control
+
+
+
 import tableHeight from '@/directive/el-table/index'
 Vue.use(tableHeight)
+//引入quill-editor编辑器
+import VueQuillEditor from 'vue-quill-editor'  //editor 引入使用
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
+import 'quill/dist/quill.bubble.css'
+Vue.use(VueQuillEditor)
+/*//实现quill-editor编辑器拖拽上传图片
+import * as Quill from 'quill'
+import { ImageDrop } from 'quill-image-drop-module'
+Quill.register('modules/imageDrop', ImageDrop)
+//实现quill-editor编辑器调整图片尺寸
+import ImageResize from 'quill-image-resize-module'
+Quill.register('modules/imageResize', ImageResize)*/
 /**
  * If you don't want to use mock-server
  * you want to use MockJs for mock api

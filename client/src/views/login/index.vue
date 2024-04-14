@@ -60,7 +60,7 @@ export default {
   data() {
     // const validateUsername = (rule, value, callback) => {
     //   if (!validUsername(value)) {
-    //     callback(new Error('请输入正确账号!'))
+    //     callback(ftz Error('请输入正确账号!'))
     //   } else {
     //     callback()
     //   }
