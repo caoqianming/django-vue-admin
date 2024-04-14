@@ -81,33 +81,33 @@ export const asyncRoutes = [
   {
     path: '/ftz',
     component: Layout,
-    redirect: '/ftz/index',
+    redirect: '/ftz/course',
     name: 'new',
-    meta: { title: '课包管理', icon: 'example', perms: ['new_manage'] },
+    meta: { title: '课包管理', icon: 'example', perms: ['course_manage'] },
     children: [
       {
-        path: 'index',
-        name: 'index',
+        path: 'course',
+        name: 'course',
         component: () => import('@/views/ftz/course.vue'),
-        meta: { title: '课程管理', icon: 'example', perms: ['course_create'] }
+        meta: { title: '课程管理', icon: 'example', perms: ['course_index'] }
       },
       {
-        path: 'test',
-        name: 'test',
-        component: () => import('@/views/ftz/test'),
-        meta: { title: '课时管理', icon: 'example', perms: ['new_test'] }
+        path: 'lesson',
+        name: 'lesson',
+        component: () => import('@/views/ftz/lesson.vue'),
+        meta: { title: '课时管理', icon: 'example', perms: ['lesson_index'] }
       },
       {
         path: 'card',
         name: 'card',
         component: () => import('@/views/ftz/card'),
-        meta: { title: '卡片管理', icon: 'example', perms: ['new_card'] }
+        meta: { title: '卡片管理', icon: 'example', perms: ['card_index'] }
       },
       {
         path: 'material',
         name: 'material',
         component: () => import('@/views/ftz/material'),
-        meta: { title: '素材管理', icon: 'example', perms: ['new_material'] }
+        meta: { title: '素材管理', icon: 'example', perms: ['material_index'] }
       }
     ]
   },
