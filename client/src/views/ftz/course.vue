@@ -3,10 +3,10 @@
     <div>
       <el-input
         v-model="search"
-        placeholder="输入岗位名称进行搜索"
+        placeholder="输入课程名称进行搜索"
         style="width: 200px"
         class="filter-item"
-        @keyup.native="handleFilter"
+        @keyup.native="resetFilter"
       />
       <el-button
         type="primary"
@@ -14,15 +14,16 @@
         @click="handleAdd"
         v-if="checkPermission(['position_create'])"
         size="small"
-        >新增</el-button
+      >新增
+      </el-button
       >
     </div>
     <el-table
       v-loading="listLoading"
       :data="
-        tableData.filter(
+        tableDataList.filter(
           (data) =>
-            !search || data.name.toLowerCase().includes(search.toLowerCase())
+            !search || data.title.toLowerCase().includes(search.toLowerCase())
         )
       "
       style="width: 100%; margin-top: 10px"
@@ -33,13 +34,27 @@
       border
       v-el-height-adaptive-table="{ bottomOffset: 50 }"
     >
-      <el-table-column type="index" width="50" />
-      <el-table-column label="岗位名称">
-        <template slot-scope="scope">{{ scope.row.name }}</template>
+      <el-table-column type="index" width="50"/>
+      <el-table-column label="课程名称">
+        <template slot-scope="scope">{{ scope.row.title }}</template>
+      </el-table-column>
+      <el-table-column label="课程类型">
+        <template slot-scope="scope">{{ scope.row.type }}</template>
+      </el-table-column>
+      <el-table-column label="课程数量">
+        <template slot-scope="scope">{{ scope.row.lesson_count }}</template>
+      </el-table-column>
+      <el-table-column label="课程描述">
+        <template slot-scope="scope">{{ scope.row.description }}</template>
       </el-table-column>
       <el-table-column label="创建日期">
         <template slot-scope="scope">
           <span>{{ scope.row.create_time }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="创建更新时间">
+        <template slot-scope="scope">
+          <span>{{ scope.row.update_time }}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="操作">
@@ -64,17 +79,37 @@
 
     <el-dialog
       :visible.sync="dialogVisible"
-      :title="dialogType === 'edit' ? '编辑岗位' : '新增岗位'"
+      :title="dialogType === 'edit' ? '编辑课程' : '新增课程'"
     >
       <el-form
         ref="Form"
-        :model="position"
+        :model="tableData"
         label-width="80px"
         label-position="right"
-        :rules="rule1"
       >
-        <el-form-item label="名称" prop="name">
-          <el-input v-model="position.name" placeholder="名称" />
+        <el-form-item label="课程名称" prop="title">
+          <el-input v-model="tableData.title" placeholder="课程名称"/>
+        </el-form-item>
+        <el-form-item label="课程类型" prop="type">
+          <el-select
+                v-model="tableData.type"
+                placeholder="请选择"
+                style="width: 90%"
+              >
+                <el-option
+                  v-for="item in dataOptions"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                />
+              </el-select>
+        </el-form-item>
+        <el-form-item label="课时数量" prop="lesson_count">
+          <el-input-number v-model="tableData.lesson_count" placeholder="课时数量"/>
+        </el-form-item>
+        <el-form-item label="课程描述" prop="description">
+          <el-input v-model="tableData.description" placeholder="课程描述" :autosize="{ minRows: 2, maxRows: 4 }"
+                    type="textarea"/>
         </el-form-item>
       </el-form>
       <span slot="footer">
@@ -87,34 +122,50 @@
 
 <script>
 import {
-  getPositionAll,
-  createPosition,
-  deletePosition,
-  updatePosition,
-} from "@/api/position";
-import { genTree, deepClone } from "@/utils";
+  getCourseById,
+  getCourseList,
+  createCourse,
+  updateCourse,
+  deleteCourse
+} from "@/api/course";
+import {genTree, deepClone} from "@/utils";
 import checkPermission from "@/utils/permission";
 
 const defaultM = {
-  id: "",
-  name: "",
+  title: "",
+  type: "",
+  description: ""
 };
 export default {
   data() {
     return {
-      position: {
+      tableData: {
         id: "",
-        name: "",
+        title: "",
+        type: "",
+        description: "",
+        create_time: "",
+        update_time: ""
       },
       search: "",
-      tableData: [],
-      positionList: [],
+      tableDataList: [],
       listLoading: true,
       dialogVisible: false,
       dialogType: "new",
-      rule1: {
-        name: [{ required: true, message: "请输入名称", trigger: "blur" }],
-      },
+      dataOptions: [
+        {
+          value: "公开课",
+          label: "公开课",
+        },
+        {
+          value: "入门课",
+          label: "入门课",
+        },
+        {
+          value: "进阶课",
+          label: "进阶课",
+        }
+      ],
     };
   },
   computed: {},
@@ -125,8 +176,8 @@ export default {
     checkPermission,
     getList() {
       this.listLoading = true;
-      getPositionAll().then((response) => {
-        this.positionList = response.data;
+      getCourseList(this.search).then((response) => {
+        this.tableDataList = response.data;
         this.tableData = response.data;
         this.listLoading = false;
       });
@@ -135,15 +186,15 @@ export default {
       this.getList();
     },
     handleFilter() {
-      const newData = this.positionList.filter(
+      const newData = this.tableDataList.filter(
         (data) =>
           !this.search ||
-          data.name.toLowerCase().includes(this.search.toLowerCase())
+          data.title.toLowerCase().includes(this.search.toLowerCase())
       );
       this.tableData = genTree(newData);
     },
     handleAdd() {
-      this.position = Object.assign({}, defaultM);
+      this.tableData = Object.assign({}, defaultM);
       this.dialogType = "new";
       this.dialogVisible = true;
       this.$nextTick(() => {
@@ -151,7 +202,7 @@ export default {
       });
     },
     handleEdit(scope) {
-      this.position = Object.assign({}, scope.row); // copy obj
+      this.tableData = Object.assign({}, scope.row); // copy obj
       this.dialogType = "edit";
       this.dialogVisible = true;
       this.$nextTick(() => {
@@ -165,7 +216,7 @@ export default {
         type: "error",
       })
         .then(async () => {
-          await deletePosition(scope.row.id);
+          await deleteCourse(scope.row.id);
           this.getList();
           this.$message({
             type: "success",
@@ -181,7 +232,7 @@ export default {
         if (valid) {
           const isEdit = this.dialogType === "edit";
           if (isEdit) {
-            updatePosition(this.position.id, this.position).then(() => {
+            updateCourse(this.tableData.id, this.tableData).then(() => {
               this.getList();
               this.dialogVisible = false;
               this.$message({
@@ -190,9 +241,7 @@ export default {
               });
             });
           } else {
-            createPosition(this.position).then((res) => {
-              // this.position = res.data
-              // this.tableData.unshift(this.position)
+            createCourse(this.tableData).then((res) => {
               this.getList();
               this.dialogVisible = false;
               this.$message({
