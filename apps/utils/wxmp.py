@@ -20,17 +20,17 @@ class WxmpClient:
     微信小程序相关
     """
 
-    def __init__(self, app_id=settings.WXMP_APPID,
-                 app_secret=settings.WXMP_APPSECRET) -> None:
+    def __init__(self, app_id='', app_secret='') -> None:
+        self.wxmp_enabled = getattr(settings, 'WXMP_ENABLED', False)
         self.app_id, self.app_secret = None, None
-        if settings.WXMP_ENABLED:
-            self.app_id = app_id
-            self.app_secret = app_secret
+        if self.wxmp_enabled:
+            self.app_id = app_id if app_id else getattr(settings, 'WXMP_APPID', False)
+            self.app_secret = app_secret if app_secret else getattr(settings, 'WXMP_APPSECRET', False)
             self.log = {}
 
     def request(self, url: str, method: str, params=dict(), json=dict(), timeout=10,
                 file_path_rela=None, raise_exception=True):
-        if not settings.WX_ENABLED:
+        if not self.wxmp_enabled:
             raise ParseError('微信小程序未启用')
         self.log = {"requested_at": now(), "id": uuid.uuid4(), "path": url, "method": method,
                     "params": params, "body": json, "target": "wx", "result": 10}

@@ -22,11 +22,12 @@ class WxClient:
     微信公众号相关
     """
 
-    def __init__(self, app_id=settings.WX_APPID,
-                 app_secret=settings.WX_APPSECRET) -> None:
-        if settings.WX_ENABLED:
-            self.app_id = app_id
-            self.app_secret = app_secret
+    def __init__(self, app_id='',
+                 app_secret='') -> None:
+        self.wx_enabled = getattr(settings, 'WX_ENABLED', False)
+        if self.wx_enabled:
+            self.app_id = app_id if app_id else getattr(settings, 'WX_APPID', False)
+            self.app_secret = app_secret if app_id else getattr(settings, 'WX_APPSECRET', False)
             self.isRuning = True
             self.token = None  # 普通token
             self.t = None  # 线程
@@ -58,7 +59,7 @@ class WxClient:
 
     def request(self, url: str, method: str, params=dict(), json=dict(), timeout=10,
                 file_path_rela=None, raise_exception=True):
-        if not settings.WX_ENABLED:
+        if not self.wx_enabled:
             raise ParseError('微信公众号未启用')
         self.log = {"requested_at": now(), "id": uuid.uuid4(), "path": url, "method": method,
                     "params": params, "body": json, "target": "wx", "result": 10}
