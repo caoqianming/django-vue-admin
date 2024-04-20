@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Course, StudyMaterial, Lesson, Card, Tag
+from .models import Course, StudyMaterial, Lesson, Card, Tag, EnumConfig
 
 
 class CourseSerializer(serializers.ModelSerializer):
@@ -56,7 +56,13 @@ class TagDetailSerializer(serializers.ModelSerializer):
 class StudyMaterialListSerializer(serializers.ModelSerializer):
     class Meta:
         model = StudyMaterial
-        fields = ['id', 'title', 'sub_title', 'description', 'type', 'context', 'tags']
+        fields = ['id', 'title', 'sub_title', 'description', 'type', 'context', 'tags', 'create_time', 'update_time']
+
+
+class EnumConfigSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = EnumConfig
+        fields = '__all__'
 
 
 class StudyMaterialDetailSerializer(serializers.ModelSerializer):

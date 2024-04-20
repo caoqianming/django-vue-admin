@@ -106,8 +106,14 @@ export const asyncRoutes = [
       {
         path: 'material',
         name: 'material',
-        component: () => import('@/views/ftz/material'),
+        component: () => import('@/views/ftz/material.vue'),
         meta: { title: '素材管理', icon: 'example', perms: ['material_index'] }
+      },
+      {
+        path: 'enum_config',
+        name: 'enum_config',
+        component: () => import('@/views/ftz/enum_config'),
+        meta: { title: '配置管理', icon: 'example', perms: ['enum_config_index'] }
       }
     ]
   },

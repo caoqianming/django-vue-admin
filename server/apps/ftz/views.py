@@ -2,9 +2,10 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework import filters
 from django_filters.rest_framework import DjangoFilterBackend
 
-from .models import Course, Card, StudyMaterial, Lesson, Tag
-from .serializers import CourseSerializer, CardListSerializer, StudyMaterialListSerializer, LessonListSerializer, TagSerializer, \
-    StudyMaterialDetailSerializer, CardDetailSerializer, LessonDetailSerializer
+from .models import Course, Card, StudyMaterial, Lesson, Tag, EnumConfig
+from .serializers import CourseSerializer, CardListSerializer, StudyMaterialListSerializer, LessonListSerializer, \
+    TagSerializer, \
+    StudyMaterialDetailSerializer, CardDetailSerializer, LessonDetailSerializer, EnumConfigSerializer
 
 
 class CourseViewSet(ModelViewSet):
@@ -67,7 +68,6 @@ class CardViewSet(ModelViewSet):
         return self.serializer_class
 
 
-
 class StudyMaterialViewSet(ModelViewSet):
     """
     学习素材-增删改查
@@ -80,6 +80,7 @@ class StudyMaterialViewSet(ModelViewSet):
     search_fields = ['title']
     ordering_fields = ['pk']
     ordering = ['pk']
+    filterset_fields = ['type']
 
     def get_serializer_class(self):
         # 如果是根据ID查询详情，则使用详细查询序列化器
@@ -97,6 +98,22 @@ class TagViewSet(ModelViewSet):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
     pagination_class = None
-    search_fields = ['name']
+    search_fields = ['name', 'value', 'module', 'service']
     ordering_fields = ['pk']
     ordering = ['pk']
+
+
+class EnumConfigViewSet(ModelViewSet):
+    """
+    枚举配置-增删改查
+    """
+    perms_map = {'get': '*', 'post': 'role_create',
+                 'put': 'role_update', 'delete': 'role_delete'}
+    queryset = EnumConfig.objects.all()
+    serializer_class = EnumConfigSerializer
+    pagination_class = None
+    search_fields = ['name', 'module', 'service', 'value']
+    ordering_fields = ['pk']
+    ordering = ['pk']
+    filter_backends = [filters.SearchFilter, DjangoFilterBackend]
+    filterset_fields = ['module', 'service']

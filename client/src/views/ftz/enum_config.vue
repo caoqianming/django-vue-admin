@@ -1,37 +1,23 @@
 <template>
   <div class="app-container">
     <el-card>
-      <div>课程
-        <el-select v-model="courseId" placeholder="请选择">
-          <el-option
-            v-for="item in courseList"
-            :key="item.id"
-            :label="`【${item.id}】- ${item.title} (${item.type})`"
-            :value="item.id">
-            <!--            <span style="float: right; color: #8492a6; font-size: 13px">{{ item.value }}</span>-->
-          </el-option>
-        </el-select>
-        <el-select v-model="tableData.type" placeholder="课时类型" style="width: 120px">
-          <el-option v-for="(item, index) in typeOptions" :key="index" :label="item.label"
-                     :value="item.value"></el-option>
-        </el-select>
+      <div>
+        <el-button type="primary" icon="el-icon-plus" @click="handleAdd">新增分类</el-button>
         <el-input
-          v-model="tableDataList.search"
-          placeholder="分组"
-          style="width: 120px"
-          class="filter-item"
-          @keyup.enter.native="handleFilter"
-        />
-        <el-input v-model="listQuery.field110" style="width: 120px" placeholder="输入卡片ID"></el-input>
-        <el-input v-model="listQuery.field110" style="width: 150px" placeholder="卡片完整名称"></el-input>
+        v-model="search"
+        placeholder="输入名称进行搜索"
+        style="width: 200px"
+        class="filter-item"
+        @keyup.native="handleFilter"
+      />
         <el-button
           class="filter-item"
           type="primary"
           icon="el-icon-search"
           @click="resetFilter"
         >查询
-        </el-button>
-        <el-button type="primary" icon="el-icon-plus" @click="handleAdd">新增课时</el-button>
+        </el-button
+        >
       </div>
     </el-card>
 
@@ -54,23 +40,30 @@
       <el-table-column label="ID" width="60">
         <template slot-scope="scope">{{ scope.row.id }}</template>
       </el-table-column>
-      <el-table-column label="课时序号" width="60">
-        <template slot-scope="scope">{{ scope.row.lesson_number }}</template>
+      <el-table-column label="模块">
+        <template slot-scope="scope">{{ scope.row.module }}</template>
       </el-table-column>
-      <el-table-column label="标题">
-        <template slot-scope="scope">{{ scope.row.title }}</template>
+      <el-table-column label="服务">
+        <template slot-scope="scope">{{ scope.row.service }}</template>
       </el-table-column>
-      <el-table-column label="类型">
-        <template slot-scope="scope">{{ scope.row.type }}</template>
+      <el-table-column label="名称">
+        <template slot-scope="scope">{{ scope.row.name }}</template>
       </el-table-column>
-      <el-table-column label="分组">
-        <template slot-scope="scope">{{ scope.row.group_name }}</template>
-      </el-table-column>
-      <el-table-column label="版本">
-        <template slot-scope="scope">{{ scope.row.version }}</template>
+      <el-table-column label="值">
+        <template slot-scope="scope">{{ scope.row.value }}</template>
       </el-table-column>
       <el-table-column label="描述">
         <template slot-scope="scope">{{ scope.row.description }}</template>
+      </el-table-column>
+      <el-table-column label="创建日期">
+        <template slot-scope="scope">
+          <span>{{ scope.row.create_time }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="创建更新时间">
+        <template slot-scope="scope">
+          <span>{{ scope.row.update_time }}</span>
+        </template>
       </el-table-column>
       <el-table-column align="center" label="操作">
         <template slot-scope="scope">
@@ -94,7 +87,7 @@
 
     <el-dialog
       :visible.sync="dialogVisible"
-      :title="dialogType === 'edit' ? '编辑课时' : '新增课时'"
+      :title="dialogType === 'edit' ? '编辑配置' : '新增配置'"
     >
       <el-form
         ref="Form"
@@ -102,32 +95,40 @@
         label-width="80px"
         label-position="right"
       >
-        <el-form-item label="标题" prop="title">
-          <el-input v-model="tableData.title" placeholder="标题"/>
-        </el-form-item>
-        <el-form-item label="课时序号" prop="lesson_number">
-          <el-input v-model="tableData.lesson_number" placeholder="课时序号"/>
-        </el-form-item>
-        <el-form-item label="卡片类型" prop="type">
+        <el-form-item label="模块" prop="module">
           <el-select
-            v-model="tableData.type"
-            placeholder="请选择"
-            style="width: 90%"
-          >
-            <el-option
-              v-for="item in typeOptions"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            />
-          </el-select>
+                v-model="tableData.module"
+                placeholder="请选择"
+                style="width: 90%"
+              >
+                <el-option
+                  v-for="item in moduleOptions"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                />
+              </el-select>
         </el-form-item>
-        <el-form-item label="分组" prop="group_name">
-          <el-input v-model="tableData.group_name" placeholder="分组"/>
+        <el-form-item label="服务" prop="service">
+          <el-select
+                v-model="tableData.service"
+                placeholder="请选择"
+                style="width: 90%"
+              >
+                <el-option
+                  v-for="item in serviceOptions"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                />
+              </el-select>
+        </el-form-item>
+        <el-form-item label="名称" prop="name">
+          <el-input v-model="tableData.name" placeholder="名称"/>
         </el-form-item>
 
-        <el-form-item label="版本" prop="version">
-          <el-input v-model="tableData.version" placeholder="版本"/>
+        <el-form-item label="值" prop="value">
+          <el-input v-model="tableData.value" placeholder="值"/>
         </el-form-item>
         <el-form-item label="描述" prop="description">
           <el-input v-model="tableData.description" placeholder="课程描述" :autosize="{ minRows: 2, maxRows: 4 }"
@@ -144,103 +145,83 @@
 
 <script>
 import {
-  getLessonById,
-  getLessonList,
-  createLesson,
-  updateLesson,
-  deleteLesson
-} from "@/api/lesson";
-import {getCourseList} from "@/api/course";
+  getEnumConfigList,
+  getEnumConfigById,
+  createEnumConfig,
+  updateEnumConfig,
+  deleteEnumConfig
+} from "@/api/enum_config";
 import {genTree, deepClone} from "@/utils";
 import checkPermission from "@/utils/permission";
 
 const defaultM = {
-  title: "",
-  type: "",
-  description: "",
-  lesson_number: 1,
-  group_name: "默认分组",
-  version: "first",
-  cards: []
+  module: "",
+  service: "",
+  name: "",
+  value: "",
+  description: ""
 };
 export default {
   data() {
     return {
-      courseList: [],
-      courseData: {id: null},
-      courseId: null,
-      courseSearch: "",
       tableData: {
         id: "",
-        title: "",
-        type: "",
+        module: "",
+        service: "",
+        name: "",
+        value: "",
         description: "",
-        lesson_number: 1,
-        group_name: "默认分组",
-        version: "first",
-        cards: []
+        create_time: "",
+        update_time: ""
       },
       search: "",
       tableDataList: [],
       listLoading: true,
       dialogVisible: false,
       dialogType: "new",
-      difficultyOptions: [
+      moduleOptions: [
         {
-          "label": "简单",
-          "value": 'easy'
-        }, {
-          "label": "中等",
-          "value": 'medium'
-        }, {
-          "label": "困难",
-          "value": 'difficult'
-        }],
-      typeOptions: [
+          label: "课程",
+          value: "course",
+        },
         {
-          "label": "编程课",
-          "value": "编程课"
-        }, {
-          "label": "编程卡",
-          "value": "编程卡"
-        }],
-      listQuery: {
-        page: 1,
-        page_size: 20,
-      },
+          label: "课时",
+          value: "lesson",
+        },
+        {
+          label: "卡片",
+          value: "card",
+        },
+        {
+          label: "素材",
+          value: "material",
+        }
+      ],
+      serviceOptions: [
+        {
+          label: "分类",
+          value: "type",
+        },
+        {
+          label: "卡片难度级别",
+          value: "difficulty",
+        },
+        {
+          label: "卡片状态",
+          value: "status",
+        }
+      ],
     };
   },
   computed: {},
   created() {
-     this.getCourseData().then(() => {
-      this.getList();
-    });
+    this.getList();
   },
   methods: {
     checkPermission,
-    changeStatus(value) {
-      this.tableData.status = value;
-    },
-
-    handleCourseChange() {
-      this.listQuery.course_id = this.courseData.id;
-    },
-    getCourseData() {
-      return new Promise((resolve, reject) => {
-        getCourseList(this.courseSearch).then((response) => {
-          this.courseList = response.data;
-          if (this.courseList && this.courseList.length > 0) {
-            this.courseId = this.courseList[0].id;
-          }
-          resolve();
-        });
-      });
-    },
-
     getList() {
       this.listLoading = true;
-      this.listQuery.course_id = this.courseId;
-      getLessonList(this.listQuery).then((response) => {
+      getEnumConfigList(this.search).then((response) => {
         this.tableDataList = response.data;
         this.tableData = response.data;
         this.listLoading = false;
@@ -261,7 +242,6 @@ export default {
       this.tableData = Object.assign({}, defaultM);
       this.dialogType = "new";
       this.dialogVisible = true;
-      this.tableData.course_id = this.courseId;
       this.$nextTick(() => {
         this.$refs["Form"].clearValidate();
       });
@@ -281,7 +261,7 @@ export default {
         type: "error",
       })
         .then(async () => {
-          await deleteLesson(scope.row.id);
+          await deleteEnumConfig(scope.row.id);
           this.getList();
           this.$message({
             type: "success",
@@ -297,7 +277,7 @@ export default {
         if (valid) {
           const isEdit = this.dialogType === "edit";
           if (isEdit) {
-            updateLesson(this.tableData.id, this.tableData).then(() => {
+            updateEnumConfig(this.tableData.id, this.tableData).then(() => {
               this.getList();
               this.dialogVisible = false;
               this.$message({
@@ -306,7 +286,7 @@ export default {
               });
             });
           } else {
-            createLesson(this.tableData).then((res) => {
+            createEnumConfig(this.tableData).then((res) => {
               this.getList();
               this.dialogVisible = false;
               this.$message({
@@ -321,7 +301,5 @@ export default {
       });
     },
   },
-  watch: {
-}
 };
 </script>

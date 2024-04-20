@@ -126,7 +126,18 @@
         </el-form-item>
         <!-- todo 这里要支持图片上传，然后将相对路径赋值-> 多选 -->
         <el-form-item label="核心图" prop="card_core_image">
-          <el-input v-model="tableData.card_core_image" placeholder="核心图"/>
+          <el-upload
+            class="avatar-uploader"
+            :action="upUrl"
+            accept="image/jpeg, image/gif, image/png, image/bmp"
+            :show-file-list="false"
+            :on-success="handleAvatarSuccess"
+            :before-upload="beforeAvatarUpload"
+            :headers="upHeaders"
+          >
+            <img v-if="tableData.card_core_image" :src="tableData.card_core_image" class="avatar" />
+            <i v-else class="el-icon-plus avatar-uploader-icon" />
+          </el-upload>
         </el-form-item>
         <el-form-item label="话题" prop="topic">
           <el-input v-model="tableData.topic" placeholder="话题"/>
@@ -172,6 +183,7 @@ import {
 } from "@/api/card";
 import {genTree, deepClone} from "@/utils";
 import checkPermission from "@/utils/permission";
+import {upUrl,upHeaders} from "@/api/file";
 
 const defaultM = {
   title: "",
@@ -187,6 +199,8 @@ const defaultM = {
 export default {
   data() {
     return {
+      upHeaders: upHeaders(),
+      upUrl: upUrl(),
       tableData: {
         id: "",
         title: "",
@@ -217,10 +231,10 @@ export default {
         }],
       typeOptions: [
         {
-          "label": "编程课",
+          "label": "单词卡",
           "value": "编程课"
         }, {
-          "label": "编程卡",
+          "label": "语法卡",
           "value": "编程卡"
         }],
       listQuery: {
@@ -231,12 +245,23 @@ export default {
   },
   computed: {},
   created() {
-    this.getList();
+    this.getList()
   },
   methods: {
     checkPermission,
     changeStatus(value) {
-      this.tableData.status = value;
+      this.tableData.status = value
+    },
+    handleAvatarSuccess(res) {
+      console.log(res)
+      this.tableData.card_core_image = res.data.file
+    },
+    beforeAvatarUpload(file) {
+      const isLt2M = file.size / 1024 / 1024 < 2;
+      if (!isLt2M) {
+        this.$message.error("上传核心图片大小不能超过 2MB!");
+      }
+      return isLt2M;
     },
     getList() {
       this.listLoading = true;
@@ -244,10 +269,10 @@ export default {
         this.tableDataList = response.data;
         this.tableData = response.data;
         this.listLoading = false;
-      });
+      })
     },
     resetFilter() {
-      this.getList();
+      this.getList()
     },
     handleFilter() {
       const newData = this.tableDataList.filter(
@@ -255,70 +280,88 @@ export default {
           !this.search ||
           data.title.toLowerCase().includes(this.search.toLowerCase())
       );
-      this.tableData = genTree(newData);
+      this.tableData = genTree(newData)
     },
     handleAdd() {
-      this.tableData = Object.assign({}, defaultM);
-      this.dialogType = "new";
-      this.dialogVisible = true;
+      this.tableData = Object.assign({}, defaultM)
+      this.dialogType = "new"
+      this.dialogVisible = true
       this.$nextTick(() => {
-        this.$refs["Form"].clearValidate();
-      });
+        this.$refs["Form"].clearValidate()
+      })
     },
     handleEdit(scope) {
-      this.tableData = Object.assign({}, scope.row); // copy obj
+      this.tableData = Object.assign({}, scope.row) // copy obj
       this.dialogType = "edit";
       this.dialogVisible = true;
       this.$nextTick(() => {
         this.$refs["Form"].clearValidate();
-      });
+      })
     },
     handleDelete(scope) {
       this.$confirm("确认删除?", "警告", {
         confirmButtonText: "确认",
         cancelButtonText: "取消",
-        type: "error",
+        type: "error"
       })
-        .then(async () => {
+        .then(async() => {
           await deleteCard(scope.row.id);
-          this.getList();
+          this.getList()
           this.$message({
             type: "success",
-            message: "成功删除!",
-          });
+            message: "删除成功!"
+          })
         })
         .catch((err) => {
-          console.error(err);
-        });
+          console.error(err)
+        })
     },
     async confirm(form) {
       this.$refs[form].validate((valid) => {
         if (valid) {
-          const isEdit = this.dialogType === "edit";
+          const isEdit = this.dialogType === "edit"
           if (isEdit) {
             updateCard(this.tableData.id, this.tableData).then(() => {
-              this.getList();
+              this.getList()
               this.dialogVisible = false;
               this.$message({
                 message: "编辑成功",
-                type: "success",
-              });
-            });
+                type: "success"
+              })
+            })
           } else {
             createCard(this.tableData).then((res) => {
-              this.getList();
-              this.dialogVisible = false;
+              this.getList()
+              this.dialogVisible = false
               this.$message({
                 message: "新增成功",
-                type: "success",
-              });
-            });
+                type: "success"
+              })
+            })
           }
         } else {
-          return false;
+          return false
         }
-      });
-    },
-  },
-};
+      })
+    }
+  }
+}
 </script>
+<style scoped>
+.avatar-uploader .el-upload:hover {
+  border-color: #409eff;
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 100px;
+  height: 100px;
+  line-height: 100px;
+  text-align: center;
+}
+.avatar {
+  width: 100px;
+  height: 100px;
+  display: block;
+}
+</style>
