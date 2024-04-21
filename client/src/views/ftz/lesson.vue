@@ -18,15 +18,7 @@
           <el-option v-for="(item, index) in typeOptions" :key="index" :label="item.name"
                      :value="item.value"></el-option>
         </el-select>
-<!--        <el-input-->
-<!--          v-model="listQuery.type"-->
-<!--          placeholder="分组"-->
-<!--          style="width: 120px"-->
-<!--          class="filter-item"-->
-<!--          @keyup.enter.native="handleFilter"-->
-<!--        />-->
-<!--        <el-input v-model="listQuery.field110" style="width: 120px" placeholder="输入卡片ID"></el-input>-->
-        <el-input v-model="listQuery.search" style="width: 300px" placeholder="输入关键字搜索"></el-input>
+    <el-input v-model="listQuery.search" style="width: 300px" placeholder="输入关键字搜索"></el-input>
         <el-button
           class="filter-item"
           type="primary"
