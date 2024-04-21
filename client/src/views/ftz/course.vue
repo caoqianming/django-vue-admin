@@ -3,10 +3,17 @@
     <el-card>
       <div>
         <el-button type="primary" icon="el-icon-plus" @click="handleAdd">新增课程</el-button>
+        <el-select v-model="listQuery.type"
+                   placeholder="课程类型"
+                   clearable
+                   style="width: 120px">
+          <el-option v-for="(item, index) in typeOptions" :key="index" :label="item.name"
+                     :value="item.value"></el-option>
+        </el-select>
         <el-input
-        v-model="search"
+        v-model="listQuery.search"
         placeholder="输入课程名称进行搜索"
-        style="width: 200px"
+        style="width: 300px"
         class="filter-item"
         @keyup.native="handleFilter"
       />
@@ -20,24 +27,7 @@
         >
       </div>
     </el-card>
-<!--    <div>-->
-<!--      <el-input-->
-<!--        v-model="search"-->
-<!--        placeholder="输入课程名称进行搜索"-->
-<!--        style="width: 200px"-->
-<!--        class="filter-item"-->
-<!--        @keyup.native="resetFilter"-->
-<!--      />-->
-<!--      <el-button-->
-<!--        type="primary"-->
-<!--        icon="el-icon-plus"-->
-<!--        @click="handleAdd"-->
-<!--        v-if="checkPermission(['position_create'])"-->
-<!--        size="small"-->
-<!--      >新增-->
-<!--      </el-button-->
-<!--      >-->
-<!--    </div>-->
+
     <el-table
       v-loading="listLoading"
       :data="
@@ -152,6 +142,7 @@ import {
 } from "@/api/course";
 import {genTree, deepClone} from "@/utils";
 import checkPermission from "@/utils/permission";
+import {getEnumConfigList} from "@/api/enum_config";
 
 const defaultM = {
   title: "",
@@ -188,17 +179,33 @@ export default {
           label: "进阶课",
         }
       ],
+      typeOptions: [],
+      listQuery: {
+        page: 1,
+        page_size: 20,
+        search: null
+      },
+      enumConfigQuery: {
+        module: 'course',
+        service: 'type'
+      }
     };
   },
   computed: {},
   created() {
+    this.getCourseTypeList();
     this.getList();
   },
   methods: {
     checkPermission,
+    getCourseTypeList(){
+      getEnumConfigList(this.enumConfigQuery).then((response) => {
+        this.typeOptions = response.data;
+      })
+    },
     getList() {
       this.listLoading = true;
-      getCourseList(this.search).then((response) => {
+      getCourseList(this.listQuery).then((response) => {
         this.tableDataList = response.data;
         this.tableData = response.data;
         this.listLoading = false;

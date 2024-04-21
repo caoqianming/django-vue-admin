@@ -20,6 +20,8 @@ class CourseViewSet(ModelViewSet):
     search_fields = ['title']
     ordering_fields = ['pk']
     ordering = ['pk']
+    filter_backends = [filters.SearchFilter, DjangoFilterBackend]
+    filterset_fields = ['type']
 
     # def get_queryset(self):
     #     all = self.request.query_params.get('all', True)
@@ -35,11 +37,11 @@ class LessonViewSet(ModelViewSet):
     queryset = Lesson.objects.all()
     serializer_class = LessonListSerializer
     pagination_class = None
-    search_fields = ['title', 'course__title', 'type', 'version', 'course_id']
+    search_fields = ['title', 'version', 'course_id__title', 'group_name']
     ordering_fields = ['pk']
     ordering = ['pk']
     filter_backends = [filters.SearchFilter, DjangoFilterBackend]
-    filterset_fields = ['course_id']
+    filterset_fields = ['course_id', 'type']
 
     def get_serializer_class(self):
         # 如果是根据ID查询详情，则使用详细查询序列化器
@@ -57,9 +59,10 @@ class CardViewSet(ModelViewSet):
     queryset = Card.objects.all()
     serializer_class = CardListSerializer
     pagination_class = None
-    search_fields = ['title']
+    search_fields = ['title', 'group_name', 'topic']
     ordering_fields = ['pk']
     ordering = ['pk']
+    filterset_fields = ['type', 'difficulty']
 
     def get_serializer_class(self):
         # 如果是根据ID查询详情，则使用详细查询序列化器

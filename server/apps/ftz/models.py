@@ -108,7 +108,7 @@ class Card(SoftModel):
     title = models.CharField('课时标题', max_length=128, blank=False)
     description = models.TextField('描述', blank=True)
     type = models.CharField('课程类型', max_length=128, choices=[])
-    status = models.IntegerField('状态', choices=[], default=0)
+    status = models.CharField('状态', choices=[], default='0')
     card_core_image = models.CharField('核心图', max_length=128, blank=True)
     group_name = models.CharField('卡片分组名称', max_length=512, blank=True)
     topic = models.CharField('话题', max_length=128, blank=True)
@@ -139,7 +139,8 @@ class Lesson(SoftModel):
     version = models.CharField('版本号')
 
     cards = models.ManyToManyField(Card, blank=True, verbose_name='卡片', related_name='cards')
-    course_id = models.ForeignKey(Course, on_delete=models.SET_NULL, verbose_name='课程', blank=True, null=True)
+    course_id = models.ForeignKey(Course, on_delete=models.SET_NULL, verbose_name='课程', blank=True, null=True,
+                                  related_name='course')
 
     def __init__(self, *args, **kwargs):
         super(Lesson, self).__init__(*args, **kwargs)

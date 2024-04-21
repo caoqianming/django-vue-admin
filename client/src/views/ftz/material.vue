@@ -3,11 +3,14 @@
     <el-card>
       <div>
         <el-button type="primary" icon="el-icon-plus" @click="handleAdd">新增素材</el-button>
-        <el-select v-model="listQuery.type" placeholder="素材类型" style="width: 120px">
-          <el-option v-for="(item, index) in typeOptions" :key="index" :label="item.label"
+        <el-select v-model="listQuery.type"
+                   placeholder="素材类型"
+                   clearable
+                   style="width: 120px">
+          <el-option v-for="(item, index) in typeOptions" :key="index" :label="item.name"
                      :value="item.value"></el-option>
         </el-select>
-        <el-input v-model="listQuery.search" style="width: 150px" placeholder="输入关键字搜索"></el-input>
+        <el-input v-model="listQuery.search" style="width: 300px" placeholder="输入关键字搜索"></el-input>
         <el-button
           class="filter-item"
           type="primary"

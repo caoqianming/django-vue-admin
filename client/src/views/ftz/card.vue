@@ -3,24 +3,33 @@
     <el-card>
       <div>
         <el-button type="primary" icon="el-icon-plus" @click="handleAdd">新增卡片</el-button>
-        <el-select v-model="tableData.type" placeholder="卡片类型" style="width: 120px">
-          <el-option v-for="(item, index) in typeOptions" :key="index" :label="item.label"
+        <el-select v-model="listQuery.type"
+                   placeholder="卡片类型"
+                   clearable
+                   style="width: 120px">
+          <el-option v-for="(item, index) in typeOptions" :key="index" :label="item.name"
+                     :value="item.value"></el-option>
+        </el-select>
+        <el-select v-model="listQuery.difficulty"
+                   placeholder="难度"
+                   clearable
+                   style="width: 120px">
+          <el-option v-for="(item, index) in difficultyOptions" :key="index" :label="item.name"
                      :value="item.value"></el-option>
         </el-select>
         <el-input
-          v-model="tableDataList.search"
-          placeholder="分组"
-          style="width: 120px"
+          v-model="listQuery.search"
+          placeholder="输入关键字搜索"
+          style="width: 300px"
           class="filter-item"
-          @keyup.enter.native="handleFilter"
         />
-        <el-input v-model="listQuery.field110" style="width: 120px" placeholder="输入卡片ID"></el-input>
-        <el-input v-model="listQuery.field110" style="width: 150px" placeholder="卡片完整名称"></el-input>
+<!--        <el-input v-model="listQuery.field110" style="width: 120px" placeholder="输入卡片ID"></el-input>-->
+<!--        <el-input v-model="listQuery.field110" style="width: 150px" placeholder="卡片完整名称"></el-input>-->
         <el-button
           class="filter-item"
           type="primary"
           icon="el-icon-search"
-          @click="handleFilter"
+          @click="resetFilter"
         >查询
         </el-button
         >
@@ -110,7 +119,7 @@
             <el-option
               v-for="item in typeOptions"
               :key="item.value"
-              :label="item.label"
+              :label="item.name"
               :value="item.value"
             />
           </el-select>
@@ -151,7 +160,7 @@
             <el-option
               v-for="item in difficultyOptions"
               :key="item.value"
-              :label="item.label"
+              :label="item.name"
               :value="item.value"
             />
           </el-select>
@@ -184,6 +193,7 @@ import {
 import {genTree, deepClone} from "@/utils";
 import checkPermission from "@/utils/permission";
 import {upUrl,upHeaders} from "@/api/file";
+import {getEnumConfigList} from "@/api/enum_config";
 
 const defaultM = {
   title: "",
@@ -219,38 +229,37 @@ export default {
       dialogVisible: false,
       dialogType: "new",
       difficultyOptions: [
-        {
-          "label": "简单",
-          "value": 'easy'
-        }, {
-          "label": "中等",
-          "value": 'medium'
-        }, {
-          "label": "困难",
-          "value": 'difficult'
-        }],
+],
       typeOptions: [
-        {
-          "label": "单词卡",
-          "value": "编程课"
-        }, {
-          "label": "语法卡",
-          "value": "编程卡"
-        }],
+],
       listQuery: {
         page: 1,
         page_size: 20,
       },
+      module_name: 'card',
     };
   },
   computed: {},
   created() {
-    this.getList()
+    this.getList();
+    this.getCardTypeList();
+    this.getDifficultyList();
   },
   methods: {
     checkPermission,
-    changeStatus(value) {
-      this.tableData.status = value
+
+    getCardTypeList(){
+      let query = {module: this.module_name, service: 'type'};
+      getEnumConfigList(query).then((response) => {
+        this.typeOptions = response.data;
+      })
+    },
+
+    getDifficultyList(){
+      let query = {module: this.module_name, service: 'difficulty'};
+      getEnumConfigList(query).then((response) => {
+        this.difficultyOptions = response.data;
+      })
     },
     handleAvatarSuccess(res) {
       console.log(res)
@@ -265,7 +274,7 @@ export default {
     },
     getList() {
       this.listLoading = true;
-      getCardList(this.search).then((response) => {
+      getCardList(this.listQuery).then((response) => {
         this.tableDataList = response.data;
         this.tableData = response.data;
         this.listLoading = false;

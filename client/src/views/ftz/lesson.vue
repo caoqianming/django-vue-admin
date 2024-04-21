@@ -11,19 +11,22 @@
             <!--            <span style="float: right; color: #8492a6; font-size: 13px">{{ item.value }}</span>-->
           </el-option>
         </el-select>
-        <el-select v-model="tableData.type" placeholder="课时类型" style="width: 120px">
-          <el-option v-for="(item, index) in typeOptions" :key="index" :label="item.label"
+        <el-select v-model="listQuery.type"
+                   placeholder="课时类型"
+                   clearable
+                   style="width: 120px">
+          <el-option v-for="(item, index) in typeOptions" :key="index" :label="item.name"
                      :value="item.value"></el-option>
         </el-select>
-        <el-input
-          v-model="tableDataList.search"
-          placeholder="分组"
-          style="width: 120px"
-          class="filter-item"
-          @keyup.enter.native="handleFilter"
-        />
-        <el-input v-model="listQuery.field110" style="width: 120px" placeholder="输入卡片ID"></el-input>
-        <el-input v-model="listQuery.field110" style="width: 150px" placeholder="卡片完整名称"></el-input>
+<!--        <el-input-->
+<!--          v-model="listQuery.type"-->
+<!--          placeholder="分组"-->
+<!--          style="width: 120px"-->
+<!--          class="filter-item"-->
+<!--          @keyup.enter.native="handleFilter"-->
+<!--        />-->
+<!--        <el-input v-model="listQuery.field110" style="width: 120px" placeholder="输入卡片ID"></el-input>-->
+        <el-input v-model="listQuery.search" style="width: 300px" placeholder="输入关键字搜索"></el-input>
         <el-button
           class="filter-item"
           type="primary"
@@ -153,6 +156,7 @@ import {
 import {getCourseList} from "@/api/course";
 import {genTree, deepClone} from "@/utils";
 import checkPermission from "@/utils/permission";
+import {getEnumConfigList} from "@/api/enum_config";
 
 const defaultM = {
   title: "",
@@ -196,24 +200,24 @@ export default {
           "label": "困难",
           "value": 'difficult'
         }],
-      typeOptions: [
-        {
-          "label": "编程课",
-          "value": "编程课"
-        }, {
-          "label": "编程卡",
-          "value": "编程卡"
-        }],
+      typeOptions: [],
       listQuery: {
         page: 1,
         page_size: 20,
+        search: null
       },
+      enumConfigQuery: {
+        module: 'lesson',
+        service: 'type'
+      },
+      total: 0
     };
   },
   computed: {},
   created() {
-     this.getCourseData().then(() => {
-      this.getList();
+      this.getLessonTypeList();
+      this.getCourseData().then(() => {
+        this.getList();
     });
   },
   methods: {
@@ -221,7 +225,11 @@ export default {
     changeStatus(value) {
       this.tableData.status = value;
     },
-
+    getLessonTypeList(){
+      getEnumConfigList(this.enumConfigQuery).then((response) => {
+        this.typeOptions = response.data;
+      })
+    },
     handleCourseChange() {
       this.listQuery.course_id = this.courseData.id;
     },
@@ -252,8 +260,8 @@ export default {
     handleFilter() {
       const newData = this.tableDataList.filter(
         (data) =>
-          !this.search ||
-          data.title.toLowerCase().includes(this.search.toLowerCase())
+          !this.listQuery.search ||
+          data.title.toLowerCase().includes(this.listQuery.search.toLowerCase())
       );
       this.tableData = genTree(newData);
     },
