@@ -47,17 +47,17 @@ urlpatterns = [
     path('', include('apps.utils.urls')),
     path('', include('apps.ops.urls')),
 
-
-
-    # api文档
-    path('api/docs/', include_docs_urls(title="接口文档",
-         authentication_classes=[], permission_classes=[])),
-    path('api/swagger/', schema_view.with_ui('swagger',
-         cache_timeout=0), name='schema-swagger-ui'),
-    path('api/redoc/', schema_view.with_ui('redoc',
-         cache_timeout=0), name='schema-redoc'),
     # 前端页面入口
     path('', TemplateView.as_view(template_name="index.html")),
 ] + \
     static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + \
     static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+if settings.DEBUG:
+    urlpatterns += [
+        # api文档
+        path('api/swagger/', schema_view.with_ui('swagger',
+            cache_timeout=0), name='schema-swagger-ui'),
+        path('api/redoc/', schema_view.with_ui('redoc',
+            cache_timeout=0), name='schema-redoc'),
+    ]
