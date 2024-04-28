@@ -330,7 +330,6 @@ def get_sysconfig(key='', reload=False):
         with open(SYS_JSON_PATH, 'r', encoding='utf-8') as f:
             config = json.loads(f.read())
             cache.set('system_config', config)
-            return config
     if key:
         k_l = key.split('.')
         for k in k_l:
