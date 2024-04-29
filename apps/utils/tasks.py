@@ -5,6 +5,7 @@ import logging
 from django.conf import settings
 from server.settings import get_sysconfig
 import importlib
+import traceback
 
 # 实例化myLogger
 myLogger = logging.getLogger('log')
@@ -27,7 +28,8 @@ class CustomTask(Task):
     """
 
     def on_failure(self, exc, task_id, args, kwargs, einfo):
-        detail = '{0!r} failed: {1!r}'.format(task_id, exc)
+        detail ='Task {0} raised exception: {1!r}\n{2!r}'.format(
+                    task_id, exc, einfo.traceback)
         myLogger.error(detail)
         send_mail_task.delay(subject='task_error', message=detail)
         return super().on_failure(exc, task_id, args, kwargs, einfo)
