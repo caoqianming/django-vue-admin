@@ -5,7 +5,6 @@ import logging
 from django.conf import settings
 from server.settings import get_sysconfig
 import importlib
-import traceback
 
 # 实例化myLogger
 myLogger = logging.getLogger('log')
