@@ -1,26 +1,20 @@
 
 from django.core.cache import cache
 from rest_framework.decorators import action
-from rest_framework.exceptions import ValidationError, ParseError
-from rest_framework.mixins import (CreateModelMixin, ListModelMixin,
-                                   RetrieveModelMixin, UpdateModelMixin, DestroyModelMixin)
-from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework.exceptions import ParseError
+from rest_framework.mixins import RetrieveModelMixin
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
-from apps.system.models import DataFilter, Dept, User
-from apps.utils.errors import PKS_ERROR
-from apps.utils.mixins import MyLoggingMixin, BulkCreateModelMixin, BulkUpdateModelMixin, BulkDestroyModelMixin
+from apps.system.models import DataFilter, Dept
+from apps.utils.mixins import MyLoggingMixin, BulkCreateModelMixin, BulkUpdateModelMixin, BulkDestroyModelMixin, CustomListModelMixin
 from apps.utils.permission import ALL_PERMS, RbacPermission, get_user_perms_map
 from apps.utils.queryset import get_child_queryset2, get_child_queryset_u
-from apps.utils.serializers import PkSerializer, ComplexSerializer
+from apps.utils.serializers import ComplexSerializer
 from rest_framework.throttling import UserRateThrottle
 from drf_yasg.utils import swagger_auto_schema
-from drf_yasg import openapi
-from apps.utils.decorators import idempotent
-from django.db import transaction
 import json
-from rest_framework.generics import get_object_or_404
 
 
 class CustomGenericViewSet(MyLoggingMixin, GenericViewSet):
@@ -184,7 +178,7 @@ class CustomGenericViewSet(MyLoggingMixin, GenericViewSet):
         return queryset.filter(create_by=self.request.user)
 
 
-class CustomModelViewSet(BulkCreateModelMixin, BulkUpdateModelMixin, ListModelMixin,
+class CustomModelViewSet(BulkCreateModelMixin, BulkUpdateModelMixin, CustomListModelMixin,
                          RetrieveModelMixin, BulkDestroyModelMixin, CustomGenericViewSet):
     """
     增强的ModelViewSet
@@ -201,29 +195,6 @@ class CustomModelViewSet(BulkCreateModelMixin, BulkUpdateModelMixin, ListModelMi
             if v not in ALL_PERMS and v != '*':
                 ALL_PERMS.append(v)
 
-    @swagger_auto_schema(manual_parameters=[
-        openapi.Parameter(name="query", in_=openapi.IN_QUERY, description="定制返回数据",
-                          type=openapi.TYPE_STRING, required=False),
-    ])
-    def list(self, request, *args, **kwargs):
-        queryset = self.filter_queryset(self.get_queryset())
-
-        page = self.paginate_queryset(queryset)
-        if page is not None:
-            serializer = self.get_serializer(page, many=True)
-            data = self.add_info_for_list(serializer.data)
-            return self.get_paginated_response(data)
-
-        serializer = self.get_serializer(queryset, many=True)
-        data = self.add_info_for_list(serializer.data)
-        return Response(data)
-
-    def add_info_for_list(self, data):
-        """给list返回数据添加额外信息
-
-        给list返回数据添加额外信息
-        """
-        return data
 
     @swagger_auto_schema(request_body=ComplexSerializer, responses={200: {}})
     @action(methods=['post'], detail=False, perms_map={'post': '*'})

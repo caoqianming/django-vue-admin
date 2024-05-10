@@ -1,5 +1,5 @@
 import uuid
-from rest_framework.mixins import CreateModelMixin, UpdateModelMixin, DestroyModelMixin
+from rest_framework.mixins import CreateModelMixin, UpdateModelMixin, DestroyModelMixin, ListModelMixin
 import ast
 import ipaddress
 import traceback
@@ -14,6 +14,7 @@ from rest_framework.exceptions import ParseError, ValidationError
 from apps.utils.errors import PKS_ERROR
 from rest_framework.generics import get_object_or_404
 from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
 from apps.utils.serializers import PkSerializer
 
 # 实例化myLogger
@@ -173,6 +174,30 @@ class BulkDestroyModelMixin(DestroyModelMixin):
             self.perform_destroy(instance)
         return Response(status=204)
 
+class CustomListModelMixin(ListModelMixin):
+    @swagger_auto_schema(manual_parameters=[
+        openapi.Parameter(name="query", in_=openapi.IN_QUERY, description="定制返回数据",
+                          type=openapi.TYPE_STRING, required=False),
+    ])
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            data = self.add_info_for_list(serializer.data)
+            return self.get_paginated_response(data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        data = self.add_info_for_list(serializer.data)
+        return Response(data)
+
+    def add_info_for_list(self, data):
+        """给list返回数据添加额外信息
+
+        给list返回数据添加额外信息
+        """
+        return data
 
 class MyLoggingMixin(object):
     """Mixin to log requests"""
