@@ -228,10 +228,8 @@ export default {
       listLoading: true,
       dialogVisible: false,
       dialogType: "new",
-      difficultyOptions: [
-],
-      typeOptions: [
-],
+      difficultyOptions: [],
+      typeOptions: [],
       listQuery: {
         page: 1,
         page_size: 20,
