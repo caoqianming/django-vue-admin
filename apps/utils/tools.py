@@ -9,6 +9,16 @@ import requests
 from io import BytesIO
 from rest_framework.serializers import ValidationError
 
+def is_close(num1, num2=0, tolerance=1e-9):
+    """
+    Check if a numeric value (int, float, etc.) is close.
+    """
+    if isinstance(num1, float) or isinstance(num2, float):     # Float check
+        return abs(num1-num2) < tolerance
+    elif isinstance(num1, int) and isinstance(num2, int):         # Integer check
+        return num1 == num2
+    else:
+        raise ValueError("Unsupported numeric type")
 
 def tran64(s):
     missing_padding = len(s) % 4
