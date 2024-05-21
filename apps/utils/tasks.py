@@ -30,7 +30,7 @@ class CustomTask(Task):
         detail ='Task {0} raised exception: {1!r}\n{2!r}'.format(
                     task_id, exc, einfo.traceback)
         myLogger.error(detail)
-        send_mail_task.delay(subject='task_error', message=detail)
+        send_mail_task.delay(subject=f'task_error_{self.name}', message=detail)
         return super().on_failure(exc, task_id, args, kwargs, einfo)
 
 @shared_task(base=CustomTask)
