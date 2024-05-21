@@ -32,6 +32,8 @@ def send_mail_task(**args):
             # 如果频率高于每分钟4封,则自动屏蔽半小时
             cache.set(cache_key, (email_count, email_enable), 1800)
             args['subject'] = args['subject'] + '_发送频繁'
+        else:
+            cache.set(cache_key, (email_count, True), 60)
         from django.core.mail import send_mail
         send_mail(**args)
 
