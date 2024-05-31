@@ -175,11 +175,17 @@ class BulkDestroyModelMixin(DestroyModelMixin):
         return Response(status=204)
 
 class CustomListModelMixin(ListModelMixin):
+    
     @swagger_auto_schema(manual_parameters=[
         openapi.Parameter(name="query", in_=openapi.IN_QUERY, description="定制返回数据",
                           type=openapi.TYPE_STRING, required=False),
     ])
     def list(self, request, *args, **kwargs):
+        """
+        获取列表
+
+        获取列表
+        """
         queryset = self.filter_queryset(self.get_queryset())
 
         page = self.paginate_queryset(queryset)
