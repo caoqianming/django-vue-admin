@@ -4,6 +4,9 @@ from django_restql.mixins import DynamicFieldsMixin
 from rest_framework.fields import empty
 from rest_framework.request import Request
 
+class BaseSerizlierMixin:
+    create_by_name = serializers.CharField(source='create_by.name', read_only=True)
+    update_by_name = serializers.CharField(source='update_by.name', read_only=True)
 
 class PkSerializer(serializers.Serializer):
     ids = serializers.ListField(
