@@ -9,3 +9,4 @@ djangorestframework==3.14.0
 djangorestframework-simplejwt==5.3.1
 drf-yasg==1.21.7
 psutil==5.9.6
+redis==5.0.1
