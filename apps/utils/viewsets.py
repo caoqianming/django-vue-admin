@@ -83,14 +83,19 @@ class CustomGenericViewSet(MyLoggingMixin, GenericViewSet):
         if not hasattr(self, 'filterset_fields'):
             self.filterset_fields = self.select_related_fields
 
-    def filter_custom(self, queryset):
+    def get_queryset_custom(self, queryset):
         """
         自定义过滤方法可复写
         """
+        if self.action in ["list", "retrieve", "create", "update", "partial_update", "destroy"]:
+            return queryset
+        elif hasattr(self, f'get_queryset_{self.action}'):
+            return getattr(self, f'get_queryset_{self.action}')(queryset)
         return queryset
 
     def filter_queryset(self, queryset):
         queryset = super().filter_queryset(queryset)
+        # 用于性能优化
         if self.select_related_fields:
             queryset = queryset.select_related(*self.select_related_fields)
         if self.prefetch_related_fields:
@@ -108,7 +113,7 @@ class CustomGenericViewSet(MyLoggingMixin, GenericViewSet):
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        queryset = self.filter_custom(queryset)
+        queryset = self.get_queryset_custom(queryset)
         if self.data_filter:
             user = self.request.user
             if user.is_superuser:
@@ -194,8 +199,7 @@ class CustomModelViewSet(BulkCreateModelMixin, BulkUpdateModelMixin, CustomListM
         for k, v in self.perms_map.items():
             if v not in ALL_PERMS and v != '*':
                 ALL_PERMS.append(v)
-
-
+        
     @swagger_auto_schema(request_body=ComplexSerializer, responses={200: {}})
     @action(methods=['post'], detail=False, perms_map={'post': '*'})
     def cquery(self, request):
