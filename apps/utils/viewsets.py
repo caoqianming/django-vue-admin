@@ -21,7 +21,7 @@ class CustomGenericViewSet(MyLoggingMixin, GenericViewSet):
     """
     增强的GenericViewSet
     """
-    perms_map = {}  # 权限标识
+    perms_map = None  # 权限标识
     throttle_classes = [UserRateThrottle]
     logging_methods = ['POST', 'PUT', 'PATCH', 'DELETE']
     ordering_fields = '__all__'
@@ -40,6 +40,19 @@ class CustomGenericViewSet(MyLoggingMixin, GenericViewSet):
     cache_seconds = 5   # 接口缓存时间默认5秒
     filterset_fields = select_related_fields
 
+    def __new__(cls, *args, **kwargs):
+        """
+        第一次实例化时，将权限标识添加到全局权限标识列表中
+        """
+        if cls.perms_map is None:
+            basename = kwargs["basename"]
+            cls.perms_map = {'get': '*', 'post': '{}.create'.format(basename), 'put': '{}.update'.format(
+                basename), 'patch': '{}.update'.format(basename), 'delete': '{}.delete'.format(basename)}
+        for _, v in cls.perms_map.items():
+            if v not in ALL_PERMS and v != '*':
+                ALL_PERMS.append(v)
+        return super().__new__(cls)
+    
     def finalize_response(self, request, response, *args, **kwargs):
         if self.hash_k and self.cache_seconds:
             cache.set(self.hash_k, response.data,
@@ -182,23 +195,11 @@ class CustomGenericViewSet(MyLoggingMixin, GenericViewSet):
             return queryset
         return queryset.filter(create_by=self.request.user)
 
-
 class CustomModelViewSet(BulkCreateModelMixin, BulkUpdateModelMixin, CustomListModelMixin,
                          RetrieveModelMixin, BulkDestroyModelMixin, CustomGenericViewSet):
     """
     增强的ModelViewSet
     """
-
-    def __init__(self, **kwargs) -> None:
-        super().__init__(**kwargs)
-        # 增加默认权限标识
-        if not self.perms_map or self.perms_map == {'get': '*'}:
-            basename = self.basename
-            self.perms_map = {'get': '*', 'post': '{}.create'.format(basename), 'put': '{}.update'.format(
-                basename), 'patch': '{}.update'.format(basename), 'delete': '{}.delete'.format(basename)}
-        for k, v in self.perms_map.items():
-            if v not in ALL_PERMS and v != '*':
-                ALL_PERMS.append(v)
         
     @swagger_auto_schema(request_body=ComplexSerializer, responses={200: {}})
     @action(methods=['post'], detail=False, perms_map={'post': '*'})
