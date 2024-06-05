@@ -8,10 +8,17 @@ def get_child_queryset_u(checkQueryset, hasParent=True):
     查的范围checkQueryset
     父obj
     是否包含父默认True
+    若有parent_link字段则进行性能优化
     '''
     cls = type(checkQueryset.model)
     if hasattr(cls, 'parent'):
         queryset = cls.objects.none()
+        if hasattr(cls, 'parent_link'):
+            for item in checkQueryset:
+                queryset = queryset | cls.objects.filter(parent_link__contains=item.id)
+                if hasParent:
+                    queryset = queryset | cls.objects.filter(pk=item.id)
+            return queryset
         if hasParent:
             queryset = checkQueryset
         child_queryset = checkQueryset.filter(parent__in=queryset)
