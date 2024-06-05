@@ -1,7 +1,7 @@
 from django.contrib.auth.models import UserManager
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-from apps.utils.models import CommonADModel, CommonAModel, CommonBModel, BaseModel, SoftDeletableManagerMixin
+from apps.utils.models import ParentModel, CommonADModel, CommonAModel, CommonBModel, BaseModel, SoftDeletableManagerMixin
 from django_celery_beat.models import IntervalSchedule, CrontabSchedule
 
 
@@ -13,7 +13,7 @@ class DataFilter(models.IntegerChoices):
     MYSELF = 60, '仅本人'
 
 
-class Permission(BaseModel):
+class Permission(ParentModel, BaseModel):
     """
     功能权限:目录,菜单,按钮
     """
@@ -29,8 +29,6 @@ class Permission(BaseModel):
     type = models.PositiveSmallIntegerField(
         '类型', choices=menu_type_choices, default=30)
     sort = models.PositiveSmallIntegerField('排序标记', default=1)
-    parent = models.ForeignKey('self', null=True, blank=True,
-                               on_delete=models.SET_NULL, verbose_name='父', db_constraint=False)
     codes = models.JSONField('权限标识', default=list, null=True, blank=True)
 
     def __str__(self):
@@ -42,14 +40,12 @@ class Permission(BaseModel):
         ordering = ['sort']
 
 
-class Dept(CommonAModel):
+class Dept(ParentModel, CommonAModel):
     """
     部门
     """
     name = models.CharField('名称', max_length=60)
     type = models.CharField('类型', max_length=20, default='dept')
-    parent = models.ForeignKey('self', null=True, blank=True,
-                               on_delete=models.SET_NULL, verbose_name='父')
     sort = models.PositiveSmallIntegerField('排序标记', default=1)
     third_info = models.JSONField('三方系统信息', default=dict)
 
@@ -60,7 +56,6 @@ class Dept(CommonAModel):
 
     def __str__(self):
         return self.name
-
 
 class Role(CommonADModel):
     """
@@ -88,8 +83,6 @@ class Post(CommonADModel):
     name = models.CharField('名称', max_length=32)
     code = models.CharField('岗位标识', max_length=32, null=True, blank=True)
     description = models.CharField('描述', max_length=50, blank=True, null=True)
-    parent = models.ForeignKey('self', null=True, blank=True,
-                               on_delete=models.SET_NULL, verbose_name='父')
     min_hour = models.PositiveSmallIntegerField('最小在岗时间', default=0)
     max_hour = models.PositiveSmallIntegerField('最长在岗时间', default=12)
 
@@ -178,14 +171,12 @@ class UserPost(BaseModel):
         unique_together = ('user', 'post', 'dept')
 
 
-class DictType(CommonAModel):
+class DictType(ParentModel, CommonAModel):
     """
     数据字典类型
     """
     name = models.CharField('名称', max_length=30)
     code = models.CharField('标识', max_length=30)
-    parent = models.ForeignKey('self', null=True, blank=True,
-                               on_delete=models.SET_NULL, verbose_name='父')
 
     class Meta:
         verbose_name = '字典类型'
@@ -196,7 +187,7 @@ class DictType(CommonAModel):
         return self.name
 
 
-class Dictionary(CommonAModel):
+class Dictionary(ParentModel, CommonAModel):
     """
     数据字典
     """
@@ -207,8 +198,6 @@ class Dictionary(CommonAModel):
     type = models.ForeignKey(
         DictType, on_delete=models.CASCADE, verbose_name='类型')
     sort = models.PositiveSmallIntegerField('排序', default=1)
-    parent = models.ForeignKey('self', null=True, blank=True,
-                               on_delete=models.SET_NULL, verbose_name='父')
     is_used = models.BooleanField('是否有效', default=True)
 
     class Meta:

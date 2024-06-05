@@ -53,6 +53,20 @@ class SoftDeletableManager(SoftDeletableManagerMixin, models.Manager):
     pass
 
 
+class ParentModel(models.Model):
+    parent = models.ForeignKey('self', null=True, blank=True,
+                               on_delete=models.SET_NULL, verbose_name='父', db_constraint=False)
+    parent_link = models.JSONField('父级关联', default=list, blank=True, editable=False)
+
+    def handle_parent(self):
+        if hasattr(self, "parent_link") and self.parent:
+            new_link = self.parent.parent_link
+            new_link.append(self.parent.id)
+            self.parent_link = new_link
+    
+    class Meta:
+        abstract = True
+
 class BaseModel(models.Model):
     """
     基本表
@@ -69,12 +83,19 @@ class BaseModel(models.Model):
     class Meta:
         abstract = True
 
+    def handle_parent(self):
+        pass
+
     def save(self, *args, **kwargs) -> None:
         # 出现了雪花ID重复, 先这样异常处理一下;已经修改了snowflake, 以防万一, 这里依然保留
         gen_id = False
         if not self.id:
             gen_id = True
             self.id = idWorker.get_id()
+
+        # 处理父级
+        self.handle_parent()
+
         try:
             return super().save(*args, **kwargs)
         except IntegrityError as e:
