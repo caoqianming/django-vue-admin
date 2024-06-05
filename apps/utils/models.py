@@ -5,6 +5,7 @@ from django.db.models import Model
 from django.db.models.query import QuerySet
 from apps.utils.snowflake import idWorker
 from django.db import IntegrityError
+from django.db import transaction
 
 # 自定义软删除查询基类
 
@@ -58,11 +59,31 @@ class ParentModel(models.Model):
                                on_delete=models.SET_NULL, verbose_name='父', db_constraint=False)
     parent_link = models.JSONField('父级关联', default=list, blank=True, editable=False)
 
-    def handle_parent(self):
-        if hasattr(self, "parent_link") and self.parent:
-            new_link = self.parent.parent_link
-            new_link.append(self.parent.id)
-            self.parent_link = new_link
+    def init_parent_link(self):
+        link = []
+        if self.parent is not None:
+            link = [self.parent.id] # 一级
+            if self.parent.parent is not None: # 二级
+                link.insert(0, self.parent.parent.id) 
+                if self.parent.parent.parent is not None: # 三级
+                    link.insert(0, self.parent.parent.parent.id)
+                    if self.parent.parent.parent.parent is not None:
+                        raise Exception('最多支持四级')
+        return link
+
+    def handle_parent(self, is_create:bool):
+        if hasattr(self, "parent_link"):
+            old_parent = None
+            if not is_create:
+                old_parent = self.__class__.objects.get(id=self.id).parent
+            if old_parent != self.parent:
+                """
+                处理父级关系
+                """
+                self.parent_link = self.init_parent_link()
+                self.__class__.objects.get_queryset(all=True).filter(parent=self.id).update(
+                    parent_link = self.parent_link + [self.id]
+                )
     
     class Meta:
         abstract = True
@@ -83,27 +104,27 @@ class BaseModel(models.Model):
     class Meta:
         abstract = True
 
-    def handle_parent(self):
+    def handle_parent(self, is_create):
         pass
 
     def save(self, *args, **kwargs) -> None:
-        # 出现了雪花ID重复, 先这样异常处理一下;已经修改了snowflake, 以防万一, 这里依然保留
-        gen_id = False
+        # 出现了雪花ID重复,不知道怎么处理，先这样异常处理一下;已经修改了snowflake, 以防万一, 这里依然保留
+        is_create = False
         if not self.id:
-            gen_id = True
+            is_create = True
             self.id = idWorker.get_id()
+        with transaction.atomic():
+            # 处理父级
+            self.handle_parent(is_create)
 
-        # 处理父级
-        self.handle_parent()
-
-        try:
-            return super().save(*args, **kwargs)
-        except IntegrityError as e:
-            if gen_id:
-                time.sleep(0.01)
-                self.id = idWorker.get_id()
+            try:
                 return super().save(*args, **kwargs)
-            raise e
+            except IntegrityError as e:
+                if is_create:
+                    time.sleep(0.01)
+                    self.id = idWorker.get_id()
+                    return super().save(*args, **kwargs)
+                raise e
 
 
 class SoftModel(BaseModel):
