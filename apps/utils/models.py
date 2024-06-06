@@ -81,7 +81,7 @@ class ParentModel(models.Model):
                 处理父级关系
                 """
                 self.parent_link = self.init_parent_link()
-                self.__class__.objects.get_queryset(all=True).filter(parent=self.id).update(
+                self.__class__.objects.filter(parent=self.id).update(
                     parent_link = self.parent_link + [self.id]
                 )
     
