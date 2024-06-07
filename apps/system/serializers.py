@@ -436,7 +436,7 @@ class MyScheduleCreateSerializer(CustomModelSerializer):
 
 class MyScheduleSerializer(CustomModelSerializer):
     interval_ = IntervalScheduleSerializer(source='interval', read_only=True)
-    crontab = CrontabScheduleSerializer(source='crontab', read_only=True)
+    crontab_ = CrontabScheduleSerializer(source='crontab', read_only=True)
 
     class Meta:
         model = MySchedule
