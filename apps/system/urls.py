@@ -3,7 +3,7 @@ from django.urls import path, include
 from .views import ApkViewSet, FileViewSet, PTaskViewSet, PTaskResultViewSet, PostRoleViewSet, TaskList, \
                     UserPostViewSet, UserViewSet, DeptViewSet, \
                     PermissionViewSet, RoleViewSet, PostViewSet, \
-                    DictTypeViewSet, DictViewSet, SysConfigView, SysBaseConfigView
+                    DictTypeViewSet, DictViewSet, SysConfigView, SysBaseConfigView, MyScheduleViewSet
 from rest_framework import routers
 
 API_BASE_URL = 'api/system/'
@@ -24,6 +24,7 @@ router.register('ptask_result', PTaskResultViewSet, basename="ptask_result")
 router.register('user_post', UserPostViewSet, basename='user_post')
 router.register('post_role', PostRoleViewSet, basename='post_role')
 router.register('apk', ApkViewSet, basename='apk')
+router.register('myschedule', MyScheduleViewSet, basename='myschedule')
 
 router2 = routers.DefaultRouter()
 router2.register('file', FileViewSet, basename='file')
