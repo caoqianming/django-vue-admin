@@ -635,8 +635,8 @@ class ApkViewSet(MyLoggingMixin, ListModelMixin, CreateModelMixin, GenericViewSe
 
 
 class MyScheduleViewSet(ListModelMixin, CreateModelMixin, DestroyModelMixin, CustomGenericViewSet):
-    perms_map = {'get': '*', 'post': 'myschedule.create',
-                 'delete': 'myschedule.delete'}
+    perms_map = {'get': '*', 'post': '*',
+                 'delete': '*'}
     serializer_class = MyScheduleSerializer
     create_serializer_class = MyScheduleCreateSerializer
     queryset = MySchedule.objects.all()
