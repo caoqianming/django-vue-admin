@@ -636,7 +636,7 @@ class ApkViewSet(MyLoggingMixin, ListModelMixin, CreateModelMixin, GenericViewSe
 
 class MyScheduleViewSet(ListModelMixin, CreateModelMixin, DestroyModelMixin, CustomGenericViewSet):
     perms_map = {'get': '*', 'post': '*',
-                 'delete': '*'}
+                 'delete': 'myschedule.delete'}
     serializer_class = MyScheduleSerializer
     create_serializer_class = MyScheduleCreateSerializer
     queryset = MySchedule.objects.all()
@@ -652,8 +652,9 @@ class MyScheduleViewSet(ListModelMixin, CreateModelMixin, DestroyModelMixin, Cus
     def get_chinese_description(self, type: str = 'interval', data: dict = {}):
         """转换为汉语描述
         """
+        print(data)
         if type == 'interval':
-            return f"每隔{data['every']}{data['period']}"
+            return f"每隔{data['every']}{self.period_dict[data['period']]}"
         elif type == 'crontab':
             locale.setlocale(locale.LC_ALL, 'zh_CN.UTF-8')
             return get_description(f"{data['minute']} {data['hour']} {data['day_of_month']} {data['month_of_year']} {data['day_of_week']}")
@@ -669,7 +670,7 @@ class MyScheduleViewSet(ListModelMixin, CreateModelMixin, DestroyModelMixin, Cus
             interval, _ = IntervalSchedule.objects.get_or_create(
                 **interval_data, defaults=interval_data)
             obj = MySchedule(**vdata)
-            obj.name = self.get_chinese_description('interval', vdata)
+            obj.name = self.get_chinese_description('interval', interval_data)
             obj.interval = interval
             obj.save()
         elif vdata['type'] == 20:
@@ -677,7 +678,7 @@ class MyScheduleViewSet(ListModelMixin, CreateModelMixin, DestroyModelMixin, Cus
             crontab, _ = CrontabSchedule.objects.get_or_create(
                 **crontab_data, defaults=crontab_data)
             obj = MySchedule(**vdata)
-            obj.name = self.get_chinese_description('crontab', vdata)
+            obj.name = self.get_chinese_description('crontab', crontab_data)
             obj.crontab = crontab
             obj.save()
 
