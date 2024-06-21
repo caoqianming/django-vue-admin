@@ -18,6 +18,7 @@ JWT认证,可使用simple_history实现审计功能,支持swagger
 
 
 ## 部分截图
+![image](https://github.com/caoqianming/django-vue-admin/blob/master/img/ticket.png)
 ![image](https://github.com/caoqianming/django-vue-admin/blob/master/img/user.png)
 ![image](https://github.com/caoqianming/django-vue-admin/blob/master/img/dict.png)
 ![image](https://github.com/caoqianming/django-vue-admin/blob/master/img/task.png)
