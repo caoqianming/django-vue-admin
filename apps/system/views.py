@@ -299,7 +299,7 @@ class PermissionViewSet(CustomModelViewSet):
     create_serializer_class = PermissionCreateUpdateSerializer
     update_serializer_class = PermissionCreateUpdateSerializer
     partial_update_serializer_class = PermissionCreateUpdateSerializer
-    search_fields = ['name', 'code']
+    search_fields = ['name', 'codes']
     ordering = ['sort', 'create_time']
 
     @action(methods=['get'], detail=False, permission_classes=[IsAuthenticated])
