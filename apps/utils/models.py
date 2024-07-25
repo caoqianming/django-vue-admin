@@ -61,6 +61,10 @@ class ParentModel(models.Model):
 
     def init_parent_link(self):
         link = []
+        try:
+            p = self.parent
+        except Exception:
+            self.parent = None
         if self.parent is not None:
             if self.parent == self:
                 raise Exception(f'{self.__class__.__name__}-{self.id}-存在循环引用')
@@ -87,9 +91,12 @@ class ParentModel(models.Model):
                 处理父级关系
                 """
                 self.parent_link = self.init_parent_link()
-                self.__class__.objects.filter(parent=self.id).update(
-                    parent_link = self.parent_link + [self.id]
-                )
+                # 处理相关的所有父子关系
+                relats = self.__class__.objects.filter(parent_link__contains=[self.id])
+                for relat in relats:
+                    relat.parent_link = relat.init_parent_link()
+                    relat.save()
+                    
     
     class Meta:
         abstract = True
