@@ -153,8 +153,12 @@ class WfService(object):
         multi_all_person_dict = {}
         destination_participant_type, destination_participant = state.participant_type, state.participant
         if destination_participant_type == State.PARTICIPANT_TYPE_FIELD:
-            destination_participant = new_ticket_data.get(destination_participant, 0) if destination_participant \
-                in new_ticket_data else Ticket.ticket_data.get(destination_participant, 0)
+            if destination_participant in new_ticket_data:
+                destination_participant = new_ticket_data.get(destination_participant, 0)
+            elif destination_participant in ticket.ticket_data:
+                destination_participant = ticket.ticket_data.get(destination_participant, 0)
+            elif hasattr(ticket, destination_participant):
+                destination_participant = getattr(ticket, destination_participant)
 
         elif destination_participant_type == State.PARTICIPANT_TYPE_FORMCODE:  # 代码获取
             module, func = destination_participant.rsplit(".", 1)
