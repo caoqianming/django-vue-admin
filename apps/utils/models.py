@@ -61,10 +61,6 @@ class ParentModel(models.Model):
 
     def init_parent_link(self):
         link = []
-        try:
-            p = self.parent
-        except Exception:
-            self.parent = None
         if self.parent is not None:
             if self.parent == self:
                 raise Exception(f'{self.__class__.__name__}-{self.id}-存在循环引用')
@@ -81,21 +77,18 @@ class ParentModel(models.Model):
                         raise Exception(f'{self.__class__.__name__}-{self.id}-最多支持四级')
         return link
 
-    def handle_parent(self, is_create:bool):
+    def handle_parent(self):
         if hasattr(self, "parent_link"):
-            old_parent = None
-            if not is_create:
-                old_parent = self.__class__.objects.get(id=self.id).parent
-            if old_parent != self.parent:
-                """
-                处理父级关系
-                """
-                self.parent_link = self.init_parent_link()
-                # 处理相关的所有父子关系
-                relats = self.__class__.objects.filter(parent_link__contains=[self.id])
-                for relat in relats:
-                    relat.parent_link = relat.init_parent_link()
-                    relat.save()
+            """
+            处理父级关系
+            """
+            self.parent_link = self.init_parent_link()
+            self.save(update_fields=['parent_link'])
+            # 处理相关的所有父子关系
+            relats = self.__class__.objects.filter(parent_link__contains=[self.id])
+            for relat in relats:
+                relat.parent_link = relat.init_parent_link()
+                relat.save(update_fields=['parent_link'])
                     
     
     class Meta:
@@ -127,17 +120,28 @@ class BaseModel(models.Model):
             is_create = True
             self.id = idWorker.get_id()
         with transaction.atomic():
-            # 处理父级
-            self.handle_parent(is_create)
-
+            old_parent = None
+            need_handle_parent = False
+            if hasattr(self, "parent"):
+                try:
+                    old_parent = self.__class__.objects.get(id=self.id).parent
+                except Exception:
+                    self.parent = None
+                    need_handle_parent = True
+                if self.parent != old_parent:
+                    need_handle_parent = True
             try:
-                return super().save(*args, **kwargs)
+                ins = super().save(*args, **kwargs)
             except IntegrityError as e:
                 if is_create:
                     time.sleep(0.01)
                     self.id = idWorker.get_id()
-                    return super().save(*args, **kwargs)
+                    ins = super().save(*args, **kwargs)
                 raise e
+            # 处理父级
+            if need_handle_parent:
+                self.handle_parent()
+            return ins
 
 
 class SoftModel(BaseModel):
