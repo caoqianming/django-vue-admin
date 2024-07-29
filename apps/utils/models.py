@@ -110,7 +110,7 @@ class BaseModel(models.Model):
     class Meta:
         abstract = True
 
-    def handle_parent(self, is_create):
+    def handle_parent(self):
         pass
 
     def save(self, *args, **kwargs) -> None:
