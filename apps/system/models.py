@@ -15,15 +15,15 @@ class DataFilter(models.IntegerChoices):
 
 class Permission(ParentModel, BaseModel):
     """
-    功能权限:目录,菜单,按钮
+    功能权限:模块,页面,接口
     """
-    PERM_TYPE_LIST = 10
-    PERM_TYPE_MENU = 20
-    PERM_TYPE_BUTTON = 30
+    PERM_TYPE_MODULE = 10
+    PERM_TYPE_PAGE = 20
+    PERM_TYPE_API = 30
     menu_type_choices = (
-        (PERM_TYPE_LIST, '目录'),
-        (PERM_TYPE_MENU, '菜单'),
-        (PERM_TYPE_BUTTON, '按钮')
+        (PERM_TYPE_MODULE, '模块'),
+        (PERM_TYPE_PAGE, '页面'),
+        (PERM_TYPE_API, '接口')
     )
     name = models.CharField('名称', max_length=30)
     type = models.PositiveSmallIntegerField(
