@@ -15,9 +15,9 @@ class UserFilterSet(filters.FilterSet):
             'depts': ['exact'],
             'type': ['exact', 'in'],
             'belong_dept__name': ['exact'],
-            'depts__name': ["exact"],
-            'posts__name': ["exact"],
-            'posts__code': ["exact"], 
+            'depts__name': ["exact", "contains"],
+            'posts__name': ["exact", "contains"],
+            'posts__code': ["exact", "contains"], 
         }
 
 
