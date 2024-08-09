@@ -159,6 +159,8 @@ class WfService(object):
                 destination_participant = ticket.ticket_data.get(destination_participant, 0)
             elif hasattr(ticket, destination_participant):
                 destination_participant = getattr(ticket, destination_participant).id
+            else:
+                destination_participant = 0
 
         elif destination_participant_type == State.PARTICIPANT_TYPE_FORMCODE:  # 代码获取
             module, func = destination_participant.rsplit(".", 1)
