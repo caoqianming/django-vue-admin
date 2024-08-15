@@ -6,6 +6,7 @@ from django.db.models.query import QuerySet
 from apps.utils.snowflake import idWorker
 from django.db import IntegrityError
 from django.db import transaction
+from rest_framework.exceptions import ParseError
 
 # 自定义软删除查询基类
 
@@ -63,18 +64,18 @@ class ParentModel(models.Model):
         link = []
         if self.parent is not None:
             if self.parent == self:
-                raise Exception(f'{self.__class__.__name__}-{self.id}-存在循环引用')
+                raise ParseError(f'{self.__class__.__name__}-{self.id}-存在循环引用')
             link = [self.parent.id] # 一级
             if self.parent.parent is not None: # 二级
                 if self.parent.parent == self:
-                    raise Exception(f'{self.__class__.__name__}-{self.id}-存在循环引用')
+                    raise ParseError(f'{self.__class__.__name__}-{self.id}-存在循环引用')
                 link.insert(0, self.parent.parent.id) 
                 if self.parent.parent.parent is not None: # 三级
                     if self.parent.parent.parent == self:
-                        raise Exception(f'{self.__class__.__name__}-{self.id}-存在循环引用')
+                        raise ParseError(f'{self.__class__.__name__}-{self.id}-存在循环引用')
                     link.insert(0, self.parent.parent.parent.id)
                     if self.parent.parent.parent.parent is not None:
-                        raise Exception(f'{self.__class__.__name__}-{self.id}-最多支持四级')
+                        raise ParseError(f'{self.__class__.__name__}-{self.id}-最多支持四级')
         return link
 
     def handle_parent(self):
