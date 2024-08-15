@@ -15,7 +15,7 @@ def check_phone_code(phone, code, raise_exception=True):
 
 def validate_password(password):
     # 正则表达式匹配规则
-    pattern = r"^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@#$%^&+=!])(?!.*\s).{8,}$"
+    pattern = r"^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@#$%^&.+=!])(?!.*\s).{8,}$"
     
     # 使用正则表达式进行匹配
     if re.match(pattern, password):
