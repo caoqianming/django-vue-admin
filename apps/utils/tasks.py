@@ -6,6 +6,7 @@ from django.conf import settings
 from server.settings import get_sysconfig
 import importlib
 from django.core.cache import cache
+import requests
 
 # 实例化myLogger
 myLogger = logging.getLogger('log')
@@ -34,8 +35,11 @@ def send_mail_task(**args):
             args['subject'] = args['subject'] + '_发送频繁'
         else:
             cache.set(cache_key, (email_count, True), 60)
-        from django.core.mail import send_mail
-        send_mail(**args)
+        if getattr(settings, 'JUMP_MAIL_ENABLED', False):
+            requests.post(settings.JUMP_MAIL_URL, json=args)
+        else:
+            from django.core.mail import send_mail
+            send_mail(**args)
 
 class CustomTask(Task):
     """
