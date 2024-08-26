@@ -13,7 +13,7 @@ class CustomBackend(ModelBackend):
             return
         try:
             user = UserModel._default_manager.get(
-                Q(username=username) | Q(phone=username) | Q(employee__id_number=username))
+                Q(username=username) | Q(phone=username))
         except UserModel.DoesNotExist:
             # Run the default password hasher once to reduce the timing
             # difference between an existing and a nonexistent user (#20760).
