@@ -124,13 +124,16 @@ class BaseModel(models.Model):
             old_parent = None
             need_handle_parent = False
             if hasattr(self, "parent"):
-                try:
-                    old_parent = self.__class__.objects.get(id=self.id).parent
-                except Exception:
-                    self.parent = None
+                if is_create:
                     need_handle_parent = True
-                if self.parent != old_parent:
-                    need_handle_parent = True
+                else:
+                    try:
+                        old_parent = self.__class__.objects.get(id=self.id).parent
+                    except Exception:
+                        self.parent = None
+                        need_handle_parent = True
+                    if self.parent != old_parent:
+                        need_handle_parent = True
             try:
                 ins = super().save(*args, **kwargs)
             except IntegrityError as e:
