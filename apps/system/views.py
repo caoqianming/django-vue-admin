@@ -238,7 +238,12 @@ class PTaskResultViewSet(ListModelMixin, RetrieveModelMixin, CustomGenericViewSe
     任务执行结果详情
     """
     perms_map = {'get': '*'}
-    filterset_fields = ['task_name', 'periodic_task_name', 'status']
+    filterset_fields = {
+        "task_name": ["exact", "in"],
+        "periodic_task_name": ["exact"],
+        "status": ["exact"],
+        "date_created": ["gte", "lte"]
+    }
     queryset = TaskResult.objects.all()
     serializer_class = PTaskResultSerializer
     ordering = ['-date_created']
