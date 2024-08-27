@@ -53,26 +53,39 @@ def query_one_dict(sql, params=None):
         return dict(zip(columns, row))
     
 import pymysql
+import psycopg2
 
 class DbConnection:
-    def __init__(self, host, user, password, database):
+    def __init__(self, host, user, password, database, dbtype='mysql'):
+        if dbtype not in ['mysql', 'pg']:
+            raise ValueError('dbtype must be mysql or pg')
+        self.dbtype = dbtype
         self.host = host
         self.user = user
         self.password = password
         self.database = database
         self.conn = None
-        self.cursor = None
+
+    def _connect(self):
+        if self.dbtype == 'mysql':
+            return pymysql.connect(
+                host=self.host,
+                user=self.user,
+                password=self.password,
+                database=self.database
+            )
+        elif self.dbtype == 'pg':
+            return psycopg2.connect(
+                host=self.host,
+                user=self.user,
+                password=self.password,
+                database=self.database,
+            )
 
     def __enter__(self):
-        self.conn = pymysql.connect(
-            host=self.host,
-            user=self.user,
-            password=self.password,
-            database=self.database
-        )
-        self.cursor = self.conn.cursor()
-        return self.cursor
+        self.conn = self._connect()
+        return self.conn.cursor()
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        self.cursor.close()
-        self.conn.close()
+        if self.conn:
+            self.conn.close()
