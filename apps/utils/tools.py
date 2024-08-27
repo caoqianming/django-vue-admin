@@ -8,6 +8,47 @@ import base64
 import requests
 from io import BytesIO
 from rest_framework.serializers import ValidationError
+import ast
+
+class CodeAnalyzer(ast.NodeVisitor):
+    def __init__(self):
+        self.errors = []
+
+    def analyze(self, code):
+        try:
+            tree = ast.parse(code)
+            self.visit(tree)
+        except SyntaxError as e:
+            self.errors.append(f"Syntax error at line {e.lineno}: {e.msg}")
+
+    def visit_Import(self, node):
+        self.errors.append(f"Forbidden import statement at line {node.lineno}")
+        self.generic_visit(node)
+
+    def visit_ImportFrom(self, node):
+        self.errors.append(f"Forbidden import-from statement at line {node.lineno}")
+        self.generic_visit(node)
+
+    def visit_Exec(self, node):
+        self.errors.append(f"Forbidden exec statement at line {node.lineno}")
+        self.generic_visit(node)
+
+    def visit_Call(self, node):
+        # Detect forbidden function calls like eval, open, etc.
+        if isinstance(node.func, ast.Name):
+            if node.func.id in ['eval', 'exec', 'open', 'compile']:
+                self.errors.append(f"Forbidden function '{node.func.id}' used at line {node.lineno}")
+        self.generic_visit(node)
+
+    def visit_With(self, node):
+        # Detect forbidden with-open blocks
+        for item in node.items:
+            context_expr = item.context_expr
+            # For Python versions >= 3.9, context_expr is replaced by context_exprs
+            if isinstance(context_expr, ast.Call) and isinstance(context_expr.func, ast.Name):
+                if context_expr.func.id == 'open':
+                    self.errors.append(f"Forbidden 'open' statement within 'with' block at line {node.lineno}")
+        self.generic_visit(node)
 
 def is_close(num1, num2=0, tolerance=1e-9):
     """
