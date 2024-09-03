@@ -319,7 +319,7 @@ LOGGING = {
 ##### 加载客户可自定义配置并提供操作方法 #####
 SYS_JSON_PATH = os.path.join(BASE_DIR, 'server/conf.json')
 
-def get_sysconfig(key='', reload=False):
+def get_sysconfig(key='', default='raise_error', reload=False):
     """获取系统配置可指定key字符串
     """
     config = cache.get('system_config', None)
@@ -333,7 +333,13 @@ def get_sysconfig(key='', reload=False):
     if key:
         k_l = key.split('.')
         for k in k_l:
-            config = config[k]
+            try:
+                config = config[k]
+            except KeyError:
+                if default == 'raise_error':
+                    raise
+                else:
+                    return default
     return config
 
 
