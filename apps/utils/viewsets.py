@@ -21,6 +21,7 @@ class CustomGenericViewSet(MyLoggingMixin, GenericViewSet):
     """
     增强的GenericViewSet
     """
+    _initialized = False
     perms_map = None  # 权限标识
     throttle_classes = [UserRateThrottle]
     logging_methods = ['POST', 'PUT', 'PATCH', 'DELETE']
@@ -44,13 +45,15 @@ class CustomGenericViewSet(MyLoggingMixin, GenericViewSet):
         """
         第一次实例化时，将权限标识添加到全局权限标识列表中
         """
-        if cls.perms_map is None:
-            basename = kwargs["basename"]
-            cls.perms_map = {'get': '*', 'post': '{}.create'.format(basename), 'put': '{}.update'.format(
-                basename), 'patch': '{}.update'.format(basename), 'delete': '{}.delete'.format(basename)}
-        for _, v in cls.perms_map.items():
-            if v not in ALL_PERMS and v != '*':
-                ALL_PERMS.append(v)
+        if not cls._initialized:
+            if cls.perms_map is None:
+                basename = kwargs["basename"]
+                cls.perms_map = {'get': '*', 'post': '{}.create'.format(basename), 'put': '{}.update'.format(
+                    basename), 'patch': '{}.update'.format(basename), 'delete': '{}.delete'.format(basename)}
+            for _, v in cls.perms_map.items():
+                if v not in ALL_PERMS and v != '*':
+                    ALL_PERMS.append(v)
+            cls._initialized = True
         return super().__new__(cls)
     
     def finalize_response(self, request, response, *args, **kwargs):
@@ -86,15 +89,6 @@ class CustomGenericViewSet(MyLoggingMixin, GenericViewSet):
         if action_serializer_class:
             return action_serializer_class
         return super().get_serializer_class()
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        if self.perms_map:
-            for k, v in self.perms_map.items():
-                if v not in ALL_PERMS and v != '*':
-                    ALL_PERMS.append(v)
-        if not hasattr(self, 'filterset_fields'):
-            self.filterset_fields = self.select_related_fields
 
     def get_queryset_custom(self, queryset):
         """
