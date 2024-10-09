@@ -5,40 +5,52 @@ from apps.system.models import DataFilter, Dept, Permission, PostRole, UserPost,
 from django.db.models.query import QuerySet
 from typing import List
 
+# 后端代码里有的权限标识
 ALL_PERMS = [
 
 ]
 
+# 数据库里定义的权限标识
+def get_alld_perms(update_cache=False) -> List[str]:
+    key = "perms_alld_list"
+    perms_alld_list = cache.get(key)
+    if perms_alld_list is None or update_cache:
+        nested_list = Permission.objects.all().values_list('codes', flat=True)
+        perms_alld_list = list(set([item for sublist in nested_list for item in sublist]))
+        perms_alld_list.sort()
+        cache.set(key, perms_alld_list, timeout=60*5)
+    return perms_alld_list
 
-def get_user_perms_map(user):
+def get_user_perms_map(user, update_cache=False):
     """
     获取权限字典,可用redis存取(包括功能和数据权限)
     """
-    user_perms_map = {}
-    if user.is_superuser:
-        for perm in Permission.objects.all():
-            if perm.codes:
-                for code in perm.codes:
-                    user_perms_map[code] = {}
-    else:
-        objs = UserPost.objects.filter(user=user).exclude(post=None)
-        for i in objs:
-            dept_id = str(i.dept.id)
-            for pr in PostRole.objects.filter(post=i.post):
-                """
-                岗位角色
-                """
-                for perm in Permission.objects.filter(role_perms=pr.role):
-                    if perm.codes:
-                        for code in perm.codes:
-                            if code in user_perms_map:
-                                data_range = user_perms_map[code].get(
-                                    dept_id, -1)
-                                if pr.data_range < data_range:
-                                    user_perms_map[code][dept_id] = pr.data_range
-                            else:
-                                user_perms_map[code] = {dept_id: pr.data_range}
-    cache.set('perms_' + str(user.id), user_perms_map, timeout=300)
+    key = f'perms_{str(user.id)}'
+    if cache.get(key) is None or update_cache:
+        user_perms_map = {}
+        if user.is_superuser:
+            codes = get_alld_perms()
+            for code in codes:
+                user_perms_map[code] = {}
+        else:
+            objs = UserPost.objects.filter(user=user).exclude(post=None)
+            for i in objs:
+                dept_id = str(i.dept.id)
+                for pr in PostRole.objects.filter(post=i.post):
+                    """
+                    岗位角色
+                    """
+                    for perm in Permission.objects.filter(role_perms=pr.role):
+                        if perm.codes:
+                            for code in perm.codes:
+                                if code in user_perms_map:
+                                    data_range = user_perms_map[code].get(
+                                        dept_id, -1)
+                                    if pr.data_range < data_range:
+                                        user_perms_map[code][dept_id] = pr.data_range
+                                else:
+                                    user_perms_map[code] = {dept_id: pr.data_range}
+        cache.set(key, user_perms_map, timeout=300)
     return user_perms_map
 
 
