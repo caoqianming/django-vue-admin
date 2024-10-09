@@ -319,15 +319,15 @@ class PermissionViewSet(CustomModelViewSet):
     
     def perform_create(self, serializer):
         super().perform_create(serializer)
-        MyThread(target=get_alld_perms, args=()).start_p()
+        MyThread(target=get_alld_perms, kwargs={"update_cache": True}).start_p()
     
     def perform_update(self, serializer):
         super().perform_update(serializer)
-        MyThread(target=get_alld_perms, args=()).start_p()
+        MyThread(target=get_alld_perms, kwargs={"update_cache": True}).start_p()
     
     def perform_destroy(self, instance):
         super().perform_destroy(instance)
-        MyThread(target=get_alld_perms, args=()).start_p()
+        MyThread(target=get_alld_perms, kwargs={"update_cache": True}).start_p()
 
 class DeptViewSet(CustomModelViewSet):
     """部门-增删改查
