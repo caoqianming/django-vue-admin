@@ -55,7 +55,7 @@ JWT认证,可使用simple_history实现审计功能,支持swagger
 
 安装node.js
 
-安装依赖包 `npm install --registry=https://registry.npm.taobao.org`
+安装依赖包 `npm install --registry=https://registry.npmmirror.com`
 
 运行服务 `npm run dev` 
 
