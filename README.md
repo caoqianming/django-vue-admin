@@ -188,5 +188,7 @@ docker-compose exec backend python manage.py makemigrations
 目前大部分代码已上传, 可查看swagger
 
 ### 微信群
-愿意交流的话可以加微信群
+愿意交流的话
+可以加QQ群 235665873
+可以加微信群
 ![image](http://49.232.29.236:2222/media/wechat_group.jpg)
