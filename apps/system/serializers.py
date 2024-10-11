@@ -277,12 +277,15 @@ class UserSimpleSerializer(CustomModelSerializer):
 
 
 class UserSignatureSerializer(CustomModelSerializer):
-    signature = serializers.CharField(
-        source='employee.signature', read_only=True)
+    signature = serializers.SerializerMethodField()
 
     class Meta:
         model = User
         fields = ['id', 'username', 'name', 'phone', 'signature']
+
+    def get_signature(self, obj):
+        if hasattr(self, "employee"):
+            return self.employee.signature
 
 
 class UserListSerializer(CustomModelSerializer):
