@@ -3,6 +3,7 @@
 .VSCodeCounter/
 .idea/
 venv/
+.venv/
 __pycache__/
 h5/*
 *.pyc
