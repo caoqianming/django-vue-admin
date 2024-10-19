@@ -12,10 +12,4 @@ class SystemConfig(AppConfig):
             from server.settings import get_sysconfig
             get_sysconfig(reload=True)
             cache.set('cache_sysconfig_need_task', False, timeout=30)
-        
-        if cache.get('cache_alldperms_task', True):
-            from apps.utils.permission import get_alld_perms
-            get_alld_perms(update_cache=True)
-            cache.set('cache_alldperms_task', False, timeout=30)
-
         return super().ready()
