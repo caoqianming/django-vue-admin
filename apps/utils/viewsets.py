@@ -116,9 +116,7 @@ class CustomGenericViewSet(MyLoggingMixin, GenericViewSet):
             user = self.request.user
             if user.is_superuser:
                 return queryset
-            user_perms_map = cache.get('perms_' + str(user.id), None)
-            if user_perms_map is None:
-                user_perms_map = get_user_perms_map(self.request.user)
+            user_perms_map = get_user_perms_map(self.request.user)
             if isinstance(user_perms_map, dict):
                 if hasattr(self, 'perms_map'):
                     perms_map = self.perms_map

@@ -13,7 +13,7 @@ ALL_PERMS = [
 # 数据库里定义的权限标识
 def get_alld_perms(update_cache=False) -> List[str]:
     key = "perms_alld_list"
-    perms_alld_list = cache.get(key)
+    perms_alld_list = cache.get(key, None)
     if perms_alld_list is None or update_cache:
         nested_list = Permission.objects.all().values_list('codes', flat=True)
         perms_alld_list = list(set([item for sublist in nested_list for item in sublist]))
@@ -26,7 +26,8 @@ def get_user_perms_map(user, update_cache=False):
     获取权限字典,可用redis存取(包括功能和数据权限)
     """
     key = f'perms_{str(user.id)}'
-    if cache.get(key) is None or update_cache:
+    user_perms_map = cache.get(key, None)
+    if user_perms_map is None or update_cache:
         user_perms_map = {}
         if user.is_superuser:
             codes = get_alld_perms()
@@ -58,9 +59,7 @@ def has_perm(user: User, perm_codes: List[str]):
     """
     返回用户是否具有给定权限列表中的权限
     """
-    user_perms_map = cache.get(f'perms_{user.id}', None)
-    if user_perms_map is None:
-        user_perms_map = get_user_perms_map(user)
+    user_perms_map = get_user_perms_map(user)
     for item in perm_codes:
         if item in user_perms_map:
             return True
@@ -81,9 +80,7 @@ class RbacPermission(BasePermission):
         """
         if not hasattr(view, 'perms_map'):
             return True
-        user_perms_map = cache.get('perms_' + request.user.id, None)
-        if user_perms_map is None:
-            user_perms_map = get_user_perms_map(request.user)
+        user_perms_map = get_user_perms_map(request.user)
         if isinstance(user_perms_map, dict):
             perms_map = view.perms_map
             _method = request._request.method.lower()
@@ -125,9 +122,7 @@ class RbacDataMixin:
 
         if hasattr(queryset.model, 'belong_dept'):
             user = self.request.user
-            user_perms_map = cache.get('perms_' + user.id, None)
-            if user_perms_map is None:
-                user_perms_map = get_user_perms_map(self.request.user)
+            user_perms_map = get_user_perms_map(self.request.user)
             if isinstance(user_perms_map, dict):
                 if hasattr(self.view, 'perms_map'):
                     perms_map = self.view.perms_map
