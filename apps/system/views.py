@@ -1,5 +1,3 @@
-import configparser
-import os
 import importlib
 import json
 from drf_yasg import openapi
@@ -23,7 +21,7 @@ from apps.system.filters import DeptFilterSet, UserFilterSet
 # from django_q.models import Task as QTask, Schedule as QSchedule
 from apps.utils.mixins import (CustomCreateModelMixin, MyLoggingMixin)
 from django.conf import settings
-from apps.utils.permission import ALL_PERMS, get_user_perms_map, get_alld_perms
+from apps.utils.permission import ALL_PERMS, get_user_perms_map
 from apps.utils.viewsets import CustomGenericViewSet, CustomModelViewSet
 from server.celery import app as celery_app
 from .models import (Dept, Dictionary, DictType, File, Permission, Post, PostRole, Role, User,
@@ -42,7 +40,8 @@ from cron_descriptor import get_description
 import locale
 from drf_yasg.utils import swagger_auto_schema
 from server.settings import get_sysconfig, update_sysconfig, update_dict
-from apps.utils.thread import MyThread
+from apps.utils.constants import DEFAULT_PWD
+from django.core.cache import cache
 
 # logger.info('请求成功！ response_code:{}；response_headers:{}；
 # response_body:{}'.format(response_code, response_headers, response_body[:251]))
@@ -319,15 +318,15 @@ class PermissionViewSet(CustomModelViewSet):
     
     def perform_create(self, serializer):
         super().perform_create(serializer)
-        MyThread(target=get_alld_perms, kwargs={"update_cache": True}).start_p()
+        cache.delete('perms_alld_list')
     
     def perform_update(self, serializer):
         super().perform_update(serializer)
-        MyThread(target=get_alld_perms, kwargs={"update_cache": True}).start_p()
+        cache.delete('perms_alld_list')
     
     def perform_destroy(self, instance):
         super().perform_destroy(instance)
-        MyThread(target=get_alld_perms, kwargs={"update_cache": True}).start_p()
+        cache.delete('perms_alld_list')
 
 class DeptViewSet(CustomModelViewSet):
     """部门-增删改查
