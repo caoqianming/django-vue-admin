@@ -1,9 +1,4 @@
 # 简介
-新增了base分支,base分支只包括后端,其在master分支的后端基础上进行了重新编写,拥有更完善的权限控制、工作流引擎、运维管理、websocket支持并提供多种常用功能集成到utils中.
-
-后期功能变动将以base分支为主,master分支只做兼容性处理,具体可切换至base分支查看
-
-## 下面为master分支介绍
 基于RBAC模型权限控制的中小型应用的基础开发平台,前后端分离,后端采用django+django-rest-framework,前端采用vue+ElementUI,移动端采用uniapp+uView(可发布h5和小程序).
 
 JWT认证,可使用simple_history实现审计功能,支持swagger
@@ -14,7 +9,12 @@ JWT认证,可使用simple_history实现审计功能,支持swagger
 
 支持功能权限(控权到每个接口)和简单的数据权限（全部、本级及以下、同级及以下、本人等）
 
-欢迎提issue
+-----
+
+若需要更复杂的一些功能，请查看仓库
+<https://github.com/caoqianming/xt_server>
+
+其在master分支的后端基础上进行了重新编写,拥有更完善的权限控制、工作流引擎、运维管理、websocket支持并提供多种常用功能集成到utils中.
 
 
 ## 部分截图
@@ -25,7 +25,8 @@ JWT认证,可使用simple_history实现审计功能,支持swagger
 
 ## 预览地址
 预览地址直接使用的runserver,账户admin,密码admin。请谨慎操作,勿修改密码
-<http://49.232.29.236:2222/>
+
+<http://49.232.14.174:7777/>
 
 ## 启动(以下是在windows下开发操作步骤)
 
@@ -191,4 +192,4 @@ docker-compose exec backend python manage.py makemigrations
 愿意交流的话
 可以加QQ群 235665873
 可以加微信群
-![image](http://49.232.29.236:2222/media/wechat_group.jpg)
+![image](http://49.232.14.174:7777/media/wechat_group.jpg)
