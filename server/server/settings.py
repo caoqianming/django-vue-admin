@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 from datetime import datetime, timedelta
 import os
+import logging
 from . import conf
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -206,6 +207,19 @@ LOG_PATH = os.path.join(BASE_DIR, 'log')
 # 如果地址不存在，则自动创建log文件夹
 if not os.path.exists(LOG_PATH):
     os.mkdir(LOG_PATH)
+
+class TimedSizeRotatingHandler(logging.handlers.TimedRotatingFileHandler):
+    def __init__(self, filename, when='midnight', interval=1, backupCount=0, 
+                 maxBytes=0, encoding=None, delay=False, utc=False, atTime=None):
+        super().__init__(filename, when, interval, backupCount, encoding, delay, utc, atTime)
+        self.maxBytes = maxBytes
+
+    def shouldRollover(self, record):
+        if self.maxBytes > 0 and os.path.exists(self.baseFilename):
+            if os.stat(self.baseFilename).st_size >= self.maxBytes:
+                return True
+        return super().shouldRollover(record)
+    
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -229,22 +243,28 @@ LOGGING = {
         # 默认记录所有日志
         'default': {
             'level': 'INFO',
-            'class': 'logging.handlers.RotatingFileHandler',
-            'filename': os.path.join(LOG_PATH, 'all-{}.log'.format(datetime.now().strftime('%Y-%m-%d'))),
+            'class': 'server.settings.TimedSizeRotatingHandler',
+            'filename': os.path.join(LOG_PATH, 'all.log'),
+            'when': 'midnight',  # 每天午夜滚动
+            'interval': 1,
             'maxBytes': 1024 * 1024 * 5,  # 文件大小
             'backupCount': 5,  # 备份数
             'formatter': 'standard',  # 输出格式
             'encoding': 'utf-8',  # 设置默认编码，否则打印出来汉字乱码
+            'delay': True,  # 延迟打开文件，减少锁定冲突
         },
         # 输出错误日志
         'error': {
             'level': 'ERROR',
-            'class': 'logging.handlers.RotatingFileHandler',
-            'filename': os.path.join(LOG_PATH, 'error-{}.log'.format(datetime.now().strftime('%Y-%m-%d'))),
+            'class': 'server.settings.TimedSizeRotatingHandler',
+            'filename': os.path.join(LOG_PATH, 'error.log'),
+            'when': 'midnight',  # 每天午夜滚动
+            'interval': 1,
             'maxBytes': 1024 * 1024 * 5,  # 文件大小
             'backupCount': 5,  # 备份数
             'formatter': 'standard',  # 输出格式
             'encoding': 'utf-8',  # 设置默认编码
+            'delay': True, 
         },
         # 控制台输出
         'console': {
@@ -256,12 +276,15 @@ LOGGING = {
         # 输出info日志
         'info': {
             'level': 'INFO',
-            'class': 'logging.handlers.RotatingFileHandler',
-            'filename': os.path.join(LOG_PATH, 'info-{}.log'.format(datetime.now().strftime('%Y-%m-%d'))),
+            'class': 'server.settings.TimedSizeRotatingHandler',
+            'filename': os.path.join(LOG_PATH, 'info.log'),
+            'when': 'midnight',  # 每天午夜滚动
+            'interval': 1,
             'maxBytes': 1024 * 1024 * 5,
             'backupCount': 5,
             'formatter': 'standard',
             'encoding': 'utf-8',  # 设置默认编码
+            'delay': True, 
         },
     },
     # 配置用哪几种 handlers 来处理日志
