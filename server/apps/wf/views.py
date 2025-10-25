@@ -37,8 +37,8 @@ class WorkflowViewSet(CreateUpdateModelAMixin, ModelViewSet):
     serializer_class = WorkflowSerializer
     search_fields = ['name', 'description']
     filterset_fields = []
-    ordering_fields = ['create_time']
-    ordering = ['-create_time']    
+    ordering_fields = ['create_time', 'name', 'key']
+    ordering = ['create_time']    
 
     @action(methods=['get'], detail=True, perms_map={'get':'workflow_update'}, pagination_class=None, serializer_class=StateSerializer)
     def states(self, request, pk=None):
