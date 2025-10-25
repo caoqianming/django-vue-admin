@@ -221,7 +221,7 @@ export const asyncRoutes = [
         component: Layout,
         children: [
           {
-            path: process.env.VUE_APP_BASE_API + '/docs/',
+            path: process.env.VUE_APP_BASE_API + '/redoc/',
             meta: { title: '接口文档', icon: 'link', perms: ['dev_docs'] }
           }
         ]
@@ -233,16 +233,6 @@ export const asyncRoutes = [
           {
             path: process.env.VUE_APP_BASE_API + '/swagger/',
             meta: { title: 'Swagger文档', icon: 'link', perms: ['dev_docs'] }
-          }
-        ]
-      },
-      {
-        path: 'admin-link',
-        component: Layout,
-        children: [
-          {
-            path: process.env.VUE_APP_BASE_API + '/admin/',
-            meta: { title: 'Django后台', icon: 'link', perms: ['dev_admin'] }
           }
         ]
       }
