@@ -1,195 +1,304 @@
-# 简介
-基于RBAC模型权限控制的中小型应用的基础开发平台,前后端分离,后端采用django+django-rest-framework,前端采用vue+ElementUI,移动端采用uniapp+uView(可发布h5和小程序).
+# django-vue-admin
 
-JWT认证,可使用simple_history实现审计功能,支持swagger
+基于 RBAC 权限模型的前后端分离后台管理平台，适合作为中小型业务系统的基础开发骨架。
 
-内置模块有组织机构\用户\角色\岗位\数据字典\文件库\定时任务\工作流(已上传大部分代码, 后端代码位于apps/wf)
+后端使用 Django + Django REST Framework，前端使用 Vue 2 + Element UI，移动端目录中提供了基于 uni-app + uView 的实现。
 
-使用工作流建议数据库用Postgresql, 下面的预览环境因为是用的sqlite因此有些json查询不支持, 使用方法可参考loonflow文档基本是一致, 主要是做了简化
+## 项目特性
 
-支持功能权限(控权到每个接口)和简单的数据权限（全部、本级及以下、同级及以下、本人等）
+- 前后端分离：后端提供 REST API，前端按权限动态加载路由和菜单
+- RBAC 权限控制：支持接口级功能权限控制
+- 数据权限：内置全部、本级及以下、同级及以下、本人等基础规则
+- JWT 认证：默认使用 `djangorestframework-simplejwt`
+- 审计能力：可结合 `django-simple-history` 记录变更历史
+- 定时任务：集成 Celery + `django-celery-beat`
+- 接口文档：内置 Swagger 页面
+- 工作流模块：参考 loonflow 思路做了简化实现
 
------
+## 内置模块
 
-若需要更复杂的一些功能，请查看仓库
-<https://github.com/caoqianming/xt_server>
+- 组织机构
+- 用户管理
+- 角色管理
+- 岗位管理
+- 权限管理
+- 数据字典
+- 文件库
+- 定时任务
+- 工作流
+- 系统监控
 
-其在master分支的后端基础上进行了重新编写,拥有更完善的权限控制、工作流引擎、运维管理、websocket支持并提供多种常用功能集成到utils中.
+## 技术栈
 
+### 后端
 
-## 部分截图
-![image](https://github.com/caoqianming/django-vue-admin/blob/master/img/ticket.png)
-![image](https://github.com/caoqianming/django-vue-admin/blob/master/img/user.png)
-![image](https://github.com/caoqianming/django-vue-admin/blob/master/img/dict.png)
-![image](https://github.com/caoqianming/django-vue-admin/blob/master/img/task.png)
+- Django 4.2.27
+- Django REST Framework 3.14.0
+- Simple JWT 5.5.1
+- django-celery-beat 2.5.0
+- django-simple-history 3.4.0
+- drf-yasg 1.21.7
+- Redis
 
-## 预览地址
-预览地址直接使用的runserver,账户admin,密码admin。请谨慎操作,勿修改密码
+### 前端
 
-<http://49.232.14.174:7777/>
+- Vue 2.6
+- Element UI 2.15
+- Vue Router 3
+- Vuex 3
+- Axios 1.6
 
-## 启动(以下是在windows下开发操作步骤)
+## 目录结构
 
-
-### django后端
-定位到server文件夹
-
-建立虚拟环境 `python -m venv venv`
-
-激活虚拟环境 `.\venv\scripts\activate`
-
-安装依赖包 `pip install -r requirements.txt`
-
-复制server文件夹下的conf_e.py为conf.py
-根据需要修改里面的数据库连接及DEBUG参数
-
-同步数据库 `python manage.py migrate`
-
-可导入初始数据 `python manage.py loaddata db.json` 或直接使用sqlite数据库(超管账户密码均为admin,每隔一段时间数据库会重置)
-
-创建超级管理员 `python manage.py createsuperuser`
-
-运行服务 `python manage.py runserver 8000` 
-
-### vue前端
-定位到client文件夹
-
-安装node.js
-
-安装依赖包 `npm install --registry=https://registry.npmmirror.com`
-
-运行服务 `npm run dev` 
-
-### nginx
-本地跑时修改nginx.conf，可显示资源文件
-
+```text
+.
+├─ client/       Web 管理端
+├─ client_mp/    移动端（uni-app + uView）
+├─ img/          README 截图资源
+├─ server/       Django 后端
+├─ docker-compose.yml
+└─ README.md
 ```
-listen 8012
+
+## 快速开始
+
+### 运行环境
+
+- Python 3.10+（建议）
+- Node.js 16 或更高版本
+- Redis 6+（使用定时任务时需要）
+- PostgreSQL（如需完整使用工作流模块，建议使用）
+
+### 1. 启动后端
+
+进入目录：`server`
+
+```bash
+python -m venv venv
+.\venv\Scripts\activate
+pip install -r requirements.txt
+```
+
+项目使用 `server/server/conf.py` 读取数据库和调试配置。
+如果是首次初始化，可参考同目录下的 `conf_e.py` 创建或调整配置。
+
+执行数据库迁移：
+
+```bash
+python manage.py migrate
+```
+
+可选：导入初始化数据
+
+```bash
+python manage.py loaddata db.json
+```
+
+说明：仓库当前已包含 `server/db.sqlite3`，本地体验时也可以直接使用。
+
+创建超级管理员：
+
+```bash
+python manage.py createsuperuser
+```
+
+启动开发服务：
+
+```bash
+python manage.py runserver 8000
+```
+
+### 2. 启动前端
+
+进入目录：`client`
+
+```bash
+npm install --registry=https://registry.npmmirror.com
+npm run dev
+```
+
+默认开发环境下，前端接口地址为：`http://localhost:8000/api`
+
+### 3. 访问入口
+
+前端开发服务默认端口通常为 `9528`。如果通过 Nginx 代理，可统一从 `8012` 访问。
+
+- 前端页面：`http://localhost:8012/` 或 `http://localhost:9528/`
+- Swagger 文档：`http://localhost:8000/api/swagger/`
+- Django Admin：`http://localhost:8000/django/admin/`
+
+## 本地联调 Nginx 示例
+
+如果你希望本地通过一个端口同时访问前端页面和后端媒体文件，可以参考以下配置：
+
+```nginx
+listen 8012;
+
 location /media {
     proxy_pass http://localhost:8000;
 }
+
 location / {
     proxy_pass http://localhost:9528;
 }
 ```
 
-运行nginx.exe
+## Docker Compose 运行
 
-### 运行
-打开localhost:8012即可访问
+仓库根目录提供了 `docker-compose.yml`，默认包含以下服务：
 
-接口文档 localhost:8000/api/swagger/
+- `backend`：Django 后端
+- `frontend`：Vue 前端
+- `redis`：Redis
 
-后台地址 localhost:8000/django/admin/
+启动：
 
-## 部署
-部署时注意修改conf.py
-
-可以前后端分开部署, nginx代理。也可打包之后将前端dist替换server/dist, 然后执行collectstatic
-
-使用gunicorn启动: 进入虚拟环境执行 gunicorn -w 5 -b 0.0.0.0:2251 server.wsgi
-
-如果需要webscoket还需要配置daphne启动，可使用supervisor监控
-
-Nginx配置可参考如下:
-```
-server {
-        listen 2250;
-        client_max_body_size 1024m;
-        location /media/ {
-                alias /home/lighthouse/xx/media/;
-                limit_rate 800k;
-        }
-        location / {
-                alias /home/lighthouse/xx/dist/;
-                index index.html;
-        }
-        location ~ ^/(api|django)/ {
-                set $CSRFTOKEN "";
-                if ($http_cookie ~* "CSRFTOKEN=(.+?)(?=;|$)") {
-                        set $CSRFTOKEN "$1";
-                }
-                proxy_set_header X-CSRFToken $CSRFTOKEN;
-                proxy_pass http://localhost:2251;
-                proxy_pass_header  Authorization;
-                proxy_pass_header  WWW-Authenticate;
-                proxy_set_header Host $host;
-                proxy_set_header X-Real-IP $remote_addr;
-                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        }
-        location /ws/ {
-                proxy_pass http://localhost:2252;
-                proxy_http_version 1.1;
-                proxy_set_header Upgrade $http_upgrade;
-                proxy_set_header Connection "upgrade";
-                proxy_redirect off;
-                proxy_set_header Host $host;
-                proxy_set_header X-Real-IP $remote_addr;
-                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-                proxy_set_header X-Forwarded-Host $server_name;
-        }
-
-}
-```
-
-### docker-compose 方式运行
-
-前端 `./client` 和后端 `./server` 目录下都有Dockerfile，如果需要单独构建镜像，可以自行构建。
-
-这里主要说docker-compose启动这种方式。
-
-按照注释修改docker-compose.yml文件。里面主要有两个服务，一个是`backend`后端,一个是`frontend`前端。
-
-默认是用开发模式跑的后端和前端。如果需要单机部署，又想用docker-compose的话，改为生产模式性能会好些。
-
-
-启动
-```
-cd <path-to-your-project>
+```bash
 docker-compose up -d
 ```
 
-启动成功后，访问端口同前面的，接口8000端口，前端8012端口，如需改动，自己改docker-compose.yml
+启动后默认访问：
 
-如果要执行里面的命令
-docker-compose exec <服务名> <命令>
+- 后端：`http://localhost:8000/`
+- 前端：`http://localhost:8012/`
 
-举个栗子：
+在容器内执行命令示例：
 
-如果我要执行后端生成数据变更命令。`python manage.py makemigrations`
-
-则用如下语句
-
-```
+```bash
 docker-compose exec backend python manage.py makemigrations
 ```
 
-### 理念
-首先得会使用django-rest-framework, 理解vue-element-admin前端方案
+说明：当前 `docker-compose.yml` 默认更偏向开发模式，若用于单机生产部署，建议切换为生产镜像和生产配置。
 
-本项目采用前端路由，后端根据用户角色读取用户权限代码返回给前端，由前端进行加载(核心代码是路由表中的perms属性以及checkpermission方法)
+## 生产部署说明
 
-后端功能权限的核心代码在server/apps/system/permission.py下重写了has_permission方法, 在APIView和ViewSet中定义perms权限代码
+部署时请重点检查以下配置：
 
-数据权限因为跟具体业务有关,简单定义了几个规则,重写了has_object_permission方法;根据需要使用即可
+- `server/server/conf.py` 中的数据库连接、`DEBUG`、主机配置
+- 静态资源和媒体文件目录
+- Nginx 反向代理配置
+- Redis、Celery、数据库的网络连通性
 
-由于实际情况比较复杂，这里建议根据不同情况自己写drf的permission_class
+前后端可以分开部署，也可以先构建前端，再将前端 `dist` 内容替换到后端 `server/dist` 中统一托管，然后执行 `collectstatic`。
 
-### 关于定时任务
-使用celery以及django_celery_beat包实现
+Gunicorn 启动示例：
 
-需要安装redis并在默认端口启动, 并启动worker以及beat
+```bash
+gunicorn -w 5 -b 0.0.0.0:2251 server.wsgi
+```
 
-进入虚拟环境并启动worker: `celery -A server worker -l info -P eventlet`, linux系统不用加-P eventlet
+如需 WebSocket，可额外使用 Daphne 并配合 Supervisor 管理进程。
 
-进入虚拟环境并启动beat: `celery -A server beat -l info`
+Nginx 可参考：
 
-### 工作流
-工作流模块参考loonflow的实现可查看其文档(逻辑一样, 感谢loonflow)
-目前大部分代码已上传, 可查看swagger
+```nginx
+server {
+    listen 2250;
+    client_max_body_size 1024m;
 
-### 微信群
-愿意交流的话
-可以加QQ群 235665873
-可以加微信群
-![image](http://49.232.14.174:7777/media/wechat_group.jpg)
+    location /media/ {
+        alias /home/lighthouse/xx/media/;
+        limit_rate 800k;
+    }
+
+    location / {
+        alias /home/lighthouse/xx/dist/;
+        index index.html;
+    }
+
+    location ~ ^/(api|django)/ {
+        set $CSRFTOKEN "";
+        if ($http_cookie ~* "CSRFTOKEN=(.+?)(?=;|$)") {
+            set $CSRFTOKEN "$1";
+        }
+        proxy_set_header X-CSRFToken $CSRFTOKEN;
+        proxy_pass http://localhost:2251;
+        proxy_pass_header Authorization;
+        proxy_pass_header WWW-Authenticate;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+
+    location /ws/ {
+        proxy_pass http://localhost:2252;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_redirect off;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Host $server_name;
+    }
+}
+```
+
+## 权限设计说明
+
+本项目采用“前端路由 + 后端权限码”的方式控制访问：
+
+- 前端在路由配置中通过 `meta.perm` 等字段控制页面显示与按钮权限
+- 后端在接口层通过 `RbacPermission` 校验用户权限码
+- 数据权限在 `has_object_permission` 中做了基础规则扩展，可按业务继续自定义
+
+核心代码位置：
+
+- 后端权限：`server/apps/system/permission.py`
+- 前端权限控制：`client/src/permission.js`
+- 前端路由与权限生成：`client/src/store/modules/permission.js`
+
+## 定时任务说明
+
+定时任务使用 Celery 和 `django-celery-beat` 实现。
+
+需要先启动 Redis，然后分别启动 worker 和 beat：
+
+```bash
+celery -A server worker -l info -P eventlet
+celery -A server beat -l info
+```
+
+说明：Linux 环境下通常不需要 `-P eventlet`。
+
+## 工作流说明
+
+工作流模块参考 loonflow 的实现思路，并做了简化。后端主要代码位于 `server/apps/wf`。
+
+建议：
+
+- 如果需要稳定使用复杂工作流能力，优先使用 PostgreSQL
+- 预览或轻量体验可直接使用 SQLite，但部分 JSON 查询能力会受限
+
+## 预览地址
+
+演示环境：<http://49.232.14.174:7777/>
+
+默认演示账户：
+
+- 用户名：`admin`
+- 密码：`admin`
+
+说明：演示环境直接使用 `runserver`，请谨慎操作，不要修改默认密码。
+
+## 部分截图
+
+![工单页面](https://github.com/caoqianming/django-vue-admin/blob/master/img/ticket.png)
+![用户管理](https://github.com/caoqianming/django-vue-admin/blob/master/img/user.png)
+![数据字典](https://github.com/caoqianming/django-vue-admin/blob/master/img/dict.png)
+![定时任务](https://github.com/caoqianming/django-vue-admin/blob/master/img/task.png)
+
+## 相关项目
+
+如果你需要更复杂、更完整的能力，可以查看：
+
+- [xt_server](https://github.com/caoqianming/xt_server)
+
+该仓库在这一套后端基础上做了进一步重写，包含更完善的权限控制、工作流引擎、运维管理、WebSocket 支持以及更多通用能力。
+
+## 交流
+
+- QQ 群：`235665873`
+- 微信群：
+
+![微信群](http://49.232.14.174:7777/media/wechat_group.jpg)
