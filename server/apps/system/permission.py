@@ -4,15 +4,6 @@ from utils.queryset import get_child_queryset2
 from .models import Organization, Permission
 from django.db.models import Q
 
-
-class FileOwnerPermission(BasePermission):
-    """共享文件可读取，仅上传者或超级管理员可删除。"""
-
-    def has_object_permission(self, request, view, obj):
-        if request.method != 'DELETE':
-            return True
-        return request.user.is_superuser or obj.create_by_id == request.user.pk
-
 def get_permission_list(user):
     """
     获取权限列表,可用redis存取
