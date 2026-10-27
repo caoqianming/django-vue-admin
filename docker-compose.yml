@@ -7,8 +7,6 @@ services:
     environment:
       # 生产的话把DJANGO_ENV这个环境变量删了 执行docker-compose build backend 重新构建下镜像
       - DJANGO_ENV=dev
-      - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY:?Set a unique Django secret key}
-      - JWT_SIGNING_KEY=${JWT_SIGNING_KEY:?Set an independent JWT signing key}
     volumes:
       - ./server:/code
     links:

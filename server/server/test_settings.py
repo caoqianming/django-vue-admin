@@ -1,4 +1,4 @@
-"""Isolated test database/cache; signing keys still come from the environment."""
+"""Isolated test database/cache; signing keys still come from conf.py."""
 from .settings import *  # noqa: F403,F401
 
 DATABASES = {'default': {'ENGINE': 'django.db.backends.sqlite3', 'NAME': ':memory:'}}

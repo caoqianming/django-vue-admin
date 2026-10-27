@@ -82,13 +82,11 @@ pip install -r requirements.txt
 项目使用 `server/server/conf.py` 读取数据库和调试配置。
 如果是首次初始化，可参考同目录下的 `conf_e.py` 创建或调整配置。
 
-首次启动前，必须设置 `DJANGO_SECRET_KEY` 和 `JWT_SIGNING_KEY` 环境变量。
+首次启动前，在 `server/server/conf.py` 中配置 `SECRET_KEY` 和 `JWT_SIGNING_KEY`。
 分别运行两次 `python -c "import secrets; print(secrets.token_urlsafe(64))"`，
-将两个不同的随机值保存到部署环境的密钥配置中（每个至少 50 字符），不要提交到 Git。
-PowerShell 使用 `$env:DJANGO_SECRET_KEY = '生成的第一个值'` 和
-`$env:JWT_SIGNING_KEY = '生成的第二个值'`；Linux 使用 `export` 设置对应变量。
+将两个不同的随机值分别填入这两个配置项。`conf.py` 已被 Git 忽略，不要提交到 Git。
 所有 Web/Celery 进程和副本应使用同一组持久化密钥，不能每次启动重新生成。
-缺少密钥、密钥太短或两者相同都会阻止服务启动。
+未配置密钥或两者相同都会阻止服务启动，不需要设置环境变量。
 
 从旧版本升级时必须轮换密钥，不能复用旧代码中的公开密钥。
 轮换后旧的 Django 会话及 JWT access/refresh token 将失效，用户需要重新登录。
@@ -175,8 +173,8 @@ location / {
 
 启动：
 
-先在部署环境设置上述两个密钥，也可以在仓库根目录的 `.env`（已忽略）中
-分别配置 `DJANGO_SECRET_KEY=...` 和 `JWT_SIGNING_KEY=...`，供 Compose 读取。
+先在 `server/server/conf.py` 中配置上述两个密钥；Compose 通过现有的
+`./server:/code` 挂载读取此配置文件。
 
 ```bash
 docker-compose up -d
