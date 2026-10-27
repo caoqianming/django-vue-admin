@@ -85,7 +85,8 @@
             v-model="org.parent"
             :multiple="false"
             :options="tableData"
-            placeholder="父级"
+            :clearable="true"
+            placeholder="留空则为根部门"
           />
         </el-form-item>
       </el-form>
@@ -126,7 +127,6 @@ export default {
       dialogType: "new",
       rule1: {
         name: [{ required: true, message: "请输入名称", trigger: "blur" }],
-        parent: [{ required: true, message: "请选择上级", trigger: "change" }],
       },
     };
   },
@@ -193,6 +193,7 @@ export default {
     async confirmOrg(form) {
       this.$refs[form].validate((valid) => {
         if (valid) {
+          this.org.parent = this.org.parent == null ? null : this.org.parent;
           const isEdit = this.dialogType === "edit";
           if (isEdit) {
             updateOrg(this.org.id, this.org).then(() => {
