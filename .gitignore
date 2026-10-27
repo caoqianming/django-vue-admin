@@ -4,5 +4,7 @@ deploy.sh
 package-lock.json
 .idea/
 .vscode/
+.venv/
+.env
 server/static/
 img/wechat_group.jpg
