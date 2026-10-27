@@ -26,7 +26,7 @@ from .filters import UserFilter
 from .mixins import CreateUpdateModelAMixin, OptimizationMixin
 from .models import (Dict, DictType, File, Organization, Permission, Position,
                      Role, User)
-from .permission import RbacPermission, get_permission_list
+from .permission import FileOwnerPermission, RbacPermission, get_permission_list
 from .permission_data import RbacFilterSet
 from .serializers import (DictSerializer, DictTypeSerializer, FileSerializer,
                           OrganizationSerializer, PermissionSerializer,
@@ -328,7 +328,7 @@ class FileViewSet(CreateModelMixin, DestroyModelMixin, RetrieveModelMixin, ListM
     文件上传用
     """
     perms_map = None
-    permission_classes=[IsAuthenticated]
+    permission_classes = [IsAuthenticated, FileOwnerPermission]
     parser_classes = [MultiPartParser, JSONParser]
     queryset = File.objects.all()
     serializer_class = FileSerializer
