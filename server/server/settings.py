@@ -14,6 +14,7 @@ from datetime import datetime, timedelta
 import os
 import logging
 from . import conf
+from django.core.exceptions import ImproperlyConfigured
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -23,7 +24,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'ez9z3a4m*$%srn9ve_t71yd!v+&xn9@0k(e(+l6#g1h=e5i4da'
+SECRET_KEY = getattr(conf, 'SECRET_KEY', '')
+JWT_SIGNING_KEY = getattr(conf, 'JWT_SIGNING_KEY', '')
+if not SECRET_KEY or not JWT_SIGNING_KEY or SECRET_KEY == JWT_SIGNING_KEY:
+    raise ImproperlyConfigured('请在 conf.py 中配置两个不同的随机密钥：SECRET_KEY 和 JWT_SIGNING_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = conf.DEBUG
@@ -167,6 +171,7 @@ REST_FRAMEWORK = {
 }
 # simplejwt配置
 SIMPLE_JWT = {
+    'SIGNING_KEY': JWT_SIGNING_KEY,
     'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
 }
 

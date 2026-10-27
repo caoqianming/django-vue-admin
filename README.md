@@ -82,6 +82,16 @@ pip install -r requirements.txt
 项目使用 `server/server/conf.py` 读取数据库和调试配置。
 如果是首次初始化，可参考同目录下的 `conf_e.py` 创建或调整配置。
 
+首次启动前，在 `server/server/conf.py` 中配置 `SECRET_KEY` 和 `JWT_SIGNING_KEY`。
+分别运行两次 `python -c "import secrets; print(secrets.token_urlsafe(64))"`，
+将两个不同的随机值分别填入这两个配置项。`conf.py` 已被 Git 忽略，不要提交到 Git。
+所有 Web/Celery 进程和副本应使用同一组持久化密钥，不能每次启动重新生成。
+未配置密钥或两者相同都会阻止服务启动，不需要设置环境变量。
+
+从旧版本升级时必须轮换密钥，不能复用旧代码中的公开密钥。
+轮换后旧的 Django 会话及 JWT access/refresh token 将失效，用户需要重新登录。
+此变更不提供单个 token 的即时注销/吊销功能。
+
 执行数据库迁移：
 
 ```bash
@@ -119,6 +129,16 @@ npm run dev
 
 默认开发环境下，前端接口地址为：`http://localhost:8000/api`
 
+### 回归测试
+
+配置好 `conf.py` 和上述两个密钥后，在 `server` 目录运行
+`python manage.py test apps.system --settings=server.test_settings --noinput`。
+测试使用内存 SQLite 和本地内存缓存，不连接业务数据库或 Redis。
+Python 3.12 新建环境若提示缺少 `pkg_resources`，需先安装
+`python -m pip install "setuptools<81"`（现有 drf-yasg 依赖）。
+在 `client` 目录运行
+`npx vue-cli-service test:unit --runInBand --cacheDirectory node_modules/.cache/jest Organization.spec.js`。
+
 ### 3. 访问入口
 
 前端开发服务默认端口通常为 `9528`。如果通过 Nginx 代理，可统一从 `8012` 访问。
@@ -152,6 +172,9 @@ location / {
 - `redis`：Redis
 
 启动：
+
+先在 `server/server/conf.py` 中配置上述两个密钥；Compose 通过现有的
+`./server:/code` 挂载读取此配置文件。
 
 ```bash
 docker-compose up -d

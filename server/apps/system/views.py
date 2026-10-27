@@ -19,7 +19,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet, ModelViewSet
 from rest_framework_simplejwt.tokens import RefreshToken
-from rest_framework.exceptions import ValidationError, ParseError
+from rest_framework.exceptions import ValidationError, ParseError, PermissionDenied
 from utils.queryset import get_child_queryset2
 
 from .filters import UserFilter
@@ -328,13 +328,19 @@ class FileViewSet(CreateModelMixin, DestroyModelMixin, RetrieveModelMixin, ListM
     文件上传用
     """
     perms_map = None
-    permission_classes=[IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     parser_classes = [MultiPartParser, JSONParser]
     queryset = File.objects.all()
     serializer_class = FileSerializer
     filterset_fields = ['type']
     search_fields = ['name']
     ordering = ['-create_time']
+
+    def perform_destroy(self, instance):
+        user = self.request.user
+        if not user.is_superuser and instance.create_by_id != user.pk:
+            raise PermissionDenied('只能删除自己上传的文件')
+        instance.delete()
 
     def perform_create(self, serializer):
         fileobj = self.request.data.get('file')

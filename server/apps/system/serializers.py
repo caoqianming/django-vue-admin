@@ -143,6 +143,7 @@ class UserModifySerializer(serializers.ModelSerializer):
         model = User
         fields = ['id', 'username', 'name', 'phone', 'email', 'dept',
                   'position', 'avatar', 'is_active', 'roles', 'is_superuser']
+        read_only_fields = ['is_superuser']
 
     def validate_phone(self, phone):
         if phone is not None:
