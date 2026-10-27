@@ -139,20 +139,11 @@ class UserModifySerializer(serializers.ModelSerializer):
     """
     phone = serializers.CharField(max_length=11, required=False, allow_null=True)
 
-    def validate(self, attrs):
-        request = self.context.get('request')
-        is_superuser = bool(request and request.user and request.user.is_superuser)
-        if not is_superuser:
-            if 'is_superuser' in attrs:
-                raise serializers.ValidationError({'is_superuser': '只有超级管理员可以修改超级用户状态'})
-            if self.instance and self.instance.is_superuser:
-                raise serializers.ValidationError('只有超级管理员可以修改超级用户')
-        return attrs
-
     class Meta:
         model = User
         fields = ['id', 'username', 'name', 'phone', 'email', 'dept',
                   'position', 'avatar', 'is_active', 'roles', 'is_superuser']
+        read_only_fields = ['is_superuser']
 
     def validate_phone(self, phone):
         if phone is not None:
